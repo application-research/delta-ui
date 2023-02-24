@@ -1,9 +1,10 @@
 import DefaultMetaTags from '@components/DefaultMetaTags';
+import PackageJSON from '@root/package.json';
 
 export default async function Head({ params }) {
-  const title = 'example';
-  const description = 'CHANGEME: description for your application using next-sass';
-  const url = 'CHANGEME: your-production-url.tld';
+  const title = `${PackageJSON.name} | v${PackageJSON.version}`;
+  const description = `${PackageJSON.description}`;
+  const url = '--';
 
   // SUMMARY_LARGE_IMAGE: 1500x785
   return (

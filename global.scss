@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'Mono';
+  src: url('https://next-s3-public.s3.us-west-2.amazonaws.com/JetBrainsMono-Regular.woff2') format('woff');
+}
+
 html,
 body,
 div,
@@ -102,13 +107,15 @@ section {
 
 html,
 body {
-  --color-background: #ffffff;
-  --color-text: #000000;
+  --color-background: #121212;
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-text: #fff;
 
   font-size: 16px;
   background: var(--color-background);
   color: var(--color-text);
-  font-family: -apple-system, BlinkMacSystemFont, helvetica neue, helvetica, sans-serif;
+  font-family: 'Mono', -apple-system, BlinkMacSystemFont, helvetica neue, helvetica, sans-serif;
+
   scrollbar-width: none;
   -ms-overflow-style: -ms-autohiding-scrollbar;
 

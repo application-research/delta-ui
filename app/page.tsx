@@ -1,7 +1,7 @@
 import '@root/global.scss';
 
-import DefaultLayout from '@components/DefaultLayout';
+import Application from '@components/Application';
 
 export default async function Page(props) {
-  return <DefaultLayout>Hello World</DefaultLayout>;
+  return <Application />;
 }
