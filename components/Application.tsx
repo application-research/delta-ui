@@ -78,7 +78,7 @@ export default function Application(props) {
           state={state}
         />
       ) : null}
-      {appTooltipState === 1 ? <FormUploadData /> : 0}
+      {appTooltipState === 1 ? <FormUploadData /> : null}
     </DefaultLayout>
   );
 }
