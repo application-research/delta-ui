@@ -11,6 +11,8 @@ import SceneDatasets from '@components/SceneDatasets';
 import SceneProviders from '@components/SceneProviders';
 import SceneReplications from '@components/SceneReplications';
 
+import FormUploadData from '@components/FormUploadData';
+
 export default function Application(props) {
   const [appNavigationState, setAppNavigationState] = React.useState(1);
   const [searchValue, setSearchChange] = React.useState('');
@@ -18,6 +20,7 @@ export default function Application(props) {
   const [selectedProvider, setSelectedProvider] = React.useState('');
   const [selectedData, setSelectedData] = React.useState('');
   const [state, setState] = React.useState({ data: [], providers: [], replications: [] });
+  const [appTooltipState, setTooltipState] = React.useState(0);
 
   React.useEffect(() => {
     // TODO(alvin, json, cake):
@@ -42,7 +45,7 @@ export default function Application(props) {
       onClickDatasets={() => setAppNavigationState(1)}
       onClickProviders={() => setAppNavigationState(2)}
       onClickReplications={() => setAppNavigationState(3)}
-      onUploadData={() => alert('work in progress')}
+      onUploadData={() => setTooltipState(appTooltipState !== 1 ? 1 : 0)}
       onImportData={() => alert('work in progress')}
       onAddProviders={() => alert('work in progress')}
     >
@@ -75,6 +78,7 @@ export default function Application(props) {
           state={state}
         />
       ) : null}
+      {appTooltipState === 1 ? <FormUploadData /> : 0}
     </DefaultLayout>
   );
 }

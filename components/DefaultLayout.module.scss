@@ -33,6 +33,7 @@
   width: 100%;
   min-width: 10%;
   border-left: 1px solid var(--color-border);
+  position: relative;
 }
 
 .right {
@@ -40,6 +41,7 @@
   min-width: 10%;
   min-height: calc(100vh - 56px);
   border-left: 1px solid var(--color-border);
+  position: relative;
 }
 
 .appTitle {
