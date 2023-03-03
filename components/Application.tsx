@@ -19,7 +19,7 @@ export default function Application(props) {
   const [providerValue, setProviderChange] = React.useState('');
   const [selectedProvider, setSelectedProvider] = React.useState('');
   const [selectedData, setSelectedData] = React.useState('');
-  const [state, setState] = React.useState({ data: [], providers: [], replications: [] });
+  const [state, setState] = React.useState({ datasets: [], providers: [], replications: [] });
   const [appTooltipState, setTooltipState] = React.useState(0);
 
   React.useEffect(() => {
@@ -27,11 +27,15 @@ export default function Application(props) {
     // You can insert the hydration point here, and all page updates here.
     // You could use websockets, or something else, whatever you desire.
     async function init() {
-      const response = await fetch('/api');
-      const json = await response.json();
+      const apiURL = "http://localhost:1314/api/v1";
+      const datasetsRes = await fetch(apiURL + "/dataset");
+      const providersRes = await fetch(apiURL + "/provider");
 
-      console.log(json);
-      setState({ data: [...json.response.data], providers: [...json.response.providers], replications: [...json.response.replications] });
+      setState({
+        datasets: await datasetsRes.json(),
+        providers: await providersRes.json(),
+        replications: []
+      });
     }
 
     init();
@@ -74,7 +78,7 @@ export default function Application(props) {
             alert('test');
           }}
           selectedData={selectedData}
-          setSelectedData={() => {}}
+          setSelectedData={() => { }}
           state={state}
         />
       ) : null}

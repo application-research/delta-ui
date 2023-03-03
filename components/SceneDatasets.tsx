@@ -12,51 +12,48 @@ export default function SceneDatasets(props) {
   return (
     <div className={styles.body}>
       <Input label={props.searchLabel} id="scene-datasets-search" placeholder={props.placeholder} value={props.searchValue} onChange={props.onSearchChange} />
-
-      {props.state.data.length ? (
+      {
+        props.state.datasets && 
         <div className={tableStyles.body}>
           <div className={tableStyles.header}>
-            {Object.keys(props.state.data[0]).map((each, index) => {
-              const isLast = Object.keys(props.state.data[0]).length - 1 === index;
-
-              if (isLast) {
-                return (
-                  <span className={tableStyles.fluidColumn} key={each}>
-                    {each}
-                  </span>
-                );
-              }
+            <span className={tableStyles.column}>ID</span>
+            <span className={tableStyles.column}>Name</span>
+            <span className={tableStyles.column}>Size</span>
+            <span className={tableStyles.column}>Replication Quota</span>
+            <span className={tableStyles.column}>Start Epoch Delay</span>
+            <span className={tableStyles.column}>Duration (Days)</span>
+            <span className={tableStyles.column}>Unsealed</span>
+            <span className={tableStyles.column}>Indexed</span>
+            <span className={tableStyles.fluidColumn}>Wallet</span>
+          </div>
+          {
+            props.state.datasets.map((dataset, i) => {
+              let progress = dataset.bytes_replicated[0] / dataset.bytes_total[0] / dataset.replication_quota;
 
               return (
-                <span className={tableStyles.column} key={each}>
-                  {each}
-                </span>
-              );
-            })}
-          </div>
-
-          {props.state.data.map((each, index) => {
-            return (
-              <div key={`${index}`}>
-                <div className={tableStyles.row}>
-                  <span className={tableStyles.column}>{each.id}</span>
-                  <span className={tableStyles.column}>{each.name}</span>
-                  <span className={tableStyles.column}>{each.replications} / 6</span>
-                  <span className={tableStyles.column}>{Utilities.bytesToSize(each.bytes)}</span>
-                  <span className={tableStyles.column}>{each.pieces}</span>
-                  <span className={tableStyles.column}>{Utilities.bytesToSize(each.datacap)}</span>
-                  <span className={tableStyles.fluidColumn}>{each.address}</span>
+                <div>
+                  <div key={i} className={tableStyles.row}>
+                    <span className={tableStyles.column}>{dataset.ID}</span>
+                    <span className={tableStyles.column}>{dataset.name}</span>
+                    <span className={tableStyles.column}>{dataset.bytes_total[0]}</span>
+                    <span className={tableStyles.column}>{dataset.replication_quota}</span>
+                    <span className={tableStyles.column}>{dataset.delay_start_epoch}</span>
+                    <span className={tableStyles.column}>{dataset.deal_duration}</span>
+                    <span className={tableStyles.column}>{dataset.unsealed ? "true" : "false"}</span>
+                    <span className={tableStyles.column}>{dataset.indexed ? "true" : "false"}</span>
+                    <span className={tableStyles.fluidColumn}>{dataset.wallet.address}</span>
+                  </div>
+                  <div className={tableStyles.progress}>
+                    <div className={tableStyles.progressBar} style={{ width: `${progress * 100}%` }} />
+                  </div>
+                  <div className={tableStyles.rowButton}>➟ Make storage deals for this dataset</div>
+                  <div className={tableStyles.rowButton}>➟ Attach content</div>
                 </div>
-                <div className={tableStyles.progress}>
-                  <div className={tableStyles.progressBar} style={{ width: `${(each.replications / 6) * 100}%` }} />
-                </div>
-                <div className={tableStyles.rowButton}>➟ Make storage deals for this dataset</div>
-                <div className={tableStyles.rowButton}>➟ Attach content</div>
-              </div>
-            );
-          })}
+              )
+            })
+          }
         </div>
-      ) : null}
+      }
     </div>
   );
 }
