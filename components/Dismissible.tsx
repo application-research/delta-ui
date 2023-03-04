@@ -6,7 +6,12 @@ function Dismissible(props) {
   React.useEffect(() => {
     function handleClickOutside(event) {
       if (ref.current && !ref.current.contains(event.target)) {
-        props.onOutsideClick(event);
+        event.stopPropagation();
+        // TODO(jim): Sad hack, I'm rusty.
+        // So embarassing.
+        setTimeout(() => {
+          props.onOutsideClick(event);
+        }, 100);
       }
     }
 
@@ -16,7 +21,11 @@ function Dismissible(props) {
     };
   }, [ref]);
 
-  return <div ref={ref}>{props.children}</div>;
+  return (
+    <div ref={ref} className={props.className} style={props.style} onClick={props.onClick}>
+      {props.children}
+    </div>
+  );
 }
 
 export default Dismissible;
