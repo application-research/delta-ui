@@ -20,7 +20,7 @@ export default function Application(props) {
   const [selectedProvider, setSelectedProvider] = React.useState('');
   const [selectedData, setSelectedData] = React.useState('');
   const [state, setState] = React.useState({ datasets: [], providers: [], replications: [] });
-  const [appTooltipState, setTooltipState] = React.useState(0);
+  const [appTooltipState, setAppTooltipState] = React.useState(0);
 
   React.useEffect(() => {
     // TODO(alvin, json, cake):
@@ -46,10 +46,11 @@ export default function Application(props) {
       appTitle={PackageJSON.name}
       appVersion={PackageJSON.version}
       appNavigationState={appNavigationState}
+      appTooltipState={appTooltipState}
       onClickDatasets={() => setAppNavigationState(1)}
       onClickProviders={() => setAppNavigationState(2)}
       onClickReplications={() => setAppNavigationState(3)}
-      onUploadData={() => setTooltipState(appTooltipState !== 1 ? 1 : 0)}
+      onUploadData={() => setAppTooltipState(1)}
       onImportData={() => alert('work in progress')}
       onAddProviders={() => alert('work in progress')}
     >
@@ -82,7 +83,13 @@ export default function Application(props) {
           state={state}
         />
       ) : null}
-      {appTooltipState === 1 ? <FormUploadData /> : null}
+      {appTooltipState === 1 ? (
+        <FormUploadData
+          onOutsideClick={(event) => {
+            setAppTooltipState(0);
+          }}
+        />
+      ) : null}
     </DefaultLayout>
   );
 }
