@@ -12,47 +12,29 @@ export default function SceneProviders(props) {
   return (
     <div className={styles.body}>
       <Input label={props.providerLabel} id="scene-provider-search" placeholder={props.placeholder} value={props.providerValue} onChange={props.onProviderChange} />
-
-      {props.state.providers.length ? (
+      {
+        props.state.providers &&
         <div className={tableStyles.body}>
           <div className={tableStyles.header}>
-            {Object.keys(props.state.providers[0]).map((each, index) => {
-              const isLast = Object.keys(props.state.providers[0]).length - 1 === index;
-
-              if (isLast) {
-                return (
-                  <span className={tableStyles.fluidColumn} key={each}>
-                    {each}
-                  </span>
-                );
-              }
-
-              return (
-                <span className={tableStyles.column} key={each}>
-                  {each}
-                </span>
-              );
-            })}
+            <span className={tableStyles.column}>Actor ID</span>
+            <span className={tableStyles.fluidColumn}>Replicated Deals</span>
           </div>
-
-          {props.state.providers.map((each, index) => {
-            return (
-              <div key={`${index}`}>
-                <div className={tableStyles.row}>
-                  <span className={tableStyles.column}>{each.id}</span>
-                  <span className={tableStyles.column}>{each.provider}</span>
-                  <span className={tableStyles.column}>{each.name}</span>
-                  <span className={tableStyles.column}>{Utilities.bytesToSize(each.bytes)}</span>
-                  <span className={tableStyles.column}>{each.deals}</span>
-                  <span className={tableStyles.fluidColumn}>{each.datasets}</span>
+          {
+            props.state.providers.map((provider, i) => {
+              return (
+                <div>
+                  <div key={i} className={tableStyles.row}>
+                    <span className={tableStyles.column}>{provider.actor_id}</span>
+                    <span className={tableStyles.fluidColumn}>{provider.replications?.length() || 0}</span>
+                  </div>
+                  <div className={tableStyles.rowButton}>➟ Make storage deals</div>
+                  <div className={tableStyles.rowButton}>➟ View details</div>
                 </div>
-                <div className={tableStyles.rowButton}>➟ Make storage deals</div>
-                <div className={tableStyles.rowButton}>➟ View details</div>
-              </div>
-            );
-          })}
+              )
+            })
+          }
         </div>
-      ) : null}
+      }
     </div>
   );
 }

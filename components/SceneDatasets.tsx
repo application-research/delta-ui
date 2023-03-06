@@ -21,7 +21,7 @@ export default function SceneDatasets(props) {
             <span className={tableStyles.column}>Size</span>
             <span className={tableStyles.column}>Replication Quota</span>
             <span className={tableStyles.column}>Start Epoch Delay</span>
-            <span className={tableStyles.column}>Duration (Days)</span>
+            <span className={tableStyles.column}>Duration</span>
             <span className={tableStyles.column}>Unsealed</span>
             <span className={tableStyles.column}>Indexed</span>
             <span className={tableStyles.fluidColumn}>Wallet</span>
@@ -35,10 +35,10 @@ export default function SceneDatasets(props) {
                   <div key={i} className={tableStyles.row}>
                     <span className={tableStyles.column}>{dataset.ID}</span>
                     <span className={tableStyles.column}>{dataset.name}</span>
-                    <span className={tableStyles.column}>{dataset.bytes_total[0]}</span>
+                    <span className={tableStyles.column}>{Utilities.bytesToSize(dataset.bytes_total[0])}</span>
                     <span className={tableStyles.column}>{dataset.replication_quota}</span>
                     <span className={tableStyles.column}>{dataset.delay_start_epoch}</span>
-                    <span className={tableStyles.column}>{dataset.deal_duration}</span>
+                    <span className={tableStyles.column}>{dataset.deal_duration} days</span>
                     <span className={tableStyles.column}>{dataset.unsealed ? "true" : "false"}</span>
                     <span className={tableStyles.column}>{dataset.indexed ? "true" : "false"}</span>
                     <span className={tableStyles.fluidColumn}>{dataset.wallet.address}</span>

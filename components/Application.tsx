@@ -29,7 +29,7 @@ export default function Application(props) {
     async function init() {
       const apiURL = "http://localhost:1314/api/v1";
       const datasetsRes = await fetch(apiURL + "/dataset");
-      const providersRes = await fetch(apiURL + "/provider");
+      const providersRes = await fetch(apiURL + "/providers");
 
       setState({
         datasets: await datasetsRes.json(),
