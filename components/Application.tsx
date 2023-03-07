@@ -22,23 +22,20 @@ export default function Application(props) {
   const [state, setState] = React.useState({ datasets: [], providers: [], replications: [] });
   const [appTooltipState, setAppTooltipState] = React.useState(0);
 
+  async function updateState() {
+    const apiURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1314/api/v1";
+    const datasetsRes = await fetch(apiURL + "/dataset");
+    const providersRes = await fetch(apiURL + "/providers");
+
+    setState({
+      datasets: await datasetsRes.json(),
+      providers: await providersRes.json(),
+      replications: []
+    });
+  }
+
   React.useEffect(() => {
-    // TODO(alvin, json, cake):
-    // You can insert the hydration point here, and all page updates here.
-    // You could use websockets, or something else, whatever you desire.
-    async function init() {
-      const apiURL = "http://localhost:1314/api/v1";
-      const datasetsRes = await fetch(apiURL + "/dataset");
-      const providersRes = await fetch(apiURL + "/providers");
-
-      setState({
-        datasets: await datasetsRes.json(),
-        providers: await providersRes.json(),
-        replications: []
-      });
-    }
-
-    init();
+    updateState();
   }, []);
 
   return (
@@ -88,6 +85,7 @@ export default function Application(props) {
           onOutsideClick={(event) => {
             setAppTooltipState(0);
           }}
+          updateState={updateState}
         />
       ) : null}
     </DefaultLayout>

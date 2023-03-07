@@ -25,15 +25,15 @@ export default function SceneDatasets(props) {
           <span className={tableStyles.fluidColumn}>Wallet</span>
         </div>
         {props.state.datasets.map((dataset, i) => {
-          let progress = dataset.bytes_replicated[0] / dataset.bytes_total[0] / dataset.replication_quota;
+          let progress = dataset.bytes_replicated.padded / dataset.bytes_total.padded / dataset.replication_quota;
 
-          return (<div>
-            <div key={i} className={tableStyles.row}>
+          return (<div key={i}>
+            <div className={tableStyles.row}>
               <span className={tableStyles.column}>{dataset.ID}</span>
               <span className={tableStyles.column}>{dataset.name}</span>
-              <span className={tableStyles.column}>{Utilities.bytesToSize(dataset.bytes_total[0])}</span>
+              <span className={tableStyles.column}>{Utilities.bytesToSize(dataset.bytes_total.raw)}</span>
               <span className={tableStyles.column}>{dataset.replication_quota}</span>
-              <span className={tableStyles.column}>{dataset.delay_start_epoch}</span>
+              <span className={tableStyles.column}>{dataset.deal_delay_start_epoch}</span>
               <span className={tableStyles.column}>{dataset.deal_duration} days</span>
               <span className={tableStyles.column}>{dataset.unsealed ? "true" : "false"}</span>
               <span className={tableStyles.column}>{dataset.indexed ? "true" : "false"}</span>
