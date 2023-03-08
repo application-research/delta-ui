@@ -10,8 +10,12 @@ import DefaultLayout from '@components/DefaultLayout';
 import SceneDatasets from '@components/SceneDatasets';
 import SceneProviders from '@components/SceneProviders';
 import SceneReplications from '@components/SceneReplications';
+import SceneWallets from '@components/SceneWallets';
 
 import FormUploadData from '@components/FormUploadData';
+import FormAddWallet from '@components/FormAddWallet';
+
+import { navigationStates, tooltipStates } from '@root/common/navigation';
 
 export default function Application(props) {
   const [appNavigationState, setAppNavigationState] = React.useState(1);
@@ -34,6 +38,10 @@ export default function Application(props) {
     });
   }
 
+  function dismissTooltip() {
+    setAppTooltipState(0);
+  }
+
   React.useEffect(() => {
     updateState();
   }, []);
@@ -44,14 +52,16 @@ export default function Application(props) {
       appVersion={PackageJSON.version}
       appNavigationState={appNavigationState}
       appTooltipState={appTooltipState}
-      onClickDatasets={() => setAppNavigationState(1)}
-      onClickProviders={() => setAppNavigationState(2)}
-      onClickReplications={() => setAppNavigationState(3)}
-      onUploadData={() => setAppTooltipState(1)}
+      onClickDatasets={() => setAppNavigationState(navigationStates.datasets)}
+      onClickProviders={() => setAppNavigationState(navigationStates.providers)}
+      onClickReplications={() => setAppNavigationState(navigationStates.replications)}
+      onUploadData={() => setAppTooltipState(tooltipStates.uploadData)}
       onImportData={() => alert('work in progress')}
       onAddProviders={() => alert('work in progress')}
+      onClickWallets={() => setAppNavigationState(navigationStates.wallets)}
+      onAddWallet={() => setAppTooltipState(tooltipStates.addWallet)}
     >
-      {appNavigationState === 1 ? (
+      {appNavigationState === navigationStates.datasets && (
         <SceneDatasets
           onSearchChange={(e) => setSearchChange(e.target.value)}
           searchValue={searchValue}
@@ -59,8 +69,8 @@ export default function Application(props) {
           placeholder="(example: university-bird-sounds.zip)"
           state={state}
         />
-      ) : null}
-      {appNavigationState === 2 ? (
+      )}
+      {appNavigationState === navigationStates.providers && (
         <SceneProviders
           onProviderChange={(e) => setProviderChange(e.target.value)}
           providerChange={providerValue}
@@ -68,8 +78,8 @@ export default function Application(props) {
           placeholder="(example: f0123456)"
           state={state}
         />
-      ) : null}
-      {appNavigationState === 3 ? (
+      )}
+      {appNavigationState === navigationStates.replications && (
         <SceneReplications
           selectedProvider={selectedProvider}
           setSelectedProvider={() => {
@@ -79,15 +89,20 @@ export default function Application(props) {
           setSelectedData={() => { }}
           state={state}
         />
-      ) : null}
-      {appTooltipState === 1 ? (
+      )}
+      {appNavigationState === navigationStates.wallets && (
+        <SceneWallets />
+      )}
+
+      {appTooltipState === tooltipStates.uploadData && (
         <FormUploadData
-          onOutsideClick={(event) => {
-            setAppTooltipState(0);
-          }}
+          onOutsideClick={dismissTooltip}
           updateState={updateState}
         />
-      ) : null}
+      )}
+      {appTooltipState === tooltipStates.addWallet && (
+        <FormAddWallet onOutsideClick={dismissTooltip} />
+      )}
     </DefaultLayout>
   );
 }

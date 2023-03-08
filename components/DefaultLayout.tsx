@@ -1,4 +1,5 @@
 import styles from '@components/DefaultLayout.module.scss';
+import { navigationStates } from '@root/common/navigation';
 
 import * as React from 'react';
 
@@ -17,7 +18,7 @@ export default function DefaultLayout(props) {
         <div className={styles.left}>
           <nav className={styles.appNavigation}>
             <span className={styles.appNavigationItem} onClick={props.onClickDatasets}>
-              Data {props.appNavigationState === 1 ? '➝' : null}
+              Datasets {props.appNavigationState === navigationStates.datasets && '➝'}
             </span>
             <span className={styles.appNavigationSubItem} onClick={props.onUploadData}>
               + Upload data
@@ -26,13 +27,19 @@ export default function DefaultLayout(props) {
               + Import data
             </span>
             <span className={styles.appNavigationItem} onClick={props.onClickProviders}>
-              Providers {props.appNavigationState === 2 ? '➝' : null}
+              Providers {props.appNavigationState === navigationStates.providers && '➝'}
             </span>
             <span className={styles.appNavigationSubItem} onClick={props.onAddProviders}>
               + Add provider
             </span>
             <span className={styles.appNavigationItem} onClick={props.onClickReplications}>
-              Replications {props.appNavigationState === 3 ? '➝' : null}
+              Replications {props.appNavigationState === navigationStates.replications && '➝'}
+            </span>
+            <span className={styles.appNavigationItem} onClick={props.onClickWallets}>
+              Wallets {props.appNavigationState === navigationStates.wallets && '➝'}
+            </span>
+            <span className={styles.appNavigationSubItem} onClick={props.onAddWallet}>
+              + Add wallet
             </span>
           </nav>
         </div>
