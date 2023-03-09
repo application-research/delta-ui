@@ -16,6 +16,7 @@ import FormUploadData from '@components/FormUploadData';
 import FormAddWallet from '@components/FormAddWallet';
 
 import { navigationStates, tooltipStates } from '@root/common/navigation';
+import FormAddProvider from './FormAddProvider';
 
 export default function Application(props) {
   const [appNavigationState, setAppNavigationState] = React.useState(1);
@@ -28,7 +29,7 @@ export default function Application(props) {
 
   async function updateState() {
     const apiURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1314/api/v1";
-    const datasetsRes = await fetch(apiURL + "/dataset");
+    const datasetsRes = await fetch(apiURL + "/datasets");
     const providersRes = await fetch(apiURL + "/providers");
 
     setState({
@@ -57,7 +58,7 @@ export default function Application(props) {
       onClickReplications={() => setAppNavigationState(navigationStates.replications)}
       onUploadData={() => setAppTooltipState(tooltipStates.uploadData)}
       onImportData={() => alert('work in progress')}
-      onAddProviders={() => alert('work in progress')}
+      onAddProviders={() => setAppTooltipState(tooltipStates.addProvider)}
       onClickWallets={() => setAppNavigationState(navigationStates.wallets)}
       onAddWallet={() => setAppTooltipState(tooltipStates.addWallet)}
     >
@@ -96,6 +97,12 @@ export default function Application(props) {
 
       {appTooltipState === tooltipStates.uploadData && (
         <FormUploadData
+          onOutsideClick={dismissTooltip}
+          updateState={updateState}
+        />
+      )}
+      {appTooltipState === tooltipStates.addProvider && (
+        <FormAddProvider
           onOutsideClick={dismissTooltip}
           updateState={updateState}
         />

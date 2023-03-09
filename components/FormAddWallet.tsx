@@ -1,7 +1,6 @@
 'use client';
 
 import styles from '@components/FormAddWallet.module.scss';
-import formStyles from '@components/Form.module.scss';
 
 import * as React from 'react';
 

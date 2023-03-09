@@ -14,14 +14,16 @@ export default function SceneProviders(props) {
     {props.state.providers &&
       <div className={tableStyles.body}>
         <div className={tableStyles.header}>
-          <span className={tableStyles.column}>Actor ID</span>
-          <span className={tableStyles.fluidColumn}>Replicated Deals</span>
+          <span className={tableStyles.column}>Provider ID</span>
+          <span className={tableStyles.column}>Provider Name</span>
+          <span className={tableStyles.fluidColumn}>Bytes Replicated</span>
         </div>
         {props.state.providers.map((provider, i) => {
-          return (<div>
-            <div key={i} className={tableStyles.row}>
+          return (<div key={i}>
+            <div className={tableStyles.row}>
               <span className={tableStyles.column}>{provider.actor_id}</span>
-              <span className={tableStyles.fluidColumn}>{provider.replications?.length() || 0}</span>
+              <span className={tableStyles.column}>{provider.actor_name}</span>
+              <span className={tableStyles.fluidColumn}>{provider.bytes_replicated.padded}</span>
             </div>
             <div className={tableStyles.rowButton}>➟ Make storage deals</div>
             <div className={tableStyles.rowButton}>➟ View details</div>

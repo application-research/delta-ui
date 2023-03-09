@@ -1,0 +1,39 @@
+@import 'Form.module.scss';
+
+.body {
+  top: 170px;
+}
+
+.field {
+  background: none;
+  border: none;
+  border-bottom: 2px solid var(--color-border);
+  padding: 4px 0;
+  margin-bottom: 16px;
+  transition: 0.25s;
+  color: var(--color-text);
+  width: 100%;
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-text);
+  }
+
+  &::before {
+    position: relative;
+    display: block;
+    left: 0;
+    top: 0;
+  }
+
+  &::placeholder {
+    color: var(--color-border);
+  }
+}
+
+.fieldLabel {
+  font-size: 0.6em;
+  text-transform: uppercase;
+  display: block;
+  color: gray;
+}
