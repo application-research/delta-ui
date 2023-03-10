@@ -14,9 +14,10 @@ import SceneWallets from '@components/SceneWallets';
 
 import FormUploadData from '@components/FormUploadData';
 import FormAddWallet from '@components/FormAddWallet';
+import FormAddProvider from '@components/FormAddProvider';
 
-import { navigationStates, tooltipStates } from '@root/common/navigation';
-import FormAddProvider from './FormAddProvider';
+import { navigationStates, tooltipStates } from '@common/navigation';
+import SceneAuth from './SceneAuth';
 
 export default function Application(props) {
   const [appNavigationState, setAppNavigationState] = React.useState(1);
@@ -26,6 +27,7 @@ export default function Application(props) {
   const [selectedData, setSelectedData] = React.useState('');
   const [state, setState] = React.useState({ datasets: [], providers: [], replications: [] });
   const [appTooltipState, setAppTooltipState] = React.useState(0);
+  const [authToken, setAuthToken] = React.useState('');
 
   async function updateState() {
     const apiURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1314/api/v1";
@@ -47,6 +49,15 @@ export default function Application(props) {
   React.useEffect(() => {
     updateState();
   }, []);
+
+  if (!authToken) {
+    return (
+      <SceneAuth
+        authToken={authToken}
+        setAuthToken={setAuthToken}
+      ></SceneAuth>
+    )
+  }
 
   return (
     <DefaultLayout
