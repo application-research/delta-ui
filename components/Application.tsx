@@ -31,11 +31,12 @@ export default function Application(props) {
     const apiURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1314/api/v1";
     const datasetsRes = await fetch(apiURL + "/datasets");
     const providersRes = await fetch(apiURL + "/providers");
+    const replicationsRes = await fetch(apiURL + "/replication");
 
     setState({
       datasets: await datasetsRes.json(),
       providers: await providersRes.json(),
-      replications: []
+      replications: await replicationsRes.json(),
     });
   }
 

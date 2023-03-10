@@ -25,8 +25,6 @@ export default function SceneProviders(props) {
               <span className={tableStyles.column}>{provider.actor_name}</span>
               <span className={tableStyles.fluidColumn}>{provider.bytes_replicated.padded}</span>
             </div>
-            <div className={tableStyles.rowButton}>➟ Make storage deals</div>
-            <div className={tableStyles.rowButton}>➟ View details</div>
           </div>)
         })}
       </div>
