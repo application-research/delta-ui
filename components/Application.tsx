@@ -19,6 +19,7 @@ import FormAddProvider from '@components/FormAddProvider';
 import { navigationStates, tooltipStates } from '@common/navigation';
 import SceneAuth from '@components/SceneAuth';
 import FormNewDataset from '@components/FormNewDataset';
+import { getCookie, setCookie } from '@root/modules/cookies';
 
 export default function Application(props) {
   const [appNavigationState, setAppNavigationState] = React.useState(1);
@@ -28,7 +29,11 @@ export default function Application(props) {
   const [selectedData, setSelectedData] = React.useState('');
   const [state, setState] = React.useState({ datasets: [], providers: [], replications: [] });
   const [appTooltipState, setAppTooltipState] = React.useState(0);
-  const [authToken, setAuthToken] = React.useState('');
+  const [authToken, setAuthTokenEphemeral] = React.useState('');
+  const setAuthToken = authToken => {
+    setAuthTokenEphemeral(authToken);
+    setCookie('auth', authToken);
+  }
 
   async function updateState() {
     const apiURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1314/api/v1";
@@ -48,7 +53,11 @@ export default function Application(props) {
   }
 
   React.useEffect(() => {
-    updateState();
+    setAuthTokenEphemeral(getCookie('auth'));
+
+    if (authToken) {
+      updateState();
+    }
   }, []);
 
   if (!authToken) {
