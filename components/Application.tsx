@@ -20,6 +20,7 @@ import { navigationStates, tooltipStates } from '@common/navigation';
 import SceneAuth from '@components/SceneAuth';
 import FormNewDataset from '@components/FormNewDataset';
 import { getCookie, setCookie } from '@root/modules/cookies';
+import { checkAuth } from '@root/data/api';
 
 export default function Application(props) {
   const [appNavigationState, setAppNavigationState] = React.useState(1);
@@ -53,12 +54,26 @@ export default function Application(props) {
   }
 
   React.useEffect(() => {
-    setAuthTokenEphemeral(getCookie('auth'));
+    (async () => {
+      setAuthToken(getCookie('auth'));
 
+      try {
+        if (!await checkAuth()) {
+          throw new Error();
+        }
+      } catch {
+        setAuthToken('');
+        alert('Cached authorization token was invalid');
+        return;
+      }
+    })()
+  }, []);
+
+  React.useEffect(() => {
     if (authToken) {
       updateState();
     }
-  }, []);
+  }, [authToken]);
 
   if (!authToken) {
     return (

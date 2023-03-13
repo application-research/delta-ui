@@ -1,6 +1,7 @@
 'use client';
 
 import styles from '@components/SceneAuth.module.scss';
+import { checkAuth, checkAuthFormat } from '@data/api';
 import React from 'react';
 import Button from './Button';
 import Input from './Input';
@@ -10,21 +11,27 @@ export default function SceneAuth(props) {
   // state doesn't update until the user submits the form
   const [tmpAuthToken, setTmpAuthToken] = React.useState(props.authToken || '');
 
-  function onSubmit(e) {
+  async function onSubmit(e) {
     e.preventDefault();
 
-    props.setAuthToken(tmpAuthToken);
-  }
+    try {
+      if (!await checkAuth(tmpAuthToken)) {
+        alert('Unauthorized token');
+        return;
+      }
+    } catch (e) {
+      alert(e.toString());
+      return;
+    }
 
-  function isAuthTokenValid() {
-    return new RegExp("^(DEL).*(TA)$").test(tmpAuthToken);
+    props.setAuthToken(tmpAuthToken);
   }
 
   return (
     <div className={styles.body}>
       <form onSubmit={onSubmit}>
         <Input type="text" label="Delta API Authorization Token" id="auth-token" value={tmpAuthToken} onChange={e => setTmpAuthToken(e.target.value)} />
-        <Button disabled={!isAuthTokenValid()}>Set Token</Button>
+        <Button disabled={!checkAuthFormat(tmpAuthToken)}>{tmpAuthToken == '' || checkAuthFormat(tmpAuthToken) ? 'Set Token' : 'Invalid Format'}</Button>
       </form>
     </div>
   )
