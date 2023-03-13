@@ -6,7 +6,8 @@ export const navigationStates = {
 };
 
 export const tooltipStates = {
-  uploadData: 1,
-  addProvider: 2,
-  addWallet: 3,
+  newDataset: 1,
+  uploadData: 2,
+  addProvider: 3,
+  addWallet: 4,
 }

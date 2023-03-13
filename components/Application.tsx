@@ -17,7 +17,8 @@ import FormAddWallet from '@components/FormAddWallet';
 import FormAddProvider from '@components/FormAddProvider';
 
 import { navigationStates, tooltipStates } from '@common/navigation';
-import SceneAuth from './SceneAuth';
+import SceneAuth from '@components/SceneAuth';
+import FormNewDataset from '@components/FormNewDataset';
 
 export default function Application(props) {
   const [appNavigationState, setAppNavigationState] = React.useState(1);
@@ -68,8 +69,7 @@ export default function Application(props) {
       onClickDatasets={() => setAppNavigationState(navigationStates.datasets)}
       onClickProviders={() => setAppNavigationState(navigationStates.providers)}
       onClickReplications={() => setAppNavigationState(navigationStates.replications)}
-      onUploadData={() => setAppTooltipState(tooltipStates.uploadData)}
-      onImportData={() => alert('work in progress')}
+      onNewDataset={() => setAppTooltipState(tooltipStates.newDataset)}
       onAddProviders={() => setAppTooltipState(tooltipStates.addProvider)}
       onClickWallets={() => setAppNavigationState(navigationStates.wallets)}
       onAddWallet={() => setAppTooltipState(tooltipStates.addWallet)}
@@ -107,8 +107,8 @@ export default function Application(props) {
         <SceneWallets />
       )}
 
-      {appTooltipState === tooltipStates.uploadData && (
-        <FormUploadData
+      {appTooltipState === tooltipStates.newDataset && (
+        <FormNewDataset
           onOutsideClick={dismissTooltip}
           updateState={updateState}
         />

@@ -1,41 +1,62 @@
 .body {
-  border-bottom: 1px solid var(--color-border);
   position: relative;
-}
-
-.label {
-  position: absolute;
-  top: 16px;
-  left: 24px;
-  font-size: 10px;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.3);
+  margin: 10px 0;
+  margin-bottom: 30px;
 }
 
 .input {
-  -webkit-appearance: none;
-  background: transparent;
-  box-sizing: border-box;
+  background: none;
+  border: none;
+  border-bottom: 2px solid var(--color-border);
+  padding: 4px 0;
+  transition: 0.25s;
   color: var(--color-text);
-  font-family: -apple-system, BlinkMacSystemFont, helvetica neue, helvetica, sans-serif;
-  scrollbar-width: none;
   width: 100%;
-  height: 88px;
-  padding: 32px 24px 0 24px;
-  font-size: 18px;
-  outline: 0;
-  margin: 0;
-  border: 0;
 
   &:focus {
-    outline: 0;
-    margin: 0;
-    border: 0;
+    outline: none;
+    border-color: var(--color-text) !important;
   }
 
-  &:blur {
-    outline: 0;
-    margin: 0;
-    border: 0;
+  &::placeholder {
+    color: var(--color-border);
   }
+
+  &[type="checkbox"] {
+    position: absolute;
+    display: block;
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: -4px;
+    border-bottom: 2px solid var(--color-border);
+    box-sizing: border-box;
+    margin: 0;
+    appearance: none;
+
+    &::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      bottom: 2px;
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+      border: 1px solid var(--color-border);
+      background: var(--color-background);
+      transition: 0.15s;
+    }
+
+    &:checked::after {
+      border-color: var(--color-primary);
+      background: var(--color-primary);
+    }
+  }
+}
+
+.label {
+  font-size: 0.6em;
+  text-transform: uppercase;
+  display: block;
+  color: gray;
 }

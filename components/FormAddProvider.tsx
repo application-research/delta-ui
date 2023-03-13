@@ -1,6 +1,8 @@
 import Dismissible from '@components/Dismissible';
 import styles from '@components/FormAddProvider.module.scss';
 import Button from '@components/Button';
+import Input from '@components/Input';
+
 import React from 'react';
 
 export default function FormAddProvider(props) {
@@ -32,21 +34,19 @@ export default function FormAddProvider(props) {
   return (<Dismissible className={styles.body} onOutsideClick={props.onOutsideClick}>
     <h2 className={styles.heading}>Add provider</h2>
     <form onSubmit={addProvider}>
-      <label htmlFor="provider-id" className={styles.fieldLabel}>Provider ID</label>
-      <input
-        type="text"
+      <Input
+        label="Provider ID"
         id="provider-id"
-        className={styles.field}
         onChange={e => setProviderID(e.target.value)}
         autoFocus
-        autoComplete="new-password"
-        placeholder="example: f012345"
+        autoComplete='new-password'
+        placeholder='example: f012345'
+        spellCheck='false'
       />
-      <label htmlFor="provider-name" className={styles.fieldLabel}>Provider Name</label>
-      <input
+      <Input
         type="text"
         id="provider-name"
-        className={styles.field}
+        label="Provider Name"
         onChange={e => setProviderName(e.target.value)}
         placeholder="a friendly name"
       />

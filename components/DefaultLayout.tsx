@@ -20,11 +20,8 @@ export default function DefaultLayout(props) {
             <span className={styles.appNavigationItem} onClick={props.onClickDatasets}>
               Datasets {props.appNavigationState === navigationStates.datasets && '➝'}
             </span>
-            <span className={styles.appNavigationSubItem} onClick={props.onUploadData}>
-              + Upload data
-            </span>
-            <span className={styles.appNavigationSubItem} onClick={props.onImportData}>
-              + Import data
+            <span className={styles.appNavigationSubItem} onClick={props.onNewDataset}>
+              + New Dataset
             </span>
             <span className={styles.appNavigationItem} onClick={props.onClickProviders}>
               Providers {props.appNavigationState === navigationStates.providers && '➝'}
