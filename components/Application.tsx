@@ -20,7 +20,7 @@ import { navigationStates, tooltipStates } from '@common/navigation';
 import SceneAuth from '@components/SceneAuth';
 import FormNewDataset from '@components/FormNewDataset';
 import { getCookie, setCookie } from '@root/modules/cookies';
-import { checkAuth } from '@root/data/api';
+import { checkAuth, getDatasets, getProviders, getReplications } from '@root/data/api';
 
 export default function Application(props) {
   const [appNavigationState, setAppNavigationState] = React.useState(1);
@@ -37,15 +37,10 @@ export default function Application(props) {
   }
 
   async function updateState() {
-    const apiURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1314/api/v1";
-    const datasetsRes = await fetch(apiURL + "/datasets");
-    const providersRes = await fetch(apiURL + "/providers");
-    const replicationsRes = await fetch(apiURL + "/replication");
-
     setState({
-      datasets: await datasetsRes.json(),
-      providers: await providersRes.json(),
-      replications: await replicationsRes.json(),
+      datasets: await getDatasets(),
+      providers: await getProviders(),
+      replications: await getReplications(),
     });
   }
 
@@ -55,15 +50,14 @@ export default function Application(props) {
 
   React.useEffect(() => {
     (async () => {
-      setAuthToken(getCookie('auth'));
+      setAuthTokenEphemeral(getCookie('auth'));
 
       try {
         if (!await checkAuth()) {
           throw new Error();
         }
       } catch {
-        setAuthToken('');
-        alert('Cached authorization token was invalid');
+        setAuthTokenEphemeral('');
         return;
       }
     })()

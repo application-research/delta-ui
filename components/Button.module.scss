@@ -28,7 +28,7 @@
   }
 
   &:disabled {
-    cursor: default;
+    cursor: not-allowed;
     background: var(--color-border);
     color: var(--color-background);
   }

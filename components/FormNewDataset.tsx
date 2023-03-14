@@ -6,6 +6,7 @@ import Dismissible from '@components/Dismissible';
 import Input from '@components/Input';
 import Button from '@components/Button';
 import React from 'react';
+import { addDataset } from '@root/data/api';
 
 export default function FormNewDataset(props) {
   let [name, setName] = React.useState('');
@@ -20,30 +21,17 @@ export default function FormNewDataset(props) {
   async function onSubmit(e) {
     e.preventDefault();
 
-    let apiURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1314/api/v1";
-
     try {
-      let res = await fetch(apiURL + "/datasets", {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: name,
-          replication_quota: replications,
-          deal_duration: duration,
-          deal_delay_start_epoch: delay,
-          // TODO: wallet
-          unsealed: unsealed,
-          indexed: indexed,
-        })
-      });
-
-      if (!res.ok) {
-        setError(await res.text());
-      }
+      await addDataset(
+        name,
+        replications,
+        duration,
+        delay,
+        unsealed,
+        indexed
+      );
     } catch (e) {
-      setError(e);
+      setError(e.toString());
     }
 
     props.updateState();

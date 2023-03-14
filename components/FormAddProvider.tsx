@@ -4,36 +4,27 @@ import Button from '@components/Button';
 import Input from '@components/Input';
 
 import React from 'react';
+import { addProvider } from '@data/api';
 
 export default function FormAddProvider(props) {
 
   let [providerID, setProviderID] = React.useState('');
   let [providerName, setProviderName] = React.useState('');
+  let [error, setError] = React.useState('');
 
-  async function addProvider(e) {
+  async function onSubmit(e) {
     e.preventDefault();
 
-    const apiURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:1314/api/v1";
-
-    const res = await fetch(apiURL + "/providers", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        actor_id: providerID,
-        actor_name: providerName,
-      })
-    });
-
-    if (!res.ok) {
-      alert("Request failed: " + await res.json());
+    try {
+      await addProvider(providerID, providerName);
+    } catch (e) {
+      setError(e.toString());
     }
   }
 
   return (<Dismissible className={styles.body} onOutsideClick={props.onOutsideClick}>
     <h2 className={styles.heading}>Add provider</h2>
-    <form onSubmit={addProvider}>
+    <form onSubmit={onSubmit}>
       <Input
         label="Provider ID"
         id="provider-id"
@@ -52,5 +43,6 @@ export default function FormAddProvider(props) {
       />
       <Button disabled={!(providerID && providerName)}>Add</Button>
     </form>
+    {error && <p className={styles.error}>{error}</p>}
   </Dismissible>)
 }
