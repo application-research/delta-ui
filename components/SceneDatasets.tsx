@@ -44,8 +44,8 @@ export default function SceneDatasets(props) {
             </div>
             <div className={tableStyles.rowButton}>➟ Make storage deals for this dataset</div>
             <div className={tableStyles.rowButton} onClick={e => {
-              props.onAttachContent();
               props.setSelectedDataset(dataset.name);
+              props.onAttachContent();
             }}>➟ Attach content</div>
           </div>)
         })}

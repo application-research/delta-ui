@@ -162,6 +162,18 @@ export async function addReplication(
   return await res.json();
 }
 
+export async function getWallets() {
+  const res = await fetch(apiURL + '/wallets', {
+    headers: defaultHeaders(),
+  });
+
+  if (!res.ok) {
+    throw new Error(await res.text());
+  }
+
+  return await res.json();
+}
+
 export async function associateWallet(address: string, datasetName: string) {
   const res = await fetch(apiURL + '/wallets/associate', {
     method: 'post',

@@ -20,6 +20,8 @@ export default function FormAddProvider(props) {
     } catch (e) {
       setError(e.toString());
     }
+
+    props.updateState();
   }
 
   return (<Dismissible className={styles.body} onOutsideClick={props.onOutsideClick}>

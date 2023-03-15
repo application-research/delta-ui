@@ -11,17 +11,18 @@ import SceneDatasets from '@components/SceneDatasets';
 import SceneProviders from '@components/SceneProviders';
 import SceneReplications from '@components/SceneReplications';
 import SceneWallets from '@components/SceneWallets';
+import SceneAuth from '@components/SceneAuth';
 
 import FormUploadData from '@components/FormUploadData';
 import FormAddWallet from '@components/FormAddWallet';
 import FormAddProvider from '@components/FormAddProvider';
+import FormAddReplication from '@components/FormAddReplication';
+import FormNewDataset from '@components/FormNewDataset';
 
 import { navigationStates, tooltipStates } from '@common/navigation';
-import SceneAuth from '@components/SceneAuth';
-import FormNewDataset from '@components/FormNewDataset';
-import { getCookie, setCookie } from '@root/modules/cookies';
-import { checkAuth, getDatasets, getProviders, getReplications } from '@root/data/api';
-import FormAddReplication from './FormAddReplication';
+import { getCookie, setCookie } from '@modules/cookies';
+import { associateWallet, checkAuth, getDatasets, getProviders, getReplications, getWallets } from '@data/api';
+import FormAssociateWallet from './FormAssociateWallet';
 
 export default function Application(props) {
   const [appNavigationState, setAppNavigationState] = React.useState(1);
@@ -29,7 +30,8 @@ export default function Application(props) {
   const [providerValue, setProviderChange] = React.useState('');
   const [selectedProvider, setSelectedProvider] = React.useState('');
   const [selectedDataset, setSelectedDataset] = React.useState('');
-  const [state, setState] = React.useState({ datasets: [], providers: [], replications: [] });
+  const [selectedWallet, setSelectedWallet] = React.useState('');
+  const [state, setState] = React.useState({ datasets: [], providers: [], replications: [], wallets: [] });
   const [appTooltipState, setAppTooltipState] = React.useState(0);
   const [authToken, setAuthTokenEphemeral] = React.useState('');
   const setAuthToken = authToken => {
@@ -42,6 +44,7 @@ export default function Application(props) {
       datasets: await getDatasets(),
       providers: await getProviders(),
       replications: await getReplications(),
+      wallets: await getWallets(),
     });
   }
 
@@ -127,7 +130,11 @@ export default function Application(props) {
         />
       )}
       {appNavigationState === navigationStates.wallets && (
-        <SceneWallets />
+        <SceneWallets
+          state={state}
+          onAssociateWallet={() => setAppTooltipState(tooltipStates.associateWallet)}
+          setSelectedWallet={setSelectedWallet}
+        />
       )}
 
       {appTooltipState === tooltipStates.newDataset && (
@@ -143,13 +150,29 @@ export default function Application(props) {
         />
       )}
       {appTooltipState === tooltipStates.addWallet && (
-        <FormAddWallet onOutsideClick={dismissTooltip} />
+        <FormAddWallet
+          onOutsideClick={dismissTooltip}
+        />
       )}
       {appTooltipState === tooltipStates.attachContent && (
-        <FormUploadData onOutsideClick={dismissTooltip} updateState={updateState} selectedDataset={selectedDataset} />
+        <FormUploadData
+          onOutsideClick={dismissTooltip}
+          updateState={updateState}
+          selectedDataset={selectedDataset}
+        />
       )}
       {appTooltipState === tooltipStates.addReplication && (
-        <FormAddReplication onOutsideClick={dismissTooltip} updateState={updateState} />
+        <FormAddReplication
+          onOutsideClick={dismissTooltip}
+          updateState={updateState}
+        />
+      )}
+      {appTooltipState === tooltipStates.associateWallet && (
+        <FormAssociateWallet
+          onOutsideClick={dismissTooltip}
+          selectedWallet={selectedWallet}
+          updateState={updateState}
+        />
       )}
     </DefaultLayout>
   );
