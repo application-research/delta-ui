@@ -29,6 +29,8 @@
   text-align: left;
   align-self: stretch;
   border-right: 1px solid var(--color-border);
+  overflow: hidden;
+  position: relative;
 
   &:last-child {
     border-right: 0px;
@@ -45,6 +47,7 @@
   text-align: left;
   align-self: stretch;
   border-right: 1px solid var(--color-border);
+  overflow: hidden;
 
   &:last-child {
     border-right: 0px;

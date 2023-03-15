@@ -1,2 +1,21 @@
 .body {
 }
+
+.secret {
+  position: relative;
+  padding: 4px;
+  margin: -4px;
+  
+  &:not(:hover) {
+    color: transparent;
+    background: var(--color-border);
+
+    &::after {
+      content: "hover to reveal";
+      position: absolute;
+      left: 4px;
+      color: var(--color-text);
+      text-transform: uppercase;
+    }
+  }
+}

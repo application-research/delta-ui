@@ -1,27 +1,48 @@
-.body {
-  position: absolute;
-  left: 0;
-  top: 88px;
-  width: 288px;
-  padding: 24px;
-  background: var(--color-background);
-  border-top: 1px solid var(--color-border);
-  border-right: 1px solid var(--color-border);
-  border-bottom: 1px solid var(--color-border);
-  border-radius: 0 8px 8px 0;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
-}
+@import 'Form.module.scss';
 
-.heading {
-  font-family: -apple-system, BlinkMacSystemFont, 'helvetica neue', helvetica, arial, sans-serif;
+.upload {
+  // border: 2px dotted var(--color-border);
+  border: 2px solid var(--color-border);
+  background: none;
+  color: var(--color-text);
+  box-sizing: border-box;
+  text-transform: uppercase;
+  border-radius: 4px;
+  outline: 0;
+  min-height: 40px;
+  width: 100%;
+  padding: 4px 24px 4px 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  letter-spacing: 0.6px;
   font-weight: 600;
+  overflow-wrap: break-word;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  transition: 200ms ease all;
+  transform: scale(1);
+  text-decoration: none;
   margin-bottom: 16px;
-  font-size: 16px;
-}
+  cursor: default;
 
-.paragraph {
-  font-family: -apple-system, BlinkMacSystemFont, 'helvetica neue', helvetica, arial, sans-serif;
-  line-height: 1.5;
-  margin-bottom: 16px;
-  font-size: 12px;
+  > * {
+    cursor: default;
+  }
+
+  &:not(.uploadReady) {
+    &:focus-within, &:hover {
+      background: var(--color-border);
+    }
+  }
+
+  input {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    // width: 0;
+    opacity: 0;
+  }
 }

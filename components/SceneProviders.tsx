@@ -9,50 +9,34 @@ import * as Utilities from '@common/utilities';
 import Input from '@components/Input';
 
 export default function SceneProviders(props) {
-  return (
-    <div className={styles.body}>
-      <Input label={props.providerLabel} id="scene-provider-search" placeholder={props.placeholder} value={props.providerValue} onChange={props.onProviderChange} />
-
-      {props.state.providers.length ? (
-        <div className={tableStyles.body}>
-          <div className={tableStyles.header}>
-            {Object.keys(props.state.providers[0]).map((each, index) => {
-              const isLast = Object.keys(props.state.providers[0]).length - 1 === index;
-
-              if (isLast) {
-                return (
-                  <span className={tableStyles.fluidColumn} key={each}>
-                    {each}
-                  </span>
-                );
-              }
-
-              return (
-                <span className={tableStyles.column} key={each}>
-                  {each}
-                </span>
-              );
-            })}
-          </div>
-
-          {props.state.providers.map((each, index) => {
-            return (
-              <div key={`${index}`}>
-                <div className={tableStyles.row}>
-                  <span className={tableStyles.column}>{each.id}</span>
-                  <span className={tableStyles.column}>{each.provider}</span>
-                  <span className={tableStyles.column}>{each.name}</span>
-                  <span className={tableStyles.column}>{Utilities.bytesToSize(each.bytes)}</span>
-                  <span className={tableStyles.column}>{each.deals}</span>
-                  <span className={tableStyles.fluidColumn}>{each.datasets}</span>
-                </div>
-                <div className={tableStyles.rowButton}>➟ Make storage deals</div>
-                <div className={tableStyles.rowButton}>➟ View details</div>
-              </div>
-            );
-          })}
+  return (<div className={styles.body}>
+    <Input label={props.providerLabel} id="scene-provider-search" placeholder={props.placeholder} value={props.search} onChange={props.onSearchChange} />
+    {props.state.providers &&
+      <div className={tableStyles.body}>
+        <div className={tableStyles.header}>
+          <span className={tableStyles.column}>Provider ID</span>
+          <span className={tableStyles.column}>Provider Name</span>
+          <span className={tableStyles.column}>Bytes Replicated</span>
+          <span className={tableStyles.fluidColumn}>Provider Key</span>
         </div>
-      ) : null}
-    </div>
-  );
+        {props.state.providers
+          .filter(
+            (provider, i) => !props.search || provider.actor_id.includes(props.search)
+          )
+          .map(
+            (provider, i) => {
+              return (<div key={i}>
+                <div className={tableStyles.row}>
+                  <span className={tableStyles.column}>{provider.actor_id}</span>
+                  <span className={tableStyles.column}>{provider.actor_name}</span>
+                  <span className={tableStyles.column}>{provider.bytes_replicated.padded}</span>
+                  <span className={tableStyles.fluidColumn}><span className={styles.secret}>{provider.key}</span></span>
+                </div>
+              </div>)
+            }
+          )
+        }
+      </div>
+    }
+  </div>);
 }
