@@ -29,15 +29,7 @@ export default function FormUploadData(props) {
     } catch (e) {
       setError(e.toString());
     }
-    // // TODO
-    // let res = await fetch(apiURL + `/dataset/content/${addDataResBody.name}`, {
-    //   method: "post",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: file
-    // });
-
+    
     props.updateState();
   }
 

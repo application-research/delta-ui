@@ -21,7 +21,7 @@ export default function DefaultLayout(props) {
               Datasets {props.appNavigationState === navigationStates.datasets && '➝'}
             </span>
             <span className={styles.appNavigationSubItem} onClick={props.onNewDataset}>
-              + New Dataset
+              + New dataset
             </span>
             <span className={styles.appNavigationItem} onClick={props.onClickProviders}>
               Providers {props.appNavigationState === navigationStates.providers && '➝'}
@@ -31,6 +31,9 @@ export default function DefaultLayout(props) {
             </span>
             <span className={styles.appNavigationItem} onClick={props.onClickReplications}>
               Replications {props.appNavigationState === navigationStates.replications && '➝'}
+            </span>
+            <span className={styles.appNavigationSubItem} onClick={props.onAddReplication}>
+              + Add replication
             </span>
             <span className={styles.appNavigationItem} onClick={props.onClickWallets}>
               Wallets {props.appNavigationState === navigationStates.wallets && '➝'}

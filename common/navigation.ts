@@ -10,4 +10,5 @@ export const tooltipStates = {
   attachContent: 2,
   addProvider: 3,
   addWallet: 4,
+  addReplication: 5,
 }

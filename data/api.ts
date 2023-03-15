@@ -65,9 +65,9 @@ export async function addDataset(
     headers: defaultHeaders(),
     body: JSON.stringify({
       'name': name,
-      'replication_quota': replications,
-      'deal_duration': durationDays,
-      'deal_delay_start_epoch': startDelayDays,
+      'replication_quota': Number(replications),
+      'deal_duration': Number(durationDays),
+      'deal_delay_start_epoch': Number(startDelayDays),
       'unsealed': unsealed,
       'indexed': indexed,
     })
@@ -140,13 +140,35 @@ export async function getReplications() {
   return await res.json();
 }
 
+export async function addReplication(
+  providerID: string,
+  datasetName: string,
+  numDeals: number,
+) {
+  const res = await fetch(apiURL + '/replication', {
+    method: 'post',
+    headers: defaultHeaders(),
+    body: JSON.stringify({
+      'provider': providerID,
+      'dataset': datasetName,
+      'num_deals': Number(numDeals),
+    }),
+  });
+
+  if (!res.ok) {
+    throw new Error(await res.text());
+  }
+
+  return await res.json();
+}
+
 export async function associateWallet(address: string, datasetName: string) {
   const res = await fetch(apiURL + '/wallets/associate', {
     method: 'post',
     headers: defaultHeaders(),
     body: JSON.stringify({
-      address: address,
-      dataset: datasetName
+      'address': address,
+      'dataset': datasetName
     })
   });
 

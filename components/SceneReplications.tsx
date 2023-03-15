@@ -17,6 +17,7 @@ export default function SceneReplications(props) {
           <div className={tableStyles.column}>Provider ID</div>
           <div className={tableStyles.fluidColumn}>Proposal CID</div>
           <div className={tableStyles.fluidColumn}>Piece CID (CommP)</div>
+          <div className={tableStyles.fluidColumn}>Message</div>
         </div>
         {props.state.replications.map((replication, i) => {
           return (
@@ -28,6 +29,7 @@ export default function SceneReplications(props) {
                 <div className={tableStyles.column}>{replication.provider_actor_id}</div>
                 <div className={tableStyles.fluidColumn}>{replication.proposal_cid}</div>
                 <div className={tableStyles.fluidColumn}>{replication.content_commp}</div>
+                <div className={tableStyles.fluidColumn}>{replication.delta_message}</div>
               </div>
             </div>
           )

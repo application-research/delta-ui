@@ -21,6 +21,7 @@ import SceneAuth from '@components/SceneAuth';
 import FormNewDataset from '@components/FormNewDataset';
 import { getCookie, setCookie } from '@root/modules/cookies';
 import { checkAuth, getDatasets, getProviders, getReplications } from '@root/data/api';
+import FormAddReplication from './FormAddReplication';
 
 export default function Application(props) {
   const [appNavigationState, setAppNavigationState] = React.useState(1);
@@ -89,6 +90,7 @@ export default function Application(props) {
       onClickReplications={() => setAppNavigationState(navigationStates.replications)}
       onNewDataset={() => setAppTooltipState(tooltipStates.newDataset)}
       onAddProviders={() => setAppTooltipState(tooltipStates.addProvider)}
+      onAddReplication={() => setAppTooltipState(tooltipStates.addReplication)}
       onClickWallets={() => setAppNavigationState(navigationStates.wallets)}
       onAddWallet={() => setAppTooltipState(tooltipStates.addWallet)}
     >
@@ -145,6 +147,9 @@ export default function Application(props) {
       )}
       {appTooltipState === tooltipStates.attachContent && (
         <FormUploadData onOutsideClick={dismissTooltip} updateState={updateState} selectedDataset={selectedDataset} />
+      )}
+      {appTooltipState === tooltipStates.addReplication && (
+        <FormAddReplication onOutsideClick={dismissTooltip} updateState={updateState} />
       )}
     </DefaultLayout>
   );
