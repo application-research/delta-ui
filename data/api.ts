@@ -1,6 +1,6 @@
 import { getCookie } from '@root/modules/cookies';
 
-const apiURL = (process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, '') + '/api/v1') || "http://localhost:1314/api/v1";
+const apiURL = process.env.NEXT_PUBLIC_API_URL ? (process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, '') + '/api/v1') : "http://localhost:1314/api/v1";
 
 function defaultHeaders() {
   return {
