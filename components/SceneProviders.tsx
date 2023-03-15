@@ -10,7 +10,7 @@ import Input from '@components/Input';
 
 export default function SceneProviders(props) {
   return (<div className={styles.body}>
-    <Input label={props.providerLabel} id="scene-provider-search" placeholder={props.placeholder} value={props.providerValue} onChange={props.onProviderChange} />
+    <Input label={props.providerLabel} id="scene-provider-search" placeholder={props.placeholder} value={props.search} onChange={props.onSearchChange} />
     {props.state.providers &&
       <div className={tableStyles.body}>
         <div className={tableStyles.header}>
@@ -19,16 +19,23 @@ export default function SceneProviders(props) {
           <span className={tableStyles.column}>Bytes Replicated</span>
           <span className={tableStyles.fluidColumn}>Provider Key</span>
         </div>
-        {props.state.providers.map((provider, i) => {
-          return (<div key={i}>
-            <div className={tableStyles.row}>
-              <span className={tableStyles.column}>{provider.actor_id}</span>
-              <span className={tableStyles.column}>{provider.actor_name}</span>
-              <span className={tableStyles.column}>{provider.bytes_replicated.padded}</span>
-              <span className={tableStyles.fluidColumn}><span className={styles.secret}>{provider.key}</span></span>
-            </div>
-          </div>)
-        })}
+        {props.state.providers
+          .filter(
+            (provider, i) => !props.search || provider.actor_id.includes(props.search)
+          )
+          .map(
+            (provider, i) => {
+              return (<div key={i}>
+                <div className={tableStyles.row}>
+                  <span className={tableStyles.column}>{provider.actor_id}</span>
+                  <span className={tableStyles.column}>{provider.actor_name}</span>
+                  <span className={tableStyles.column}>{provider.bytes_replicated.padded}</span>
+                  <span className={tableStyles.fluidColumn}><span className={styles.secret}>{provider.key}</span></span>
+                </div>
+              </div>)
+            }
+          )
+        }
       </div>
     }
   </div>);

@@ -26,8 +26,9 @@ import FormAssociateWallet from './FormAssociateWallet';
 
 export default function Application(props) {
   const [appNavigationState, setAppNavigationState] = React.useState(1);
-  const [searchValue, setSearchChange] = React.useState('');
-  const [providerValue, setProviderChange] = React.useState('');
+  const [datasetSearch, setDatasetSearch] = React.useState('');
+  const [providerSearch, setProviderSearch] = React.useState('');
+  const [replicationSearch, setReplicationSearch] = React.useState('');
   const [selectedProvider, setSelectedProvider] = React.useState('');
   const [selectedDataset, setSelectedDataset] = React.useState('');
   const [selectedWallet, setSelectedWallet] = React.useState('');
@@ -99,10 +100,10 @@ export default function Application(props) {
     >
       {appNavigationState === navigationStates.datasets && (
         <SceneDatasets
-          onSearchChange={(e) => setSearchChange(e.target.value)}
-          searchValue={searchValue}
-          searchLabel="Search your DDM"
-          placeholder="(example: university-bird-sounds.zip)"
+          search={datasetSearch}
+          onSearchChange={(e) => setDatasetSearch(e.target.value)}
+          searchLabel="Search datasets"
+          placeholder="(example: university-bird-sounds)"
           state={state}
           onAttachContent={() => setAppTooltipState(tooltipStates.attachContent)}
           selectedDataset={selectedDataset}
@@ -111,8 +112,8 @@ export default function Application(props) {
       )}
       {appNavigationState === navigationStates.providers && (
         <SceneProviders
-          onProviderChange={(e) => setProviderChange(e.target.value)}
-          providerChange={providerValue}
+          search={providerSearch}
+          onSearchChange={(e) => setProviderSearch(e.target.value)}
           providerLabel="Search your providers"
           placeholder="(example: f0123456)"
           state={state}
@@ -120,6 +121,10 @@ export default function Application(props) {
       )}
       {appNavigationState === navigationStates.replications && (
         <SceneReplications
+          search={replicationSearch}
+          onSearchChange={e => setReplicationSearch(e.target.value)}
+          searchLabel='Search replications'
+          placeholder='search any field (replication filtering is w.i.p.)'
           selectedProvider={selectedProvider}
           setSelectedProvider={() => {
             alert('test');
