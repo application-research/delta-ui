@@ -56,7 +56,6 @@ export async function addDataset(
   name: string,
   replications: number,
   durationDays: number,
-  startDelayDays: number,
   unsealed: boolean,
   indexed: boolean,
 ) {
@@ -67,7 +66,6 @@ export async function addDataset(
       'name': name,
       'replication_quota': Number(replications),
       'deal_duration': Number(durationDays),
-      'deal_delay_start_epoch': Number(startDelayDays),
       'unsealed': unsealed,
       'indexed': indexed,
     })

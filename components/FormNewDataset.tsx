@@ -12,7 +12,6 @@ export default function FormNewDataset(props) {
   let [name, setName] = React.useState('');
   let [replications, setReplications] = React.useState(6);
   let [duration, setDuration] = React.useState(540);
-  let [delay, setDelay] = React.useState(7);
   let [indexed, setIndexed] = React.useState(false);
   let [unsealed, setUnsealed] = React.useState(false);
 
@@ -26,7 +25,6 @@ export default function FormNewDataset(props) {
         name,
         replications,
         duration,
-        delay,
         unsealed,
         indexed
       );
@@ -48,7 +46,6 @@ export default function FormNewDataset(props) {
         <Input label="Dataset Name" id="dataset-name" value={name} placeholder="a friendly name" required autoFocus onChange={e => setName(e.target.value)} />
         <Input type="number" label="Replication Count" value={replications} id="dataset-replications" required onChange={e => setReplications(e.target.value)} />
         <Input type="number" label="Deal Duration (Days)" value={duration} onChange={e => setDuration(e.target.value)} />
-        <Input type="number" label="Deal Start Delay" value={delay} onChange={e => setDelay(e.target.value)} />
         <Input type="checkbox" label="Publish to indexer?" checked={indexed} id="dataset-indexed" onChange={e => setIndexed(e.target.checked)} />
         <Input type="checkbox" label="Keep unsealed copy?" checked={unsealed} id="dataset-unsealed" onChange={e => setUnsealed(e.target.checked)} />
         <Button disabled={!isFormValid()}>Create</Button>
