@@ -23,6 +23,7 @@
   transition: 200ms ease all;
   transform: scale(1);
   text-decoration: none;
+  margin-bottom: 16px;
   cursor: default;
 
   > * {
@@ -44,8 +45,4 @@
     // width: 0;
     opacity: 0;
   }
-}
-
-.uploadReady {
-  border: none;
 }

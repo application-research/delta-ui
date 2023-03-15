@@ -139,3 +139,20 @@ export async function getReplications() {
   
   return await res.json();
 }
+
+export async function associateWallet(address: string, datasetName: string) {
+  const res = await fetch(apiURL + '/wallets/associate', {
+    method: 'post',
+    headers: defaultHeaders(),
+    body: JSON.stringify({
+      address: address,
+      dataset: datasetName
+    })
+  });
+
+  if (!res.ok) {
+    throw new Error(await res.text());
+  }
+
+  return await res.json();
+}

@@ -27,7 +27,7 @@ export default function Application(props) {
   const [searchValue, setSearchChange] = React.useState('');
   const [providerValue, setProviderChange] = React.useState('');
   const [selectedProvider, setSelectedProvider] = React.useState('');
-  const [selectedData, setSelectedData] = React.useState('');
+  const [selectedDataset, setSelectedDataset] = React.useState('');
   const [state, setState] = React.useState({ datasets: [], providers: [], replications: [] });
   const [appTooltipState, setAppTooltipState] = React.useState(0);
   const [authToken, setAuthTokenEphemeral] = React.useState('');
@@ -99,6 +99,9 @@ export default function Application(props) {
           searchLabel="Search your DDM"
           placeholder="(example: university-bird-sounds.zip)"
           state={state}
+          onAttachContent={() => setAppTooltipState(tooltipStates.attachContent)}
+          selectedDataset={selectedDataset}
+          setSelectedDataset={setSelectedDataset}
         />
       )}
       {appNavigationState === navigationStates.providers && (
@@ -116,8 +119,8 @@ export default function Application(props) {
           setSelectedProvider={() => {
             alert('test');
           }}
-          selectedData={selectedData}
-          setSelectedData={() => { }}
+          selectedDataset={selectedDataset}
+          setSelectedDataset={() => { }}
           state={state}
         />
       )}
@@ -139,6 +142,9 @@ export default function Application(props) {
       )}
       {appTooltipState === tooltipStates.addWallet && (
         <FormAddWallet onOutsideClick={dismissTooltip} />
+      )}
+      {appTooltipState === tooltipStates.attachContent && (
+        <FormUploadData onOutsideClick={dismissTooltip} updateState={updateState} selectedDataset={selectedDataset} />
       )}
     </DefaultLayout>
   );

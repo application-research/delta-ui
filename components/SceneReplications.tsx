@@ -22,12 +22,12 @@ export default function SceneReplications(props) {
           return (
             <div key={i}>
               <div className={tableStyles.row}>
-                <div className={tableStyles.column}>replication.ID</div>
-                <div className={tableStyles.column}>replication.status</div>
-                <div className={tableStyles.column}>replication.deal_time</div>
-                <div className={tableStyles.column}>replication.provider_actor_id</div>
-                <div className={tableStyles.column}>replication.proposal_cid</div>
-                <div className={tableStyles.column}>replication.content_commp</div>
+                <div className={tableStyles.column}>{replication.ID}</div>
+                <div className={tableStyles.column}>{replication.status}</div>
+                <div className={tableStyles.column}>{replication.deal_time}</div>
+                <div className={tableStyles.column}>{replication.provider_actor_id}</div>
+                <div className={tableStyles.fluidColumn}>{replication.proposal_cid}</div>
+                <div className={tableStyles.fluidColumn}>{replication.content_commp}</div>
               </div>
             </div>
           )
