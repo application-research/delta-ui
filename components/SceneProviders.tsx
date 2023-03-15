@@ -16,14 +16,16 @@ export default function SceneProviders(props) {
         <div className={tableStyles.header}>
           <span className={tableStyles.column}>Provider ID</span>
           <span className={tableStyles.column}>Provider Name</span>
-          <span className={tableStyles.fluidColumn}>Bytes Replicated</span>
+          <span className={tableStyles.column}>Bytes Replicated</span>
+          <span className={tableStyles.fluidColumn}>Provider Key</span>
         </div>
         {props.state.providers.map((provider, i) => {
           return (<div key={i}>
             <div className={tableStyles.row}>
               <span className={tableStyles.column}>{provider.actor_id}</span>
               <span className={tableStyles.column}>{provider.actor_name}</span>
-              <span className={tableStyles.fluidColumn}>{provider.bytes_replicated.padded}</span>
+              <span className={tableStyles.column}>{provider.bytes_replicated.padded}</span>
+              <span className={tableStyles.fluidColumn}><span className={styles.secret}>{provider.key}</span></span>
             </div>
           </div>)
         })}
