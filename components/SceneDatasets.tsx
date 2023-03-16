@@ -28,6 +28,7 @@ export default function SceneDatasets(props) {
           .filter((dataset, i) => !props.search || dataset.name.includes(props.search))
           .map((dataset, i) => {
             let progress = dataset.bytes_replicated.padded / dataset.bytes_total.padded / dataset.replication_quota;
+            if (Number.isNaN(progress)) progress = 0;
 
             return (<div key={i}>
               <div className={tableStyles.row}>
