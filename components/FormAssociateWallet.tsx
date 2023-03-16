@@ -1,11 +1,12 @@
 'use client';
 
+import React from 'react';
+import { associateWallet } from '@data/api';
+
 import styles from '@components/FormAssociateWallet.module.scss';
 import Button from '@components/Button';
 import Dismissible from '@components/Dismissible';
 import Input from '@components/Input';
-import React from 'react';
-import { associateWallet } from '@root/data/api';
 
 export default function FormAssociateWallet(props) {
   const [error, setError] = React.useState('');
