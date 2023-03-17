@@ -22,7 +22,7 @@ export default function SceneDatasets(props) {
           <span className={tableStyles.column}>Duration</span>
           <span className={tableStyles.column}>Unsealed</span>
           <span className={tableStyles.column}>Indexed</span>
-          <span className={tableStyles.fluidColumn}>Wallet</span>
+          <span className={tableStyles.fluidColumn}>Wallets</span>
         </div>
         {props.state.datasets
           .filter((dataset, i) => !props.search || dataset.name.includes(props.search))
@@ -39,7 +39,7 @@ export default function SceneDatasets(props) {
                   <span className={tableStyles.column}>{dataset.deal_duration} days</span>
                   <span className={tableStyles.column}>{dataset.unsealed ? "true" : "false"}</span>
                   <span className={tableStyles.column}>{dataset.indexed ? "true" : "false"}</span>
-                  <span className={tableStyles.fluidColumn}>{dataset.wallet?.address}</span>
+                  <span className={tableStyles.fluidColumn}><div>{dataset.wallet?.map((wallet, i) => <div key={i}>{wallet.address}</div>)}</div></span>
                 </div>
                 <div className={tableStyles.progress}>
                   <div className={tableStyles.progressBar} style={{ width: `${progress * 100}%` }} />
