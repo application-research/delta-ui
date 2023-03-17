@@ -124,3 +124,11 @@ body {
     display: none;
   }
 }
+
+a, a:visited {
+  color: #4e7ed6;
+
+  &[target="_blank"]::after {
+    content: " ↗";
+  }
+}

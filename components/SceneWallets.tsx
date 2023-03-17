@@ -24,7 +24,13 @@ export default function SceneWallets(props) {
             return (
               <div key={i}>
                 <div className={tableStyles.row}>
-                  <span className={tableStyles.fluidColumn}>{wallet.address}</span>
+                  <span className={tableStyles.fluidColumn}>
+                    <span>{wallet.address}</span> 
+                    <span>&nbsp;|&nbsp;</span> 
+                    <a href={`https://filfox.info/en/address/${wallet.address}`} target="_blank">
+                      filfox
+                    </a>
+                  </span>
                   <span className={tableStyles.column}>{wallet.balance.balance_filecoin}</span>
                   <span className={tableStyles.column}>{wallet.balance.balance_datacap}</span>
                   <span className={tableStyles.column}>{wallet.dataset_name}</span>
