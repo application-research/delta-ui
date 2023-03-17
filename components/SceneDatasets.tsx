@@ -20,7 +20,6 @@ export default function SceneDatasets(props) {
           <span className={tableStyles.column}>Name</span>
           <span className={tableStyles.column}>Size</span>
           <span className={tableStyles.column}>Replication Quota</span>
-          <span className={tableStyles.column}>Start Epoch Delay</span>
           <span className={tableStyles.column}>Duration</span>
           <span className={tableStyles.column}>Unsealed</span>
           <span className={tableStyles.column}>Indexed</span>
@@ -38,7 +37,6 @@ export default function SceneDatasets(props) {
                 <span className={tableStyles.column}>{dataset.name}</span>
                 <span className={tableStyles.column}>{Utilities.bytesToSize(dataset.bytes_total.raw)}</span>
                 <span className={tableStyles.column}>{dataset.replication_quota}</span>
-                <span className={tableStyles.column}>{dataset.deal_delay_start_epoch} days</span>
                 <span className={tableStyles.column}>{dataset.deal_duration} days</span>
                 <span className={tableStyles.column}>{dataset.unsealed ? "true" : "false"}</span>
                 <span className={tableStyles.column}>{dataset.indexed ? "true" : "false"}</span>
