@@ -1,0 +1,31 @@
+.body {
+  position: relative;
+  margin: 10px 0;
+  margin-bottom: 30px;
+}
+
+.label {
+  font-size: 0.6em;
+  text-transform: uppercase;
+  display: block;
+  color: gray;
+}
+
+.select {
+  background: var(--color-background);
+  border: none;
+  border-bottom: 2px solid var(--color-border);
+  padding: 4px 0;
+  transition: 0.25s;
+  color: var(--color-text);
+  width: 100%;
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-text) !important;
+  }
+
+  &::placeholder {
+    color: var(--color-border);
+  }
+}

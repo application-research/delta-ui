@@ -7,6 +7,7 @@ import styles from '@components/FormAssociateWallet.module.scss';
 import Button from '@components/Button';
 import Dismissible from '@components/Dismissible';
 import Input from '@components/Input';
+import Select from './Select';
 
 export default function FormAssociateWallet(props) {
   const [error, setError] = React.useState('');
@@ -24,19 +25,22 @@ export default function FormAssociateWallet(props) {
     props.updateState();
   }
 
+  function isFormValid() {
+    return !!datasetName;
+  }
+
   return (
     <Dismissible className={styles.body} onOutsideClick={props.onOutsideClick}>
       <h2 className={styles.heading}>Associate wallet</h2>
       <p className={styles.paragraph}>{props.selectedWallet}</p>
       <form onSubmit={onSubmit}>
-        <Input
-          id='dataset-name'
-          label='Dataset Name'
-          placeholder='a registered dataset name'
-          value={datasetName}
-          onChange={e => setDatasetName(e.target.value)}
-        />
-        <Button>Apply</Button>
+        <Select id='dataset-name' label='Dataset Name' value={datasetName} onChange={e => setDatasetName(e.target.value)}>
+          <option value='' hidden>Select a dataset...</option>
+          {props.state.datasets?.map((dataset, i) => {
+            return <option key={i} value={dataset.name}>{dataset.name}</option>
+          })}
+        </Select>
+        <Button disabled={!isFormValid()}>Apply</Button>
       </form>
       {error && <div className={styles.error}>{error}</div>}
     </Dismissible>

@@ -117,8 +117,6 @@ export async function addProvider(id: string, name: string) {
     })
   });
 
-  console.log(res);
-
   if (!res.ok) {
     throw new Error(await res.text());
   }

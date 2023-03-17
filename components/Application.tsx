@@ -181,6 +181,7 @@ export default function Application(props) {
         <FormAssociateWallet
           onOutsideClick={dismissTooltip}
           selectedWallet={selectedWallet}
+          state={state}
           updateState={updateState}
         />
       )}
