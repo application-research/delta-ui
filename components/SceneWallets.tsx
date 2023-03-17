@@ -16,7 +16,8 @@ export default function SceneWallets(props) {
         <div className={tableStyles.body}>
           <div className={tableStyles.header}>
             <span className={tableStyles.fluidColumn}>Address</span>
-            <span className={tableStyles.column}>Datacap Used</span>
+            <span className={tableStyles.column}>Filecoin Balance</span>
+            <span className={tableStyles.column}>Datacap Balance</span>
             <span className={tableStyles.column}>Dataset Name</span>
           </div>
           {props.state.wallets.map((wallet, i) => {
@@ -24,6 +25,7 @@ export default function SceneWallets(props) {
               <div key={i}>
                 <div className={tableStyles.row}>
                   <span className={tableStyles.fluidColumn}>{wallet.address}</span>
+                  <span className={tableStyles.column}>{wallet.balance.balance_filecoin}</span>
                   <span className={tableStyles.column}>{wallet.balance.balance_datacap}</span>
                   <span className={tableStyles.column}>{wallet.dataset_name}</span>
                 </div>
