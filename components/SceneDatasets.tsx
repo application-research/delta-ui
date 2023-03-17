@@ -7,8 +7,10 @@ import * as React from 'react';
 import * as Utilities from '@common/utilities';
 
 import Input from '@components/Input';
+import LoadingIndicator from './LoadingIndicator';
 
 export default function SceneDatasets(props) {
+  console.log(props.state.datasets);
   return (<div className={styles.body}>
     <Input label={props.searchLabel} id="scene-datasets-search" placeholder={props.placeholder} value={props.search} onChange={props.onSearchChange} />
     {props.state.datasets &&
@@ -55,5 +57,6 @@ export default function SceneDatasets(props) {
         }
       </div>
     }
+    {props.state.datasets === undefined && <LoadingIndicator />}
   </div>);
 }

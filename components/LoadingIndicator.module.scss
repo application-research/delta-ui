@@ -1,0 +1,33 @@
+.container {
+  width: max-content;
+  margin: 32px auto;
+}
+
+.loadingIndicator {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+
+  &::after {
+    content: "";
+    background: var(--color-text);
+    width: 100%;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    border-radius: inherit;
+    animation: 1.5s indicator infinite ease-in-out;
+  }
+}
+
+@keyframes indicator {
+  from {
+    left: -100%;
+  }
+
+  to {
+    left: 100%;
+  }
+}

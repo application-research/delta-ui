@@ -32,7 +32,12 @@ export default function Application(props) {
   const [selectedProvider, setSelectedProvider] = React.useState('');
   const [selectedDataset, setSelectedDataset] = React.useState('');
   const [selectedWallet, setSelectedWallet] = React.useState('');
-  const [state, setState] = React.useState({ datasets: [], providers: [], replications: [], wallets: [] });
+  const [state, setState] = React.useState({ 
+    datasets: undefined, 
+    providers: undefined, 
+    replications: undefined, 
+    wallets: undefined 
+  });
   const [appTooltipState, setAppTooltipState] = React.useState(0);
   const [authToken, setAuthTokenEphemeral] = React.useState('');
   const setAuthToken = authToken => {

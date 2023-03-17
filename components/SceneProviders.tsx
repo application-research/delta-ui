@@ -7,6 +7,7 @@ import * as React from 'react';
 import * as Utilities from '@common/utilities';
 
 import Input from '@components/Input';
+import LoadingIndicator from './LoadingIndicator';
 
 export default function SceneProviders(props) {
   return (<div className={styles.body}>
@@ -38,5 +39,6 @@ export default function SceneProviders(props) {
         }
       </div>
     }
+    {props.state.providers === undefined && <LoadingIndicator />}
   </div>);
 }
