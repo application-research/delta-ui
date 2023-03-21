@@ -16,7 +16,7 @@ export default function SceneReplications(props) {
       {props.state.replications &&
         <div className={tableStyles.body}>
           <div className={tableStyles.header}>
-            <div className={tableStyles.column}>ID</div>
+            <div className={tableStyles.column}>Dataset</div>
             <div className={tableStyles.column}>Status</div>
             <div className={tableStyles.column}>Deal Time</div>
             <div className={tableStyles.column}>Provider ID</div>
@@ -38,7 +38,7 @@ export default function SceneReplications(props) {
               return (
                 <div key={i}>
                   <div className={tableStyles.row}>
-                    <div className={tableStyles.column}>{replication.ID}</div>
+                    <div className={tableStyles.column}>{replication.content.dataset_name}</div>
                     <div className={tableStyles.column}>{replication.status}</div>
                     <div className={tableStyles.column}>{replication.deal_time}</div>
                     <div className={tableStyles.column}>{replication.provider_actor_id}</div>
