@@ -175,6 +175,7 @@ export default function Application(props) {
         <FormAddReplication
           onOutsideClick={dismissTooltip}
           updateState={updateState}
+          providers={state.providers}
         />
       )}
       {appTooltipState === tooltipStates.associateWallet && (

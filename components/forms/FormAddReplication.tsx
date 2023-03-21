@@ -8,13 +8,14 @@ import styles from './FormAddReplication.module.scss';
 import Dismissible from '@components/Dismissible';
 import Button from '@components/Button';
 import Input from 'components/Input';
+import ProviderSelect from '@components/ProviderSelect';
 
 export default function FormAddReplication(props) {
   const [providerID, setProviderID] = React.useState('');
   const [datasetName, setDatasetName] = React.useState('');
   const [numDeals, setNumDeals] = React.useState(1);
   const [error, setError] = React.useState('');
-  
+
   async function onSubmit(e) {
     e.preventDefault();
 
@@ -23,15 +24,15 @@ export default function FormAddReplication(props) {
     } catch (e) {
       setError(e.toString());
     }
-    
+
     props.updateState();
   }
-  
+
   return (
     <Dismissible className={styles.body} onOutsideClick={props.onOutsideClick}>
       <h2 className={styles.heading}>Add replication</h2>
       <form onSubmit={onSubmit}>
-        <Input label='Provider ID' placeholder='example: f012345' autoFocus value={providerID} onChange={e => setProviderID(e.target.value)} />
+        <ProviderSelect id='provider-id' label='Provider ID' providers={props.providers} onChange={e => setProviderID(e.target.value)} autoFocus />
         <Input label='Dataset Name' placeholder='leave blank for any dataset' value={datasetName} onChange={e => setDatasetName(e.target.value)} />
         <Input type='number' label='Number of Deals' value={numDeals} onChange={e => setNumDeals(e.target.value)} />
         <Button>Add</Button>

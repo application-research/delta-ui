@@ -19,6 +19,7 @@
   transition: 0.25s;
   color: var(--color-text);
   width: 100%;
+  font-size: 0.8em;
 
   &:focus {
     outline: none;
@@ -27,5 +28,9 @@
 
   &::placeholder {
     color: var(--color-border);
+  }
+
+  &, option {
+    font-family: inherit;
   }
 }
