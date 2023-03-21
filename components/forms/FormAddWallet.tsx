@@ -1,8 +1,8 @@
 'use client';
 
-import styles from '@components/FormAddWallet.module.scss';
-
 import * as React from 'react';
+
+import styles from './FormAddWallet.module.scss';
 
 import Button from '@components/Button';
 import Dismissible from '@components/Dismissible';

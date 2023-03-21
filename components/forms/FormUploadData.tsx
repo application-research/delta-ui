@@ -1,6 +1,6 @@
 'use client';
 
-import styles from '@components/FormUploadData.module.scss';
+import styles from './FormUploadData.module.scss';
 
 import * as React from 'react';
 

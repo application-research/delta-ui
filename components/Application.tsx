@@ -1,28 +1,28 @@
 'use client';
 
-import styles from '@components/Application.module.scss';
-
 import * as React from 'react';
-
 import PackageJSON from '@root/package.json';
-import DefaultLayout from '@components/DefaultLayout';
-
-import SceneDatasets from '@components/SceneDatasets';
-import SceneProviders from '@components/SceneProviders';
-import SceneReplications from '@components/SceneReplications';
-import SceneWallets from '@components/SceneWallets';
-import SceneAuth from '@components/SceneAuth';
-
-import FormUploadData from '@components/FormUploadData';
-import FormAddWallet from '@components/FormAddWallet';
-import FormAddProvider from '@components/FormAddProvider';
-import FormAddReplication from '@components/FormAddReplication';
-import FormNewDataset from '@components/FormNewDataset';
-
 import { navigationStates, tooltipStates } from '@common/navigation';
 import { getCookie, setCookie } from '@modules/cookies';
 import { associateWallet, checkAuth, getDatasets, getProviders, getReplications, getWallets } from '@data/api';
-import FormAssociateWallet from './FormAssociateWallet';
+
+import styles from '@components/Application.module.scss';
+
+import DefaultLayout from '@components/DefaultLayout';
+
+import SceneDatasets from '@components/scenes/SceneDatasets';
+import SceneProviders from '@components/scenes/SceneProviders';
+import SceneReplications from '@components/scenes/SceneReplications';
+import SceneWallets from '@components/scenes/SceneWallets';
+import SceneAuth from '@components/scenes/SceneAuth';
+
+import FormUploadData from '@components/forms/FormUploadData';
+import FormAddWallet from '@components/forms/FormAddWallet';
+import FormAddProvider from '@components/forms/FormAddProvider';
+import FormAddReplication from '@components/forms/FormAddReplication';
+import FormNewDataset from '@components/forms/FormNewDataset';
+import FormAssociateWallet from '@components/forms/FormAssociateWallet';
+
 
 export default function Application(props) {
   const [appNavigationState, setAppNavigationState] = React.useState(1);

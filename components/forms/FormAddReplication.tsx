@@ -1,11 +1,13 @@
 'use client';
 
-import Dismissible from '@components/Dismissible';
-import styles from '@components/FormAddReplication.module.scss';
+import * as React from 'react';
 import { addReplication } from '@root/data/api';
-import React from 'react';
-import Button from './Button';
-import Input from './Input';
+
+import styles from './FormAddReplication.module.scss';
+
+import Dismissible from '@components/Dismissible';
+import Button from '@components/Button';
+import Input from 'components/Input';
 
 export default function FormAddReplication(props) {
   const [providerID, setProviderID] = React.useState('');

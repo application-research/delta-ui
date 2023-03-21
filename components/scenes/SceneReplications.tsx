@@ -3,11 +3,11 @@
 import * as React from 'react';
 import * as Utilities from '@common/utilities';
 
-import styles from '@components/SceneReplications.module.scss';
+import styles from './SceneReplications.module.scss';
 import tableStyles from '@components/Table.module.scss';
 
 import Input from '@components/Input';
-import LoadingIndicator from './LoadingIndicator';
+import LoadingIndicator from '@components/LoadingIndicator';
 
 export default function SceneReplications(props) {
   return (

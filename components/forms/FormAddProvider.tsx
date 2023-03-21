@@ -1,10 +1,11 @@
+import * as React from 'react';
+import { addProvider } from '@data/api';
+
+import styles from './FormAddProvider.module.scss';
+
 import Dismissible from '@components/Dismissible';
-import styles from '@components/FormAddProvider.module.scss';
 import Button from '@components/Button';
 import Input from '@components/Input';
-
-import React from 'react';
-import { addProvider } from '@data/api';
 
 export default function FormAddProvider(props) {
 

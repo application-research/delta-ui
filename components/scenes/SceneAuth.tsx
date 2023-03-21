@@ -1,10 +1,12 @@
 'use client';
 
-import styles from '@components/SceneAuth.module.scss';
+import * as React from 'react';
 import { checkAuth, checkAuthFormat } from '@data/api';
-import React from 'react';
-import Button from './Button';
-import Input from './Input';
+
+import styles from './SceneAuth.module.scss';
+
+import Button from '@components/Button';
+import Input from '@components/Input';
 
 export default function SceneAuth(props) {
   // Store a tmp auth token in the component so the main application auth token

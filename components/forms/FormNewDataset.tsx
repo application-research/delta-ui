@@ -1,6 +1,6 @@
 'use client';
 
-import styles from '@components/FormNewDataset.module.scss';
+import styles from './FormNewDataset.module.scss';
 
 import Dismissible from '@components/Dismissible';
 import Input from '@components/Input';
