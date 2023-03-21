@@ -176,6 +176,7 @@ export default function Application(props) {
           onOutsideClick={dismissTooltip}
           updateState={updateState}
           providers={state.providers}
+          datasets={state.datasets}
         />
       )}
       {appTooltipState === tooltipStates.associateWallet && (

@@ -7,7 +7,7 @@ import styles from './FormAssociateWallet.module.scss';
 
 import Button from '@components/Button';
 import Dismissible from '@components/Dismissible';
-import Select from '@components/Select';
+import DatasetSelect from '@components/DatasetSelect';
 
 export default function FormAssociateWallet(props) {
   const [error, setError] = React.useState('');
@@ -34,12 +34,7 @@ export default function FormAssociateWallet(props) {
       <h2 className={styles.heading}>Associate wallet</h2>
       <p className={styles.paragraph}>{props.selectedWallet}</p>
       <form onSubmit={onSubmit}>
-        <Select id='dataset-name' label='Dataset Name' value={datasetName} onChange={e => setDatasetName(e.target.value)}>
-          <option value='' hidden>Select a dataset...</option>
-          {props.state.datasets?.map((dataset, i) => {
-            return <option key={i} value={dataset.name}>{dataset.name}</option>
-          })}
-        </Select>
+        <DatasetSelect id='dataset-name' label='Dataset Name' value={datasetName} onChange={e => setDatasetName(e.target.value)} required autoFocus />
         <Button disabled={!isFormValid()}>Apply</Button>
       </form>
       {error && <div className={styles.error}>{error}</div>}

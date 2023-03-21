@@ -2,8 +2,7 @@ import Select from '@components/Select';
 
 export default function ProviderSelect(props) {
   return (
-    <Select {...props}>
-      <option hidden selected disabled value=''>select a provider...</option>
+    <Select default='select a provider...' {...props}>
       {props.providers?.map((provider, i) => {
         return (
           <option value={provider.actor_id}>
