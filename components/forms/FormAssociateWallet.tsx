@@ -34,7 +34,7 @@ export default function FormAssociateWallet(props) {
       <h2 className={styles.heading}>Associate wallet</h2>
       <p className={styles.paragraph}>{props.selectedWallet}</p>
       <form onSubmit={onSubmit}>
-        <DatasetSelect id='dataset-name' label='Dataset Name' value={datasetName} onChange={e => setDatasetName(e.target.value)} required autoFocus />
+        <DatasetSelect id='dataset-name' label='Dataset Name' value={datasetName} onChange={e => setDatasetName(e.target.value)} datasets={props.state.datasets} required autoFocus />
         <Button disabled={!isFormValid()}>Apply</Button>
       </form>
       {error && <div className={styles.error}>{error}</div>}
