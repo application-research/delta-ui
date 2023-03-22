@@ -28,7 +28,7 @@ export default function SceneAuth(props) {
     }
 
     props.setAuthToken(tmpAuthToken);
-    props.setUIAddress(tmpDDMAddress);
+    props.setDDMAddress(tmpDDMAddress);
   }
 
   return (
