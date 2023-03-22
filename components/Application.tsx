@@ -43,7 +43,10 @@ export default function Application(props) {
   const setAuthToken = authToken => {
     setAuthTokenEphemeral(authToken);
     setCookie('auth', authToken);
-  }
+  };
+  const setDDMAddress = ddmAddress => {
+    setCookie('ddm-address', ddmAddress);
+  };
 
   async function updateState() {
     setState({
@@ -84,6 +87,7 @@ export default function Application(props) {
       <SceneAuth
         authToken={authToken}
         setAuthToken={setAuthToken}
+        setDDMAddress={setDDMAddress}
       ></SceneAuth>
     )
   }

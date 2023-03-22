@@ -12,6 +12,7 @@ export default function SceneAuth(props) {
   // Store a tmp auth token in the component so the main application auth token
   // state doesn't update until the user submits the form
   const [tmpAuthToken, setTmpAuthToken] = React.useState(props.authToken || '');
+  const [tmpDDMAddress, setTmpDDMAddress] = React.useState(props.authToken || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1314');
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -27,13 +28,15 @@ export default function SceneAuth(props) {
     }
 
     props.setAuthToken(tmpAuthToken);
+    props.setUIAddress(tmpDDMAddress);
   }
 
   return (
     <div className={styles.body}>
       <form onSubmit={onSubmit}>
-        <Input type="text" label="Delta API Authorization Token" id="auth-token" value={tmpAuthToken} onChange={e => setTmpAuthToken(e.target.value)} />
-        <Button disabled={!checkAuthFormat(tmpAuthToken)}>{tmpAuthToken == '' || checkAuthFormat(tmpAuthToken) ? 'Set Token' : 'Invalid Format'}</Button>
+        <Input label="Delta API Authorization Token" id="auth-token" value={tmpAuthToken} onChange={e => setTmpAuthToken(e.target.value)} />
+        <Input label="Delta-DM API Address" id='ddm-address' value={tmpDDMAddress} onChange={e => setTmpDDMAddress(e.target.value)} />
+        <Button disabled={!checkAuthFormat(tmpAuthToken)}>{tmpAuthToken == '' || checkAuthFormat(tmpAuthToken) ? 'Connect' : 'Invalid Token Format'}</Button>
       </form>
     </div>
   )
