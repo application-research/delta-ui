@@ -8,6 +8,7 @@ import tableStyles from '@components/Table.module.scss';
 
 import Input from '@components/Input';
 import LoadingIndicator from '@components/LoadingIndicator';
+import ProviderRef from '@components/ProviderRef';
 
 export default function SceneProviders(props) {
   return (<div className={styles.body}>
@@ -28,7 +29,7 @@ export default function SceneProviders(props) {
             (provider, i) => {
               return (<div key={i}>
                 <div className={tableStyles.row}>
-                  <span className={tableStyles.column}>{provider.actor_id}</span>
+                  <span className={tableStyles.column}><ProviderRef providerID={provider.actor_id} /></span>
                   <span className={tableStyles.column}>{provider.actor_name}</span>
                   <span className={tableStyles.column}>{provider.bytes_replicated.padded}</span>
                   <span className={tableStyles.fluidColumn}><span className={styles.secret}>{provider.key}</span></span>

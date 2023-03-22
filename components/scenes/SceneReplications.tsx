@@ -8,6 +8,7 @@ import tableStyles from '@components/Table.module.scss';
 
 import Input from '@components/Input';
 import LoadingIndicator from '@components/LoadingIndicator';
+import ProviderRef from '@components/ProviderRef';
 
 export default function SceneReplications(props) {
   return (
@@ -41,7 +42,7 @@ export default function SceneReplications(props) {
                     <div className={tableStyles.column}>{replication.content.dataset_name}</div>
                     <div className={tableStyles.column}>{replication.status}</div>
                     <div className={tableStyles.column}>{replication.deal_time}</div>
-                    <div className={tableStyles.column}>{replication.provider_actor_id}</div>
+                    <div className={tableStyles.column}><ProviderRef providerID={replication.provider_actor_id} /></div>
                     <div className={tableStyles.fluidColumn}>{replication.proposal_cid}</div>
                     <div className={tableStyles.fluidColumn}>{replication.content_commp}</div>
                     <div className={tableStyles.fluidColumn}>{replication.delta_message}</div>
