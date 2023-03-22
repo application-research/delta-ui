@@ -129,6 +129,7 @@ a, a:visited {
   color: #4e7ed6;
 
   &[target="_blank"]::after {
-    content: " ↗";
+    content: "\00A0↗";
+    margin-left: -1px; // NOTE(@elijaharita) there's a tiny 1 pixel gap if this isn't done
   }
 }
