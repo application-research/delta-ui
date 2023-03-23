@@ -16,7 +16,6 @@ export default function SceneDatasets(props) {
     {props.state.datasets &&
       <div className={tableStyles.body}>
         <div className={tableStyles.header}>
-          <span className={tableStyles.column}>ID</span>
           <span className={tableStyles.column}>Name</span>
           <span className={tableStyles.column}>Size</span>
           <span className={tableStyles.column}>Replication Quota</span>
@@ -33,7 +32,6 @@ export default function SceneDatasets(props) {
             return (
               <div key={i}>
                 <div className={tableStyles.row}>
-                  <span className={tableStyles.column}>{dataset.ID}</span>
                   <span className={tableStyles.column}>{dataset.name}</span>
                   <span className={tableStyles.column}>{Utilities.bytesToSize(dataset.bytes_total.raw)}</span>
                   <span className={tableStyles.column}>{dataset.replication_quota}</span>

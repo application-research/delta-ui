@@ -45,6 +45,18 @@ export async function checkAuth(auth?: string): Promise<boolean> {
   return true;
 }
 
+export async function getHealth() {
+  const res = await fetch(apiURL + '/api/v1/health', {
+    headers: defaultHeaders(),
+  });
+
+  if (!res.ok) {
+    throw new Error(await res.text());
+  }
+
+  return await res.json();
+}
+
 export async function getDatasets() {
   const res = await fetch(apiURL + '/api/v1/datasets', {
     headers: defaultHeaders()

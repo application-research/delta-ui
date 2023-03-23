@@ -4,7 +4,7 @@ import * as React from 'react';
 import PackageJSON from '@root/package.json';
 import { navigationStates, tooltipStates } from '@common/navigation';
 import { getCookie, setCookie } from '@modules/cookies';
-import { associateWallet, checkAuth, getDatasets, getProviders, getReplications, getWallets } from '@data/api';
+import { associateWallet, checkAuth, getDatasets, getHealth, getProviders, getReplications, getWallets } from '@data/api';
 
 import styles from '@components/Application.module.scss';
 
@@ -38,6 +38,7 @@ export default function Application(props) {
     replications: undefined, 
     wallets: undefined 
   });
+  const [health, setHealth] = React.useState(undefined);
   const [appTooltipState, setAppTooltipState] = React.useState(0);
   const [authToken, setAuthTokenEphemeral] = React.useState('');
   const setAuthToken = authToken => {
@@ -55,6 +56,10 @@ export default function Application(props) {
       replications: await getReplications(),
       wallets: await getWallets(),
     });
+  }
+
+  async function updateHealth() {
+    setHealth(await getHealth());
   }
 
   function dismissTooltip() {
@@ -79,6 +84,7 @@ export default function Application(props) {
   React.useEffect(() => {
     if (authToken) {
       updateState();
+      updateHealth();
     }
   }, [authToken]);
 
@@ -94,8 +100,10 @@ export default function Application(props) {
 
   return (
     <DefaultLayout
-      appTitle={PackageJSON.name}
-      appVersion={PackageJSON.version}
+      appTitle={'Delta DM'}
+      appVersion={
+        `UUID: ${health.uuid || 'not set'} | DDM Version: ${health.ddm_info.version} (${health.ddm_info.commit}) | Delta Version: ${health.delta_info.version} (${health.delta_info.commit})`
+      }
       appNavigationState={appNavigationState}
       appTooltipState={appTooltipState}
       onClickDatasets={() => setAppNavigationState(navigationStates.datasets)}

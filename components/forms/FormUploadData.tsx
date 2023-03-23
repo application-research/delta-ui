@@ -39,14 +39,16 @@ export default function FormUploadData(props) {
 
   return (
     <Dismissible className={styles.body} onOutsideClick={props.onOutsideClick}>
-      <h2 className={styles.heading}>Upload data for {props.selectedDataset}</h2>
+      <h2 className={styles.heading}>Attach data for {props.selectedDataset}</h2>
       <p className={styles.paragraph}>Upload a <em>.json</em> dataset file describing contents to upload to the Filecoin network.</p>
       <form onSubmit={onUpload}>
         <Input id='dataset-name' label='Dataset Name' value={datasetName} required onChange={e => setDatasetName(e.target.value)} autoFocus />
+        <br />
         <label htmlFor="dataset-file" className={`${styles.upload} ${file ? styles.uploadReady : ""}`} onPaste={onPaste}>
           <input type="text" id="dataset-file" onClick={e => e.preventDefault()} />
           {file ? "✓ Ready" : "Paste Content File Here"}
         </label>
+        <br />
         <Button disabled={!isFormValid()}>Upload</Button>
       </form>
       {error && <p className={styles.error}>{error}</p>}
