@@ -35,8 +35,11 @@ export default function FormAddReplication(props) {
       <h2 className={styles.heading}>Add replication</h2>
       <form onSubmit={onSubmit}>
         <ProviderSelect id='provider-id' label='Provider' providers={props.providers} onChange={e => setProviderID(e.target.value)} required autoFocus />
+        <br />
         <DatasetSelect id='dataset-name' label='Dataset' default='any' datasets={props.datasets} onChange={e => setDatasetName(e.target.value)} />
+        <br />
         <Input type='number' label='Number of Deals' value={numDeals} onChange={e => setNumDeals(e.target.value)} required />
+        <br />
         <Button>Add</Button>
       </form>
       {error && <p className={styles.error}>{error}</p>}

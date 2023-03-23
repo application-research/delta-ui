@@ -61,10 +61,15 @@ export default function FormNewDataset(props) {
       <form onSubmit={onSubmit}>
         <h2 className={styles.heading}>New dataset</h2>
         <Input label="Dataset Name" id="dataset-name" value={name} placeholder="a friendly name" required autoFocus onChange={e => setName(normalizeName(e.target.value))} />
+        <br />
         <Input type="number" label="Replication Count" value={replications} id="dataset-replications" required onChange={e => setReplications(e.target.value)} />
+        <br />
         <Input type="number" label="Deal Duration (Days)" value={duration} onChange={e => setDuration(e.target.value)} />
+        <br />
         <Input type="checkbox" label="Publish to indexer?" checked={indexed} id="dataset-indexed" onChange={e => setIndexed(e.target.checked)} />
+        <br />
         <Input type="checkbox" label="Keep unsealed copy?" checked={unsealed} id="dataset-unsealed" onChange={e => setUnsealed(e.target.checked)} />
+        <br />
         <Button disabled={!isFormValid()}>Create</Button>
       </form>
       {error && <p className={styles.error}>{error}</p>}

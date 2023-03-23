@@ -1,7 +1,5 @@
 .body {
   position: relative;
-  margin: 10px 0;
-  margin-bottom: 30px;
 }
 
 .input {
@@ -12,7 +10,7 @@
   transition: 0.25s;
   color: var(--color-text);
   width: 100%;
-
+  
   &:focus {
     outline: none;
     border-color: var(--color-text) !important;
@@ -51,11 +49,27 @@
       border-color: var(--color-primary);
       background: var(--color-primary);
     }
+
+    &:disabled::after {
+      content: "X";
+      border: none;
+      color: red;
+      font-weight: bold;
+      line-height: 0.9;
+    }
+
+    &:disabled:checked::after {
+      content: "\2713";
+      vertical-align: middle;
+      text-align: center;
+      background: none;
+      color: green;
+    }
   }
 }
 
 .label {
-  font-size: 0.6em;
+  font-size: 0.6rem;
   text-transform: uppercase;
   display: block;
   color: gray;

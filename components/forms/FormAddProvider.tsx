@@ -37,6 +37,7 @@ export default function FormAddProvider(props) {
         placeholder='example: f012345'
         spellCheck='false'
       />
+      <br />
       <Input
         type="text"
         id="provider-name"
@@ -44,6 +45,7 @@ export default function FormAddProvider(props) {
         onChange={e => setProviderName(e.target.value)}
         placeholder="a friendly name"
       />
+      <br />
       <Button disabled={!(providerID && providerName)}>Add</Button>
     </form>
     {error && <p className={styles.error}>{error}</p>}

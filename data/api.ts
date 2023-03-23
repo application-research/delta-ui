@@ -124,6 +124,23 @@ export async function addProvider(id: string, name: string) {
   return await res.json();
 }
 
+export async function updateProvider(id: string, name: string, allowSelfService: boolean) {
+  const res = await fetch(apiURL + '/api/v1/providers/' + id, {
+    method: 'put',
+    headers: defaultHeaders(),
+    body: JSON.stringify({
+      'actor_name': name,
+      'allow_self_service': allowSelfService,
+    })
+  });
+
+  if (!res.ok) {
+    throw new Error(await res.text());
+  }
+
+  return await res.json();
+}
+
 export async function getReplications() {
   const res = await fetch(apiURL + '/api/v1/replication', {
     headers: defaultHeaders()

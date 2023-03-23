@@ -126,6 +126,7 @@ export default function Application(props) {
           providerLabel="Search your providers"
           placeholder="(example: f0123456)"
           state={state}
+          updateState={updateState}
         />
       )}
       {appNavigationState === navigationStates.replications && (

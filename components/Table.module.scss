@@ -1,5 +1,4 @@
-.body {
-}
+.body {}
 
 .header {
   display: flex;
@@ -8,6 +7,11 @@
   border-bottom: 1px solid var(--color-border);
   font-size: 10px;
   text-transform: uppercase;
+
+  .column,
+  .fluidColumn {
+    border-right: none;
+  }
 }
 
 .row {
@@ -15,43 +19,31 @@
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--color-border);
-  font-size: 12px;
+  font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.6);
-}
+  transition: 0.1s;
 
-.fluidColumn {
-  min-width: 10%;
-  width: 100%;
-  padding: 8px 24px 8px 24px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-start;
-  text-align: left;
-  align-self: stretch;
-  border-right: 1px solid var(--color-border);
-  overflow: hidden;
-  position: relative;
-
-  &:last-child {
-    border-right: 0px;
+  &:hover {
+    border-bottom-color: var(--color-primary);
   }
 }
 
 .column {
-  width: 180px;
+  width: 10rem;
   flex-shrink: 0;
-  padding: 8px 24px 8px 24px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-start;
+  padding: 0.5rem 1.5rem;
   text-align: left;
   align-self: stretch;
-  border-right: 1px solid var(--color-border);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: left;
+}
 
-  &:last-child {
-    border-right: 0px;
-  }
+.fluidColumn {
+  @extend .column;
+  flex-grow: 1;
 }
 
 .rowButton {
@@ -62,10 +54,20 @@
   transition: 200ms ease all;
   cursor: pointer;
   background: rgba(0, 0, 0, 1);
+  position: relative;
 
   &:hover {
     color: rgba(255, 255, 255, 0.5);
   }
+}
+
+.columnButton {
+  @extend .rowButton;
+  @extend .column;
+
+  border: none;
+  border-left: 1px solid var(--color-border);
+  text-align: center;
 }
 
 .progress {

@@ -1,10 +1,10 @@
-.body {
-}
+@import '@components/Table.module.scss';
 
 .secret {
   position: relative;
   padding: 4px;
   margin: -4px;
+  width: fit-content;
   
   &:not(:hover) {
     color: transparent;
@@ -18,4 +18,47 @@
       text-transform: uppercase;
     }
   }
+}
+
+.columnProviderInfo {
+  @extend .column;
+  max-width: 12rem;
+}
+
+.columnBytesReplicated {
+  @extend .column;
+  max-width: 12rem;
+}
+
+.columnFlags {
+  @extend .column;
+  min-width: 12rem;
+}
+
+.columnProviderKey {
+  @extend .fluidColumn;
+}
+
+.columnButtonManage {
+  @extend .columnButton;
+}
+
+.columnButtonCancel {
+  @extend .columnButton;
+}
+
+.columnButtonSave {
+  @extend .columnButton;
+  background: var(--color-primary);
+}
+
+.providerCard {
+  margin: 0.5rem;
+  padding: 1.5rem;
+  border: 1px solid var(--color-border);
+}
+
+.providerName {
+  font-size: 0.8em;
+  color: #7f7f7f;
 }
