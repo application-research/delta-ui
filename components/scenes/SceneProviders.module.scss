@@ -22,7 +22,7 @@
 
 .columnProviderInfo {
   @extend .column;
-  max-width: 12rem;
+  min-width: 18rem;
 }
 
 .columnBytesReplicated {

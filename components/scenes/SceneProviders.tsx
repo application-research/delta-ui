@@ -103,7 +103,7 @@ function ProviderCard(props) {
     <div className={tableStyles.row}>
       <span className={styles.columnProviderInfo}>
         <div className={styles.providerName}>{provider.actor_name || 'unnamed'}</div>
-        <div className={styles.providerID}>{provider.actor_id}</div>
+        <ProviderRef providerID={provider.actor_id} />
       </span>
       <span className={styles.columnBytesReplicated}>
         <div>{Utilities.bytesToSize(provider.bytes_replicated.padded)}</div>
