@@ -1,5 +1,9 @@
 export function setCookie(name: string, val: string) {
-  document.cookie = `${name}=${val}`;
+  const date = new Date();
+  date.setFullYear(date.getFullYear() + 1);
+
+  const expires = date.toUTCString();
+  document.cookie = `${name}=${val}; expires=${expires}; path=/`;
 }
 
 /**
