@@ -20,7 +20,7 @@
   justify-content: space-between;
   border-bottom: 1px solid var(--color-border);
   font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.7);
   transition: 0.1s;
 
   &:hover {
@@ -55,9 +55,10 @@
   cursor: pointer;
   background: rgba(0, 0, 0, 1);
   position: relative;
+  color: inherit;
 
   &:hover {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.6);
   }
 }
 
@@ -68,6 +69,7 @@
   border: none;
   border-left: 1px solid var(--color-border);
   text-align: center;
+  align-items: center;
 }
 
 .progress {

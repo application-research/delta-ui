@@ -10,6 +10,7 @@ import Input from '@components/Input';
 import LoadingIndicator from '@components/LoadingIndicator';
 import ProviderRef from '@components/ProviderRef';
 import { updateProvider } from '@root/data/api';
+import Button from '../Button';
 
 export default function SceneProviders(props) {
   return (
@@ -93,9 +94,9 @@ function ProviderCard(props) {
       </span>
       <span className={styles.columnProviderKey}><div className={styles.secret}>{provider.key}</div></span>
       <span className={styles.columnButtonCancel} onClick={e => cancelEdit()}>Cancel Edit</span>
-      <span className={styles.columnButtonSave} onClick={e => submitEdit()}>
+      <Button className={styles.columnButtonSave} onClick={e => submitEdit()} loading={saving}>
         <span>Save <span style={{ textTransform: 'lowercase' }}>{provider.actor_id}</span></span>
-      </span>
+      </Button>
     </div>
   );
 

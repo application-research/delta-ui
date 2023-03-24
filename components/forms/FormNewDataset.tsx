@@ -16,12 +16,16 @@ export default function FormNewDataset(props) {
   let [indexed, setIndexed] = React.useState(false);
   let [unsealed, setUnsealed] = React.useState(false);
 
+  let [loading, setLoading] = React.useState(false);
   let [error, setError] = React.useState('');
 
   async function onSubmit(e) {
     e.preventDefault();
 
+    
     try {
+      setLoading(true);
+
       await addDataset(
         name,
         replications,
@@ -29,11 +33,14 @@ export default function FormNewDataset(props) {
         unsealed,
         indexed
       );
+
+      await props.updateState();
+      props.onOutsideClick();
     } catch (e) {
       setError(e.toString());
+    } finally {
+      setLoading(false);
     }
-
-    props.updateState();
   }
 
   function isFormValid() {
@@ -70,7 +77,7 @@ export default function FormNewDataset(props) {
         <br />
         <Input type="checkbox" label="Keep unsealed copy?" checked={unsealed} id="dataset-unsealed" onChange={e => setUnsealed(e.target.checked)} />
         <br />
-        <Button disabled={!isFormValid()}>Create</Button>
+        <Button disabled={!isFormValid()} loading={loading}>Create</Button>
       </form>
       {error && <p className={styles.error}>{error}</p>}
     </Dismissible>

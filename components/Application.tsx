@@ -102,7 +102,7 @@ export default function Application(props) {
     <DefaultLayout
       appTitle={'Delta DM'}
       appVersion={
-        `UUID: ${health.uuid || 'not set'} | DDM Version: ${health.ddm_info.version} (${health.ddm_info.commit}) | Delta Version: ${health.delta_info.version} (${health.delta_info.commit})`
+        `UUID: ${health?.uuid || 'not set'} | DDM Version: ${health?.ddm_info.version} (${health?.ddm_info.commit}) | Delta Version: ${health?.delta_info.version} (${health?.delta_info.commit})`
       }
       appNavigationState={appNavigationState}
       appTooltipState={appTooltipState}

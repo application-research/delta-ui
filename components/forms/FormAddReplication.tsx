@@ -15,6 +15,8 @@ export default function FormAddReplication(props) {
   const [providerID, setProviderID] = React.useState('');
   const [datasetName, setDatasetName] = React.useState('');
   const [numDeals, setNumDeals] = React.useState(1);
+  
+  const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState('');
 
   async function onSubmit(e) {
@@ -22,12 +24,17 @@ export default function FormAddReplication(props) {
     e.target.reportValidity();
 
     try {
+      setLoading(true);
+
       await addReplication(providerID, datasetName, numDeals);
+
+      await props.updateState();
+      props.onOutsideClick();
     } catch (e) {
       setError(e.toString());
+    } finally {
+      setLoading(false);
     }
-
-    props.updateState();
   }
 
   return (
@@ -40,7 +47,7 @@ export default function FormAddReplication(props) {
         <br />
         <Input type='number' label='Number of Deals' value={numDeals} onChange={e => setNumDeals(e.target.value)} required />
         <br />
-        <Button>Add</Button>
+        <Button loading={loading}>Add</Button>
       </form>
       {error && <p className={styles.error}>{error}</p>}
     </Dismissible>

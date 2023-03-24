@@ -11,18 +11,25 @@ export default function FormAddProvider(props) {
 
   let [providerID, setProviderID] = React.useState('');
   let [providerName, setProviderName] = React.useState('');
+
+  let [loading, setLoading] = React.useState(false);
   let [error, setError] = React.useState('');
 
   async function onSubmit(e) {
     e.preventDefault();
 
     try {
+      setLoading(true);
+      
       await addProvider(providerID, providerName);
+
+      await props.updateState();
+      props.onOutsideClick();
     } catch (e) {
       setError(e.toString());
+    } finally {
+      setLoading(false);
     }
-
-    props.updateState();
   }
 
   return (<Dismissible className={styles.body} onOutsideClick={props.onOutsideClick}>
@@ -46,7 +53,7 @@ export default function FormAddProvider(props) {
         placeholder="a friendly name"
       />
       <br />
-      <Button disabled={!(providerID && providerName)}>Add</Button>
+      <Button disabled={!(providerID && providerName)} loading={loading}>Add</Button>
     </form>
     {error && <p className={styles.error}>{error}</p>}
   </Dismissible>)

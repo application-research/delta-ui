@@ -5,7 +5,7 @@ import styles from './LoadingIndicator.module.scss'
 export default function LoadingIndicator(props) {
   return (
     <div className={styles.container}>
-      <p>Loading...</p>
+      {props.text && <p>{props.text}</p>}
       <div className={styles.loadingIndicator}></div>
     </div>
   );

@@ -1,9 +1,10 @@
 .container {
-  width: max-content;
-  margin: 32px auto;
+  width: 4rem;
+  margin: auto;
 }
 
 .loadingIndicator {
+  display: block;
   width: 100%;
   height: 8px;
   border-radius: 4px;
