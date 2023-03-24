@@ -22,7 +22,7 @@ export default function FormNewDataset(props) {
   async function onSubmit(e) {
     e.preventDefault();
 
-    
+
     try {
       setLoading(true);
 
@@ -51,7 +51,7 @@ export default function FormNewDataset(props) {
     const a = 'æøåàáäâèéëêìíïîòóöôùúüûñçßÿœæŕśńṕẃǵǹḿǘẍźḧ·/_,:;';
     const b = 'aoaaaaaeeeeiiiioooouuuuncsyoarsnpwgnmuxzh------';
     const p = new RegExp(a.split('').join('|'), 'g');
-  
+
     return text
       .toString()
       .toLowerCase()
@@ -67,17 +67,24 @@ export default function FormNewDataset(props) {
     <Dismissible className={styles.body} onOutsideClick={props.onOutsideClick}>
       <form onSubmit={onSubmit}>
         <h2 className={styles.heading}>New dataset</h2>
-        <Input label="Dataset Name" id="dataset-name" value={name} placeholder="a friendly name" required autoFocus onChange={e => setName(normalizeName(e.target.value))} />
-        <br />
-        <Input type="number" label="Replication Count" value={replications} id="dataset-replications" required onChange={e => setReplications(e.target.value)} />
-        <br />
-        <Input type="number" label="Deal Duration (Days)" value={duration} onChange={e => setDuration(e.target.value)} />
-        <br />
-        <Input type="checkbox" label="Publish to indexer?" checked={indexed} id="dataset-indexed" onChange={e => setIndexed(e.target.checked)} />
-        <br />
-        <Input type="checkbox" label="Keep unsealed copy?" checked={unsealed} id="dataset-unsealed" onChange={e => setUnsealed(e.target.checked)} />
-        <br />
-        <Button disabled={!isFormValid()} loading={loading}>Create</Button>
+        <div className={styles.formRow}>
+          <Input label="Dataset Name" id="dataset-name" value={name} placeholder="a friendly name" required autoFocus onChange={e => setName(normalizeName(e.target.value))} />
+        </div>
+        <div className={styles.formRow}>
+          <Input type="number" label="Replication Count" value={replications} id="dataset-replications" required onChange={e => setReplications(e.target.value)} />
+        </div>
+        <div className={styles.formRow}>
+          <Input type="number" label="Deal Duration (Days)" value={duration} onChange={e => setDuration(e.target.value)} />
+        </div>
+        <div className={styles.formRow}>
+          <Input type="checkbox" label="Publish to indexer?" checked={indexed} id="dataset-indexed" onChange={e => setIndexed(e.target.checked)} />
+        </div>
+        <div className={styles.formRow}>
+          <Input type="checkbox" label="Keep unsealed copy?" checked={unsealed} id="dataset-unsealed" onChange={e => setUnsealed(e.target.checked)} />
+        </div>
+        <div className={styles.formRow}>
+          <Button disabled={!isFormValid()} loading={loading}>Create</Button>
+        </div>
       </form>
       {error && <p className={styles.error}>{error}</p>}
     </Dismissible>

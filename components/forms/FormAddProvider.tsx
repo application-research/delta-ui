@@ -20,7 +20,7 @@ export default function FormAddProvider(props) {
 
     try {
       setLoading(true);
-      
+
       await addProvider(providerID, providerName);
 
       await props.updateState();
@@ -35,25 +35,29 @@ export default function FormAddProvider(props) {
   return (<Dismissible className={styles.body} onOutsideClick={props.onOutsideClick}>
     <h2 className={styles.heading}>Add provider</h2>
     <form onSubmit={onSubmit}>
-      <Input
-        label="Provider ID"
-        id="provider-id"
-        onChange={e => setProviderID(e.target.value)}
-        autoFocus
-        autoComplete='new-password'
-        placeholder='example: f012345'
-        spellCheck='false'
-      />
-      <br />
-      <Input
-        type="text"
-        id="provider-name"
-        label="Provider Name"
-        onChange={e => setProviderName(e.target.value)}
-        placeholder="a friendly name"
-      />
-      <br />
-      <Button disabled={!(providerID && providerName)} loading={loading}>Add</Button>
+      <div className={styles.formRow}>
+        <Input
+          label="Provider ID"
+          id="provider-id"
+          onChange={e => setProviderID(e.target.value)}
+          autoFocus
+          autoComplete='new-password'
+          placeholder='example: f012345'
+          spellCheck='false'
+        />
+      </div>
+      <div className={styles.formRow}>
+        <Input
+          type="text"
+          id="provider-name"
+          label="Provider Name"
+          onChange={e => setProviderName(e.target.value)}
+          placeholder="a friendly name"
+        />
+      </div>
+      <div className={styles.formRow}>
+        <Button disabled={!(providerID && providerName)} loading={loading}>Add</Button>
+      </div>
     </form>
     {error && <p className={styles.error}>{error}</p>}
   </Dismissible>)
