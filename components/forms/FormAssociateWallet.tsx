@@ -10,16 +10,22 @@ import Dismissible from '@components/Dismissible';
 import DatasetSelect from '@components/DatasetSelect';
 
 export default function FormAssociateWallet(props) {
-  const [error, setError] = React.useState('');
   const [datasetName, setDatasetName] = React.useState('');
+
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState('');
 
   async function onSubmit(e) {
     e.preventDefault();
 
     try {
+      setLoading(true);
+      
       await associateWallet(props.selectedWallet, datasetName);
     } catch (e) {
       setError(e.toString());
+    } finally {
+      setLoading(false);
     }
 
     props.updateState();
@@ -35,7 +41,7 @@ export default function FormAssociateWallet(props) {
       <p className={styles.paragraph}>{props.selectedWallet}</p>
       <form onSubmit={onSubmit}>
         <DatasetSelect id='dataset-name' label='Dataset Name' value={datasetName} onChange={e => setDatasetName(e.target.value)} datasets={props.state.datasets} required autoFocus />
-        <Button disabled={!isFormValid()}>Apply</Button>
+        <Button disabled={!isFormValid()} loading={loading}>Apply</Button>
       </form>
       {error && <div className={styles.error}>{error}</div>}
     </Dismissible>
