@@ -18,7 +18,7 @@ export default function SceneAuth(props) {
     e.preventDefault();
 
     try {
-      if (!await checkAuth(tmpAuthToken)) {
+      if (!await checkAuth(tmpAuthToken, tmpDDMAddress)) {
         alert('Unauthorized token');
         return;
       }

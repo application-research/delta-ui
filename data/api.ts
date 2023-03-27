@@ -1,6 +1,6 @@
 import { getCookie } from '@root/modules/cookies';
 
-const apiURL = (process.env.ddmAddress || process.env.NEXT_PUBLIC_API_URL)?.replace(/\/$/, '') || "http://localhost:1314";
+const apiURL = (getCookie('ddm-address') || process.env.NEXT_PUBLIC_API_URL)?.replace(/\/$/, '') || "http://localhost:1314";
 
 function defaultHeaders() {
   return {
@@ -22,12 +22,12 @@ export function checkAuthFormat(auth?: string): boolean {
 
 // Checks auth key validity with delta-dm. Optionally accepts an auth key
 // parameter - if not provided, the auth cookie will be used.
-export async function checkAuth(auth?: string): Promise<boolean> {
+export async function checkAuth(auth?: string, ddmAddress?: string): Promise<boolean> {
   if (auth === undefined) {
     auth = getCookie('auth');
   }
 
-  const res = await fetch(apiURL + '/api/v1/health', {
+  const res = await fetch((ddmAddress || apiURL) + '/api/v1/health', {
     headers: {
       ...defaultHeaders(),
       'Authorization': 'Bearer ' + auth,
