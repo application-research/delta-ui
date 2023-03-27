@@ -3,38 +3,54 @@
 import styles from './FormUploadData.module.scss';
 
 import * as React from 'react';
+import { addContents } from '@root/data/api';
 
 import Button from '@components/Button';
 import Dismissible from '@components/Dismissible';
 import Input from '@components/Input';
-import { addContents } from '@root/data/api';
+import FileUpload from '@components/FileUpload';
 
 export default function FormUploadData(props) {
   const [datasetName, setDatasetName] = React.useState('');
-  const [file, setFile] = React.useState('');
+  const [file, setFile] = React.useState(null);
+
+  const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState('');
-
-  function onPaste(e) {
-    e.preventDefault();
-
-    let pasteValue = (e.clipboardData).getData("text");
-    setFile(pasteValue);
-  };
 
   async function onUpload(e) {
     e.preventDefault();
 
+    setLoading(true);
+
+    const readFileContents = (file) => {
+      return new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          resolve(event.target.result as string);
+        };
+        reader.onerror = (error) => {
+          reject(error);
+        };
+        reader.readAsText(file);
+      });
+    };
+
     try {
-      await addContents(props.selectedDataset, file);
+      const fileContents = await readFileContents(file);
+
+      JSON.parse(fileContents);
+
+      await addContents(props.selectedDataset, fileContents);
+      await props.updateState();
     } catch (e) {
       setError(e.toString());
+    } finally {
+      setLoading(false);
     }
-    
-    props.updateState();
   }
 
   function isFormValid() {
-    return file && datasetName;
+    return datasetName && file;
   }
 
   return (
@@ -42,14 +58,15 @@ export default function FormUploadData(props) {
       <h2 className={styles.heading}>Attach data for {props.selectedDataset}</h2>
       <p className={styles.paragraph}>Upload a <em>.json</em> dataset file describing contents to upload to the Filecoin network.</p>
       <form onSubmit={onUpload}>
-        <Input id='dataset-name' label='Dataset Name' value={datasetName} required onChange={e => setDatasetName(e.target.value)} autoFocus />
-        <br />
-        <label htmlFor="dataset-file" className={`${styles.upload} ${file ? styles.uploadReady : ""}`} onPaste={onPaste}>
-          <input type="text" id="dataset-file" onClick={e => e.preventDefault()} />
-          {file ? "✓ Ready" : "Paste Content File Here"}
-        </label>
-        <br />
-        <Button disabled={!isFormValid()}>Upload</Button>
+        <div className={styles.formRow}>
+          <Input id='dataset-name' label='Dataset Name' value={datasetName} required onChange={e => setDatasetName(e.target.value)} autoFocus />
+        </div>
+        <div className={styles.formRow}>
+          <FileUpload label='Content JSON' onUpload={file => setFile(file)} />
+        </div>
+        <div className={styles.formRow}>
+          <Button disabled={!isFormValid()} loading={loading}>Upload</Button>
+        </div>
       </form>
       {error && <p className={styles.error}>{error}</p>}
     </Dismissible>
