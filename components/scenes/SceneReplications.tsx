@@ -53,7 +53,7 @@ export default function SceneReplications(props) {
           }
         </div>
       }
-      {props.state.replications === undefined && <LoadingIndicator />}
+      {props.state.replications === undefined && <LoadingIndicator padded />}
     </div>
   );
 }

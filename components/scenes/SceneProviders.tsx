@@ -37,7 +37,7 @@ export default function SceneProviders(props) {
           }
         </div>
       }
-      {props.state.providers === undefined && <LoadingIndicator />}
+      {props.state.providers === undefined && <LoadingIndicator padded />}
     </div>
   );
 }

@@ -41,7 +41,7 @@ export default function SceneWallets(props) {
           })}
         </div>
       }
-      {props.state.wallets === undefined && <LoadingIndicator />}
+      {props.state.wallets === undefined && <LoadingIndicator padded />}
     </div >
   )
 }

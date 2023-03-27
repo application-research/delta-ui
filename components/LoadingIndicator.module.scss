@@ -1,6 +1,13 @@
 .container {
   width: 4rem;
+  box-sizing: content-box;
   margin: auto;
+}
+
+.containerPadded {
+  @extend .container;
+
+  padding: 2rem;
 }
 
 .loadingIndicator {

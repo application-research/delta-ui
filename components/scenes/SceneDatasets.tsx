@@ -54,6 +54,6 @@ export default function SceneDatasets(props) {
         }
       </div>
     }
-    {props.state.datasets === undefined && <LoadingIndicator />}
+    {props.state.datasets === undefined && <LoadingIndicator padded />}
   </div>);
 }
