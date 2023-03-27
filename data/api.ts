@@ -21,18 +21,34 @@ export function checkAuthFormat(auth?: string): boolean {
 }
 
 // Checks auth key validity with delta-dm. Optionally accepts an auth key
-// parameter - if not provided, the auth cookie will be used.
+// parameter - if not provided, cached cookie values will be used.
+//
+// This function times out after 5 seconds.
 export async function checkAuth(auth?: string, ddmAddress?: string): Promise<boolean> {
   if (auth === undefined) {
     auth = getCookie('auth');
   }
 
-  const res = await fetch((ddmAddress || apiURL) + '/api/v1/health', {
-    headers: {
-      ...defaultHeaders(),
-      'Authorization': 'Bearer ' + auth,
+  let res;
+  const abortController = new AbortController();
+  const timeoutID = setTimeout(() => abortController.abort(), 5000);
+  try {
+    res = await fetch((ddmAddress || apiURL) + '/api/v1/health', {
+      headers: {
+        ...defaultHeaders(),
+        'Authorization': 'Bearer ' + auth,
+      },
+      signal: abortController.signal,
+    });
+  } catch (e) {
+    if (e.name === 'AbortError') {
+      throw new Error('Timed out');
+    } else {
+      throw e;
     }
-  });
+  } finally {
+    clearTimeout(timeoutID);
+  }
 
   if (res.status === 401) {
     return false;
@@ -61,6 +77,11 @@ export async function getDatasets() {
   const res = await fetch(apiURL + '/api/v1/datasets', {
     headers: defaultHeaders()
   });
+
+  if (!res.ok) {
+    throw new Error(await res.text());
+  }
+  
   return await res.json();
 }
 
