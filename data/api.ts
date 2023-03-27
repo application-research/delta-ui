@@ -1,6 +1,8 @@
 import { getCookie } from '@root/modules/cookies';
 
-const apiURL = (getCookie('ddm-address') || process.env.NEXT_PUBLIC_API_URL)?.replace(/\/$/, '') || "http://localhost:1314";
+function apiURL() {
+  return (getCookie('ddm-address') || process.env.NEXT_PUBLIC_API_URL)?.replace(/\/$/, '') || "http://localhost:1314";
+}
 
 function defaultHeaders() {
   return {
@@ -33,7 +35,7 @@ export async function checkAuth(auth?: string, ddmAddress?: string): Promise<boo
   const abortController = new AbortController();
   const timeoutID = setTimeout(() => abortController.abort(), 5000);
   try {
-    res = await fetch((ddmAddress || apiURL) + '/api/v1/health', {
+    res = await fetch((ddmAddress || apiURL()) + '/api/v1/health', {
       headers: {
         ...defaultHeaders(),
         'Authorization': 'Bearer ' + auth,
@@ -62,7 +64,7 @@ export async function checkAuth(auth?: string, ddmAddress?: string): Promise<boo
 }
 
 export async function getHealth() {
-  const res = await fetch(apiURL + '/api/v1/health', {
+  const res = await fetch(apiURL() + '/api/v1/health', {
     headers: defaultHeaders(),
   });
 
@@ -74,7 +76,7 @@ export async function getHealth() {
 }
 
 export async function getDatasets() {
-  const res = await fetch(apiURL + '/api/v1/datasets', {
+  const res = await fetch(apiURL() + '/api/v1/datasets', {
     headers: defaultHeaders()
   });
 
@@ -92,7 +94,7 @@ export async function addDataset(
   unsealed: boolean,
   indexed: boolean,
 ) {
-  const res = await fetch(apiURL + '/api/v1/datasets', {
+  const res = await fetch(apiURL() + '/api/v1/datasets', {
     method: 'post',
     headers: defaultHeaders(),
     body: JSON.stringify({
@@ -115,7 +117,7 @@ export async function addContents(
   datasetName: string,
   body: string,
 ) {
-  const res = await fetch(apiURL + '/api/v1/datasets/content/' + datasetName, {
+  const res = await fetch(apiURL() + '/api/v1/datasets/content/' + datasetName, {
     method: 'post',
     headers: defaultHeaders(),
     body: body
@@ -129,7 +131,7 @@ export async function addContents(
 }
 
 export async function getProviders() {
-  const res = await fetch(apiURL + '/api/v1/providers', {
+  const res = await fetch(apiURL() + '/api/v1/providers', {
     headers: defaultHeaders()
   });
 
@@ -141,7 +143,7 @@ export async function getProviders() {
 }
 
 export async function addProvider(id: string, name: string) {
-  const res = await fetch(apiURL + '/api/v1/providers', {
+  const res = await fetch(apiURL() + '/api/v1/providers', {
     method: 'post',
     headers: defaultHeaders(),
     body: JSON.stringify({
@@ -158,7 +160,7 @@ export async function addProvider(id: string, name: string) {
 }
 
 export async function updateProvider(id: string, name: string, allowSelfService: boolean) {
-  const res = await fetch(apiURL + '/api/v1/providers/' + id, {
+  const res = await fetch(apiURL() + '/api/v1/providers/' + id, {
     method: 'put',
     headers: defaultHeaders(),
     body: JSON.stringify({
@@ -175,7 +177,7 @@ export async function updateProvider(id: string, name: string, allowSelfService:
 }
 
 export async function getReplications() {
-  const res = await fetch(apiURL + '/api/v1/replication', {
+  const res = await fetch(apiURL() + '/api/v1/replication', {
     headers: defaultHeaders()
   });
 
@@ -191,7 +193,7 @@ export async function addReplication(
   datasetName: string,
   numDeals: number,
 ) {
-  const res = await fetch(apiURL + '/api/v1/replication', {
+  const res = await fetch(apiURL() + '/api/v1/replication', {
     method: 'post',
     headers: defaultHeaders(),
     body: JSON.stringify({
@@ -209,7 +211,7 @@ export async function addReplication(
 }
 
 export async function getWallets() {
-  const res = await fetch(apiURL + '/api/v1/wallets', {
+  const res = await fetch(apiURL() + '/api/v1/wallets', {
     headers: defaultHeaders(),
   });
 
@@ -221,7 +223,7 @@ export async function getWallets() {
 }
 
 export async function associateWallet(address: string, datasetName: string) {
-  const res = await fetch(apiURL + '/api/v1/wallets/associate', {
+  const res = await fetch(apiURL() + '/api/v1/wallets/associate', {
     method: 'post',
     headers: defaultHeaders(),
     body: JSON.stringify({
