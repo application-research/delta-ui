@@ -1,0 +1,19 @@
+@import '@components/Table.module.scss';
+
+.row:hover {
+  background: var(--color-primary);
+
+  * {
+    color: var(--color-text) !important;
+  }
+}
+
+.directory {
+  color: var(--color-primary);
+  text-decoration: underline;
+  width: max-content;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
