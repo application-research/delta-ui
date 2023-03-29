@@ -11,7 +11,11 @@ import Input from '@components/Input';
 import FileUpload from '@components/FileUpload';
 import DatasetSelect from '@components/DatasetSelect';
 
-export default function FormUploadData(props) {
+export default function FormUploadData(props: {
+  selectedDataset: string,
+  onOutsideClick: React.MouseEventHandler,
+  updateState: () => void,
+}) {
   const [datasetName, setDatasetName] = React.useState(props.selectedDataset || '');
   const [file, setFile] = React.useState(null);
 

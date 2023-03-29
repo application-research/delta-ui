@@ -182,7 +182,6 @@ export default function Application(props) {
           onOutsideClick={dismissTooltip}
           updateState={updateState}
           selectedDataset={selectedDataset}
-          state={state}
         />
       )}
       {appTooltipState === tooltipStates.addReplication && (

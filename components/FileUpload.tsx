@@ -7,6 +7,7 @@ export default function FileUpload(props) {
   let id = (props.id ? props.id + '-' : '') + createSlug(props.label);
   
   const [file, setFile] = React.useState(null);
+  const [dragOver, setDragOver] = React.useState(false);
   const fileInputRef = React.useRef<HTMLInputElement>();
 
   const handleFileChange = (e) => {
@@ -25,7 +26,13 @@ export default function FileUpload(props) {
 
   const handleDragOver = (e) => {
     e.preventDefault();
+    setDragOver(true);
   };
+
+  const handleDragLeave = e => {
+    e.preventDefault();
+    setDragOver(false);
+  }
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -34,12 +41,11 @@ export default function FileUpload(props) {
       setFile(tmpFile);
       props.onUpload(tmpFile);
     }
-
-    props.onUpload(file);
+    setDragOver(false);
   };
 
   return (
-    <div className={styles.fileUpload} onPaste={handlePaste} onDragOver={handleDragOver} onDrop={handleDrop}>
+    <div className={styles.fileUpload} onPaste={handlePaste} onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}>
       <label className={styles.label} htmlFor={id}>{props.label}</label>
       <input
         id={id}
@@ -48,7 +54,7 @@ export default function FileUpload(props) {
         onChange={handleFileChange}
         style={{ display: 'none' }}
       />
-      <button className={styles.fileUploadButton} type="button" onClick={() => fileInputRef.current?.click()}>
+      <button className={`${styles.fileUploadButton} ${dragOver && styles.fileUploadButtonHover}`} type="button" onClick={() => fileInputRef.current?.click()}>
         { file ? file.name : 'Select or Drop File' }
       </button>
     </div>

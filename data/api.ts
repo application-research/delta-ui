@@ -177,7 +177,7 @@ export async function updateProvider(id: string, name: string, allowSelfService:
 }
 
 export async function getReplications() {
-  const res = await fetch(apiURL() + '/api/v1/replication', {
+  const res = await fetch(apiURL() + '/api/v1/replications', {
     headers: defaultHeaders()
   });
 
@@ -193,7 +193,7 @@ export async function addReplication(
   datasetName: string,
   numDeals: number,
 ) {
-  const res = await fetch(apiURL() + '/api/v1/replication', {
+  const res = await fetch(apiURL() + '/api/v1/replications', {
     method: 'post',
     headers: defaultHeaders(),
     body: JSON.stringify({

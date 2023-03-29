@@ -12,14 +12,19 @@
   height: 100%;
   padding: 1rem;
 
-  &:focus, &:hover {
+  &:focus {
+    @extend .fileUploadButtonHover;
     outline: none;
-    border-color: var(--color-text);
   }
 
   &:hover {
+    @extend .fileUploadButtonHover;
     cursor: pointer;
   }
+}
+
+.fileUploadButtonHover {
+  border-color: var(--color-text);
 }
 
 .label {
