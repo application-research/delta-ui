@@ -9,9 +9,10 @@ import Button from '@components/Button';
 import Dismissible from '@components/Dismissible';
 import Input from '@components/Input';
 import FileUpload from '@components/FileUpload';
+import DatasetSelect from '@components/DatasetSelect';
 
 export default function FormUploadData(props) {
-  const [datasetName, setDatasetName] = React.useState('');
+  const [datasetName, setDatasetName] = React.useState(props.selectedDataset || '');
   const [file, setFile] = React.useState(null);
 
   const [loading, setLoading] = React.useState(false);
@@ -58,9 +59,9 @@ export default function FormUploadData(props) {
       <h2 className={styles.heading}>Attach data for {props.selectedDataset}</h2>
       <p className={styles.paragraph}>Upload a <em>.json</em> dataset file describing contents to upload to the Filecoin network.</p>
       <form onSubmit={onUpload}>
-        <div className={styles.formRow}>
-          <Input id='dataset-name' label='Dataset Name' value={datasetName} required onChange={e => setDatasetName(e.target.value)} autoFocus />
-        </div>
+        {/* <div className={styles.formRow}>
+          <DatasetSelect label='Dataset Name' datasets={props.state?.datasets} autoFocus onChange={e => setDatasetName(e.target.value)} />
+        </div> */}
         <div className={styles.formRow}>
           <FileUpload label='Content JSON' onUpload={file => setFile(file)} />
         </div>
