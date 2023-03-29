@@ -165,7 +165,7 @@ export async function updateProvider(id: string, name: string, allowSelfService:
     headers: defaultHeaders(),
     body: JSON.stringify({
       'actor_name': name,
-      'allow_self_service': allowSelfService,
+      'allow_self_service': allowSelfService ? 'on' : 'off',
     })
   });
 
