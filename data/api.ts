@@ -117,7 +117,7 @@ export async function addContents(
   datasetName: string,
   body: string,
 ) {
-  const res = await fetch(apiURL() + '/api/v1/datasets/content/' + datasetName, {
+  const res = await fetch(apiURL() + '/api/v1/contents/' + datasetName, {
     method: 'post',
     headers: defaultHeaders(),
     body: body
