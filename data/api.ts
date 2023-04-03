@@ -192,6 +192,7 @@ export async function addReplication(
   providerID: string,
   datasetName: string,
   numDeals: number,
+  delayStartDays: number,
 ) {
   const res = await fetch(apiURL() + '/api/v1/replications', {
     method: 'post',
@@ -200,6 +201,7 @@ export async function addReplication(
       'provider': providerID,
       'dataset': datasetName,
       'num_deals': Number(numDeals),
+      'delay_start_days': Number(delayStartDays),
     }),
   });
 
