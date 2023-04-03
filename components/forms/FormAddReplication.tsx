@@ -15,6 +15,7 @@ export default function FormAddReplication(props) {
   const [providerID, setProviderID] = React.useState('');
   const [datasetName, setDatasetName] = React.useState('');
   const [numDeals, setNumDeals] = React.useState(1);
+  const [delayStartDays, setDelayStartDays] = React.useState(3);
 
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState('');
@@ -26,7 +27,7 @@ export default function FormAddReplication(props) {
     try {
       setLoading(true);
 
-      await addReplication(providerID, datasetName, numDeals);
+      await addReplication(providerID, datasetName, numDeals, delayStartDays);
 
       await props.updateState();
       props.onOutsideClick();
@@ -49,6 +50,9 @@ export default function FormAddReplication(props) {
         </div>
         <div className={styles.formRow}>
           <Input type='number' label='Number of Deals' value={numDeals} onChange={e => setNumDeals(e.target.value)} required />
+        </div>
+        <div className={styles.formRow}>
+          <Input type='number' label='Delay Start (Days)' value={delayStartDays} onChagne={e => setDelayStartDays(e.target.value)} required />
         </div>
         <div className={styles.formRow}>
           <Button loading={loading}>Add</Button>
