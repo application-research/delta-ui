@@ -22,6 +22,7 @@ import FormAddProvider from '@components/forms/FormAddProvider';
 import FormAddReplication from '@components/forms/FormAddReplication';
 import FormNewDataset from '@components/forms/FormNewDataset';
 import FormAssociateWallet from '@components/forms/FormAssociateWallet';
+import { readFileSync } from 'fs';
 
 
 export default function Application(props) {
@@ -39,6 +40,7 @@ export default function Application(props) {
     wallets: undefined 
   });
   const [health, setHealth] = React.useState(undefined);
+  const [commitHash, setCommitHash] = React.useState(undefined);
   const [appTooltipState, setAppTooltipState] = React.useState(0);
   const [authToken, setAuthTokenEphemeral] = React.useState('');
   const setAuthToken = authToken => {
@@ -62,6 +64,10 @@ export default function Application(props) {
     setHealth(await getHealth());
   }
 
+  async function updateCommitHash() {
+    setCommitHash((await (await fetch('/api')).json()).commit_hash)
+  }
+
   function dismissTooltip() {
     setAppTooltipState(0);
   }
@@ -78,13 +84,14 @@ export default function Application(props) {
         setAuthTokenEphemeral('');
         return;
       }
-    })()
+    })();
   }, []);
 
   React.useEffect(() => {
     if (authToken) {
       updateState();
       updateHealth();
+      updateCommitHash();
     }
   }, [authToken]);
 
@@ -102,7 +109,15 @@ export default function Application(props) {
     <DefaultLayout
       appTitle={'Delta DM'}
       appVersion={
-        `UUID: ${health?.uuid || 'not set'} | DDM Version: ${health?.ddm_info.version} (${health?.ddm_info.commit}) | Delta Version: ${health?.delta_info.version} (${health?.delta_info.commit})`
+        `
+          UUID: ${health?.uuid || 'not set'} 
+          | 
+          DDM Version: ${health?.ddm_info.version} (${health?.ddm_info.commit}) 
+          | 
+          Delta Version: ${health?.delta_info.version} (${health?.delta_info.commit})
+          |
+          UI Version: ${PackageJSON.version} (${commitHash})
+        `
       }
       appNavigationState={appNavigationState}
       appTooltipState={appTooltipState}
