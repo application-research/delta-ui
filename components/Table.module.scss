@@ -70,6 +70,11 @@
   border-left: 1px solid var(--color-border);
   text-align: center;
   align-items: center;
+
+  &:disabled {
+    color: var(--color-border);
+    cursor: not-allowed;
+  }
 }
 
 .progress {
