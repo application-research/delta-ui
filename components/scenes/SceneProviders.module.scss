@@ -62,3 +62,17 @@
   font-size: 0.8em;
   color: #7f7f7f;
 }
+
+.copy {
+  color: var(--color-primary);
+  text-decoration: underline;
+  padding-left: 1rem;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &::after {
+    content: " 📋";
+  }
+}
