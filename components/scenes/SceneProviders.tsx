@@ -92,8 +92,8 @@ function ProviderCard(props) {
       <span className={styles.columnFlags}>
         <Input type='checkbox' label='Allow self service' checked={allowSelfService} onChange={e => setAllowSelfService(e.target.checked)} />
       </span>
-      <span className={styles.columnProviderKey}><div className={styles.secret}>{provider.key}</div><div className={styles.copy}>copy</div></span>
-      <span className={styles.columnButtonCancel} onClick={e => cancelEdit()}>Cancel Edit</span>
+      <span className={styles.columnProviderKey}><ProviderKey providerKey={provider.key} /></span>
+      <Button className={styles.columnButtonCancel} onClick={e => cancelEdit()} disabled={saving}>Cancel Edit</Button>
       <Button className={styles.columnButtonSave} onClick={e => submitEdit()} loading={saving}>
         <span>Save <span style={{ textTransform: 'lowercase' }}>{provider.actor_id}</span></span>
       </Button>
@@ -116,9 +116,9 @@ function ProviderCard(props) {
         <Input type='checkbox' label='Allow self service' checked={provider.allow_self_service} disabled />
       </span>
       <span className={styles.columnProviderKey}><ProviderKey providerKey={provider.key} /></span>
-      <span className={styles.columnButtonManage} onClick={e => setEditing(true)}>
+      <Button className={styles.columnButtonManage} onClick={e => setEditing(true)}>
         <span>Manage <span style={{ textTransform: 'lowercase' }}>{provider.actor_id}</span></span>
-      </span>
+      </Button>
     </div>
   );
 }
