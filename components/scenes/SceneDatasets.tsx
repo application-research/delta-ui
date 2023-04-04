@@ -18,6 +18,7 @@ export default function SceneDatasets(props) {
         <div className={tableStyles.header}>
           <span className={tableStyles.column}>Name</span>
           <span className={tableStyles.column}>Size</span>
+          <span className={tableStyles.column}>Deals Made</span>
           <span className={tableStyles.column}>Replication Quota</span>
           <span className={tableStyles.column}>Duration</span>
           <span className={tableStyles.column}>Unsealed</span>
@@ -34,6 +35,7 @@ export default function SceneDatasets(props) {
                 <div className={tableStyles.row}>
                   <span className={tableStyles.column}>{dataset.name}</span>
                   <span className={tableStyles.column}>{Utilities.bytesToSize(dataset.bytes_total.raw)}</span>
+                  <span className={tableStyles.column}>{dataset.count_replicated}</span>
                   <span className={tableStyles.column}>{dataset.replication_quota}</span>
                   <span className={tableStyles.column}>{dataset.deal_duration} days</span>
                   <span className={tableStyles.column}>{dataset.unsealed ? "true" : "false"}</span>
