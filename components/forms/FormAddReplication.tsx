@@ -49,10 +49,16 @@ export default function FormAddReplication(props) {
           <DatasetSelect id='dataset-name' label='Dataset' default='any' datasets={props.datasets} onChange={e => setDatasetName(e.target.value)} />
         </div>
         <div className={styles.formRow}>
-          <Input type='number' label='Number of Deals' value={numDeals} onChange={e => setNumDeals(e.target.value)} required />
+          <Input
+            type='number'
+            label='Number of Deals'
+            value={numDeals}
+            onChange={e => setNumDeals(e.target.value)}
+            required
+          />
         </div>
         <div className={styles.formRow}>
-          <Input type='number' label='Delay Start (Days)' value={delayStartDays} onChagne={e => setDelayStartDays(e.target.value)} required />
+          <Input type='number' label='Delay Start (Days)' value={delayStartDays} onChange={e => setDelayStartDays(e.target.value)} required />
         </div>
         <div className={styles.formRow}>
           <Button loading={loading}>Add</Button>
