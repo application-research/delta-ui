@@ -20,10 +20,10 @@ export default function SceneProviders(props) {
         <div className={tableStyles.body}>
           <div className={tableStyles.header}>
             <span className={styles.columnProviderInfo}>Provider Info</span>
-            <span className={styles.columnBytesReplicated}>Bytes Replicated (Padded)</span>
-            <span className={styles.columnBytesReplicated}>Bytes Replicated (Raw)</span>
+            <span className={styles.columnBytesReplicated}>Bytes Replicated</span>
             <span className={styles.columnFlags}>Flags</span>
             <span className={styles.columnProviderKey}>Provider Key</span>
+            <span className={styles.columnAllowedDatasets}>Allowed Datasets</span>
           </div>
           {props.state.providers
             .filter(
@@ -84,15 +84,14 @@ function ProviderCard(props) {
         />
       </span>
       <span className={styles.columnBytesReplicated}>
-        <div>{Utilities.bytesToSize(provider.bytes_replicated.padded)}</div>
-      </span>
-      <span className={styles.columnBytesReplicated}>
-        <div>{Utilities.bytesToSize(provider.bytes_replicated.raw)}</div>
+        <div>{Utilities.bytesToSize(provider.bytes_replicated.padded)} (padded)</div>
+        <div>{Utilities.bytesToSize(provider.bytes_replicated.raw)} (unpadded)</div>
       </span>
       <span className={styles.columnFlags}>
         <Input type='checkbox' label='Allow self service' checked={allowSelfService} onChange={e => setAllowSelfService(e.target.checked)} />
       </span>
       <span className={styles.columnProviderKey}><ProviderKey providerKey={provider.key} /></span>
+      <span className={styles.columnAllowedDatasets}></span>
       <Button className={styles.columnButtonCancel} onClick={e => cancelEdit()} disabled={saving}>Cancel Edit</Button>
       <Button className={styles.columnButtonSave} onClick={e => submitEdit()} loading={saving}>
         <span>Save <span style={{ textTransform: 'lowercase' }}>{provider.actor_id}</span></span>
@@ -107,15 +106,14 @@ function ProviderCard(props) {
         <ProviderRef providerID={provider.actor_id} />
       </span>
       <span className={styles.columnBytesReplicated}>
-        <div>{Utilities.bytesToSize(provider.bytes_replicated.padded)}</div>
-      </span>
-      <span className={styles.columnBytesReplicated}>
-        <div>{Utilities.bytesToSize(provider.bytes_replicated.raw)}</div>
+        <div>{Utilities.bytesToSize(provider.bytes_replicated.padded)} (padded)</div>
+        <div>{Utilities.bytesToSize(provider.bytes_replicated.raw)} (unpadded)</div>
       </span>
       <span className={styles.columnFlags}>
         <Input type='checkbox' label='Allow self service' checked={provider.allow_self_service} disabled />
       </span>
       <span className={styles.columnProviderKey}><ProviderKey providerKey={provider.key} /></span>
+      <span className={styles.columnAllowedDatasets}></span>
       <Button className={styles.columnButtonManage} onClick={e => setEditing(true)}>
         <span>Manage <span style={{ textTransform: 'lowercase' }}>{provider.actor_id}</span></span>
       </Button>
@@ -133,11 +131,11 @@ function ProviderKey(props) {
 
     setTimeout(() => setCopied(false), 3000);
   }
-  
+
   return (
     <span>
       <span className={styles.secret}>{props.providerKey}</span>
-      <span className={styles.copy} onClick={copy}>{copied ? 'copied ✓' : 'copy' }</span>
+      <span className={styles.copy} onClick={copy}>{copied ? 'copied ✓' : 'copy'}</span>
     </span>
   );
 }
