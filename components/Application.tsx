@@ -22,8 +22,6 @@ import FormAddProvider from '@components/forms/FormAddProvider';
 import FormAddReplication from '@components/forms/FormAddReplication';
 import FormNewDataset from '@components/forms/FormNewDataset';
 import FormAssociateWallet from '@components/forms/FormAssociateWallet';
-import { readFileSync } from 'fs';
-
 
 export default function Application(props) {
   const [appNavigationState, setAppNavigationState] = React.useState(1);
@@ -33,11 +31,11 @@ export default function Application(props) {
   const [selectedProvider, setSelectedProvider] = React.useState('');
   const [selectedDataset, setSelectedDataset] = React.useState('');
   const [selectedWallet, setSelectedWallet] = React.useState('');
-  const [state, setState] = React.useState({ 
-    datasets: undefined, 
-    providers: undefined, 
-    replications: undefined, 
-    wallets: undefined 
+  const [state, setState] = React.useState({
+    datasets: undefined,
+    providers: undefined,
+    replications: undefined,
+    wallets: undefined
   });
   const [health, setHealth] = React.useState(undefined);
   const [commitHash, setCommitHash] = React.useState(undefined);
@@ -81,17 +79,21 @@ export default function Application(props) {
           throw new Error();
         }
       } catch {
-        setAuthTokenEphemeral('');
+        // setAuthTokenEphemeral('');
         return;
       }
     })();
   }, []);
 
   React.useEffect(() => {
-    if (authToken) {
-      updateState();
-      updateHealth();
-      updateCommitHash();
+    try {
+      if (authToken) {
+        updateState();
+        updateHealth();
+        updateCommitHash();
+      }
+    } catch {
+
     }
   }, [authToken]);
 

@@ -1,0 +1,17 @@
+.message {
+  border: 1px solid var(--color-error);
+
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.8rem;
+}
+
+.infoMessage {
+  @extend .message;
+}
+
+.errorMessage {
+  @extend .message;
+
+  color: var(--color-error);
+}
