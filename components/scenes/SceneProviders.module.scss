@@ -37,7 +37,7 @@
 
 .columnProviderKey {
   @extend .column;
-  min-width: 25rem;
+  min-width: 26rem;
 }
 
 .columnAllowedDatasets {
@@ -75,9 +75,5 @@
 
   &:hover {
     cursor: pointer;
-  }
-
-  &::after {
-    content: "📋";
   }
 }

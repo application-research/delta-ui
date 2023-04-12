@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import * as Utilities from '@common/utilities';
+import { updateProvider } from '@root/data/api';
 
 import styles from './SceneProviders.module.scss';
 import tableStyles from '@components/Table.module.scss';
@@ -9,8 +10,8 @@ import tableStyles from '@components/Table.module.scss';
 import Input from '@components/Input';
 import LoadingIndicator from '@components/LoadingIndicator';
 import ProviderRef from '@components/ProviderRef';
-import { updateProvider } from '@root/data/api';
-import Button from '../Button';
+import Button from '@components/Button';
+import TagSelect from '@components/TagSelect';
 
 export default function SceneProviders(props) {
   return (
@@ -31,7 +32,7 @@ export default function SceneProviders(props) {
             )
             .map(
               (provider, i) => {
-                return <ProviderCard provider={provider} updateState={props.updateState} key={i} />
+                return <ProviderCard provider={provider} state={props.state} updateState={props.updateState} key={i} />
               }
             )
           }
@@ -49,10 +50,14 @@ function ProviderCard(props) {
   let [name, setName] = React.useState(provider.actor_name);
   let [allowSelfService, setAllowSelfService] = React.useState(provider.allow_self_service);
   let [saving, setSaving] = React.useState(false);
+  let [allowedDatasets, setAllowedDatasets] = React.useState(provider.allowed_datasets?.map((dataset, i) => dataset.name) || []);
+
+  let datasetNames = props.state.datasets?.map((dataset, i) => dataset.name) || [];
 
   function cancelEdit() {
     setAllowSelfService(provider.allow_self_service);
     setName(provider.actor_name);
+    setAllowedDatasets(provider.allowed_datasets?.map((dataset, i) => dataset.name) || []);
     setEditing(false);
   }
 
@@ -60,7 +65,7 @@ function ProviderCard(props) {
     setSaving(true);
 
     try {
-      await updateProvider(provider.actor_id, name, allowSelfService);
+      await updateProvider(provider.actor_id, name, allowSelfService, allowedDatasets);
     } catch (e) {
       alert('Saving provider failed: ' + e.toString());
       setSaving(false);
@@ -91,7 +96,13 @@ function ProviderCard(props) {
         <Input type='checkbox' label='Allow self service' checked={allowSelfService} onChange={e => setAllowSelfService(e.target.checked)} />
       </span>
       <span className={styles.columnProviderKey}><ProviderKey providerKey={provider.key} /></span>
-      <span className={styles.columnAllowedDatasets}></span>
+      <span className={styles.columnAllowedDatasets}>
+        <TagSelect
+          selected={allowedDatasets}
+          setSelected={setAllowedDatasets}
+          options={datasetNames}
+        />
+      </span>
       <Button className={styles.columnButtonCancel} onClick={e => cancelEdit()} disabled={saving}>Cancel Edit</Button>
       <Button className={styles.columnButtonSave} onClick={e => submitEdit()} loading={saving}>
         <span>Save <span style={{ textTransform: 'lowercase' }}>{provider.actor_id}</span></span>
@@ -113,7 +124,14 @@ function ProviderCard(props) {
         <Input type='checkbox' label='Allow self service' checked={provider.allow_self_service} disabled />
       </span>
       <span className={styles.columnProviderKey}><ProviderKey providerKey={provider.key} /></span>
-      <span className={styles.columnAllowedDatasets}></span>
+      <span className={styles.columnAllowedDatasets}>
+        <TagSelect
+          selected={allowedDatasets}
+          setSelected={setAllowedDatasets}
+          options={datasetNames}
+          disabled
+        />
+      </span>
       <Button className={styles.columnButtonManage} onClick={e => setEditing(true)}>
         <span>Manage <span style={{ textTransform: 'lowercase' }}>{provider.actor_id}</span></span>
       </Button>
@@ -135,7 +153,7 @@ function ProviderKey(props) {
   return (
     <span>
       <span className={styles.secret}>{props.providerKey}</span>
-      <span className={styles.copy} onClick={copy}>{copied ? 'copied ✓' : 'copy'}</span>
+      <span className={styles.copy} onClick={copy}>{copied ? 'copied ✓' : 'copy 📋'}</span>
     </span>
   );
 }

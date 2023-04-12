@@ -159,13 +159,14 @@ export async function addProvider(id: string, name: string) {
   return await res.json();
 }
 
-export async function updateProvider(id: string, name: string, allowSelfService: boolean) {
+export async function updateProvider(id: string, name: string, allowSelfService: boolean, allowedDatasets: string[]) {
   const res = await fetch(apiURL() + '/api/v1/providers/' + id, {
     method: 'put',
     headers: defaultHeaders(),
     body: JSON.stringify({
       'actor_name': name,
       'allow_self_service': allowSelfService ? 'on' : 'off',
+      'allowed_datasets': allowedDatasets
     })
   });
 

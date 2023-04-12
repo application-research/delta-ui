@@ -117,11 +117,17 @@ body {
   color: var(--color-text);
   font-family: 'Mono', -apple-system, BlinkMacSystemFont, helvetica neue, helvetica, sans-serif;
 
-  scrollbar-width: none;
+  scrollbar-width: 8px;
+  scrollbar-color: var(--color-primary);
   -ms-overflow-style: -ms-autohiding-scrollbar;
 
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+  }
+  
   ::-webkit-scrollbar {
-    display: none;
+    width: 8px;
+    background: var(--color-background);
   }
 }
 
