@@ -22,12 +22,12 @@
 
 .columnProviderInfo {
   @extend .column;
-  min-width: 18rem;
+  min-width: 12rem;
 }
 
 .columnBytesReplicated {
   @extend .column;
-  max-width: 12rem;
+  min-width: 14rem;
 }
 
 .columnFlags {
@@ -36,7 +36,12 @@
 }
 
 .columnProviderKey {
-  @extend .fluidColumn;
+  @extend .column;
+  min-width: 26rem;
+}
+
+.columnAllowedDatasets {
+  @extend .fluidColumn
 }
 
 .columnButtonManage {
@@ -70,9 +75,5 @@
 
   &:hover {
     cursor: pointer;
-  }
-
-  &::after {
-    content: " 📋";
   }
 }
