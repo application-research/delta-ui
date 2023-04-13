@@ -10,8 +10,28 @@ export default function TagSelect(props: {
   setSelected: (selected: string[]) => void,
   options: string[],
 }) {
-  let addMenuButton = React.useRef(null);
   let [showAddMenu, setShowAddMenu] = React.useState(false);
+  let [selectMenuPos, setSelectMenuPos] = React.useState({ x: 0, y: 0 });
+
+  function updateSelectMenuPos(node) {
+    let anchorRect = node.getBoundingClientRect();
+    let anchorOffsetParentRect = node.offsetParent.getBoundingClientRect();
+    let left = anchorRect.left - anchorOffsetParentRect.left + anchorRect.width;
+    let top = anchorRect.top - anchorOffsetParentRect.top + anchorRect.height * 0.5;
+    setSelectMenuPos({ x: left, y: top });
+  }
+
+  let addMenuButton = React.useCallback(node => {
+    if (node) {
+      updateSelectMenuPos(node);
+    }
+  }, [showAddMenu]);
+
+  React.useEffect(() => {
+    if (props.selected.length === props.options.length) {
+      setShowAddMenu(false);
+    }
+  }, [props.selected])
 
   function select(value: string) {
     props.setSelected([...props.selected, value]);
@@ -35,19 +55,13 @@ export default function TagSelect(props: {
         add
       </span>}
       {showAddMenu && (() => {
-
-        let anchorRect = addMenuButton.current.getBoundingClientRect();
-        let anchorOffsetParentRect = addMenuButton.current.offsetParent.getBoundingClientRect();
-        let left = anchorRect.left - anchorOffsetParentRect.left + anchorRect.width;
-        let top = anchorRect.top - anchorOffsetParentRect.top + anchorRect.height * 0.5;
-
         return (
           <Dismissible
             className={styles.addMenu}
             onOutsideClick={() => setShowAddMenu(false)}
             style={{
-              left: `${left}px`,
-              top: `${top}px`,
+              left: `${selectMenuPos.x}px`,
+              top: `${selectMenuPos.y}px`,
             }}
           >
             <ul className={styles.options}>
