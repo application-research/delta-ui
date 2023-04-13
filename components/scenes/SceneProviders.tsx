@@ -66,16 +66,15 @@ function ProviderCard(props) {
 
     try {
       await updateProvider(provider.actor_id, name, allowSelfService, allowedDatasets);
+      setEditing(false);
     } catch (e) {
       alert('Saving provider failed: ' + e.toString());
-      setSaving(false);
       return;
+    } finally {
+      setSaving(false);
     }
-
-    await props.updateState();
-
-    setSaving(false);
-    setEditing(false);
+    
+    props.updateState();
   }
 
   if (editing) return (
