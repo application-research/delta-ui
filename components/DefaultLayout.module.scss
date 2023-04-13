@@ -27,7 +27,7 @@
 
 .left {
   flex-shrink: 0;
-  min-width: 220px;
+  min-width: 16rem;
 }
 
 .topRight {
@@ -50,10 +50,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px 0 24px;
+  padding: 0 1.5rem;
   border-right: var(--color-border);
   text-transform: uppercase;
-  font-size: 12px;
   letter-spacing: 0.1px;
 }
 
@@ -64,10 +63,8 @@
   justify-content: flex-start;
   padding: 0 24px 0 24px;
   text-transform: uppercase;
-  font-size: 12px;
   letter-spacing: 0.1px;
   opacity: 0.2;
-  font-size: 0.8rem;
 }
 
 .appNavigation {
@@ -77,7 +74,6 @@
 .appNavigationItem {
   display: block;
   padding: 12px 24px 12px 24px;
-  font-size: 12px;
   letter-spacing: 0.1px;
   transition: 200ms ease all;
   cursor: pointer;
@@ -91,7 +87,6 @@
 .appNavigationSubItem {
   display: block;
   padding: 4px 24px 4px 32px;
-  font-size: 12px;
   letter-spacing: 0.1px;
   transition: 200ms ease all;
   cursor: pointer;

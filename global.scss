@@ -112,7 +112,7 @@ body {
   --color-primary: #1d724c;
   --color-text: #fff;
 
-  font-size: 16px;
+  font-size: 14px;
   background: var(--color-background);
   color: var(--color-text);
   font-family: 'Mono', -apple-system, BlinkMacSystemFont, helvetica neue, helvetica, sans-serif;
@@ -128,6 +128,12 @@ body {
   ::-webkit-scrollbar {
     width: 8px;
     background: var(--color-background);
+  }
+}
+
+@media screen and (max-width: 1600px) {
+  html, body {
+    font-size: 10px;
   }
 }
 

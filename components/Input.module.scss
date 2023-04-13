@@ -10,6 +10,7 @@
   transition: 0.25s;
   color: var(--color-text);
   width: 100%;
+  font-size: 1rem;
   
   &:focus {
     outline: none;
@@ -55,7 +56,10 @@
       border: none;
       color: red;
       font-weight: bold;
-      line-height: 0.9;
+      line-height: 1rem;
+
+      font-size: 0.8rem;
+      text-align: center;
     }
 
     &:disabled:checked::after {
@@ -69,7 +73,7 @@
 }
 
 .label {
-  font-size: 0.6rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
   display: block;
   color: gray;

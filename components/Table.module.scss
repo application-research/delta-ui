@@ -1,12 +1,10 @@
-.body {}
-
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--color-border);
-  font-size: 10px;
   text-transform: uppercase;
+  font-size: 0.8rem;
 
   .column,
   .fluidColumn {
@@ -19,7 +17,6 @@
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--color-border);
-  font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.7);
   transition: 0.1s;
 
@@ -29,7 +26,7 @@
 }
 
 .column {
-  width: 10rem;
+  width: 12rem;
   flex-shrink: 0;
   padding: 0.5rem 1.5rem;
   text-align: left;
@@ -48,7 +45,7 @@
 
 .rowButton {
   padding: 8px 24px 8px 24px;
-  font-size: 10px;
+  font-size: 0.8rem;
   text-transform: uppercase;
   border-bottom: 1px solid var(--color-border);
   transition: 200ms ease all;
