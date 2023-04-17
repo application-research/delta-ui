@@ -28,8 +28,8 @@ export default function SceneWallets(props) {
                   <span className={tableStyles.fluidColumn}>
                     <WalletRef address={wallet.address} />
                   </span>
-                  <span className={tableStyles.column}>{wallet.balance.balance_filecoin}</span>
-                  <span className={tableStyles.column}>{wallet.balance.balance_datacap}</span>
+                  <span className={tableStyles.column}>{wallet.balance.balance_filecoin / 1000000000000000000} FIL</span>
+                  <span className={tableStyles.column}>{Utilities.bytesToSize(wallet.balance.balance_datacap)}</span>
                   <span className={tableStyles.column}>{wallet.dataset_name}</span>
                 </div>
                 {!wallet.dataset_name && <div className={tableStyles.rowButton} onClick={e => {
