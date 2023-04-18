@@ -146,7 +146,7 @@ export default function Application(props) {
         <SceneProviders
           search={providerSearch}
           onSearchChange={(e) => setProviderSearch(e.target.value)}
-          providerLabel="Search your providers"
+          providerLabel="Search providers"
           placeholder="(example: f0123456)"
           state={state}
           updateState={updateState}

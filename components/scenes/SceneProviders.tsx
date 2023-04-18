@@ -16,9 +16,17 @@ import TagSelect from '@components/TagSelect';
 export default function SceneProviders(props) {
   return (
     <div className={styles.body}>
-      <Input label={props.providerLabel} id="scene-provider-search" placeholder={props.placeholder} value={props.search} onChange={props.onSearchChange} />
       {props.state.providers &&
         <div className={tableStyles.body}>
+          <Input
+            labelClassName={tableStyles.searchLabel}
+            inputClassName={tableStyles.searchInput}
+            label={props.providerLabel}
+            id="scene-provider-search"
+            placeholder={props.placeholder}
+            value={props.search}
+            onChange={props.onSearchChange}
+          />
           <div className={tableStyles.header}>
             <span className={styles.columnProviderInfo}>Provider Info</span>
             <span className={styles.columnBytesReplicated}>Bytes Replicated</span>
@@ -73,7 +81,7 @@ function ProviderCard(props) {
     } finally {
       setSaving(false);
     }
-    
+
     props.updateState();
   }
 
