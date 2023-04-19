@@ -1,0 +1,31 @@
+.body {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  font-size: 0.8rem;
+}
+
+.success {
+  @extend .body;
+
+  color: var(--color-primary);
+}
+
+.error {
+  @extend .body;
+  
+  color: #f44;
+  border-color: #f44;
+}
+
+.icon {
+  text-align: center;
+  font-size: 2rem;
+}
+
+.message {
+  border-top: 2px solid;
+  border-color: inherit;
+  padding-top: 1rem;
+  margin-top: 0.5rem;
+}
