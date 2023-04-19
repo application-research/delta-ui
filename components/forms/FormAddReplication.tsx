@@ -10,6 +10,7 @@ import Button from '@components/Button';
 import Input from 'components/Input';
 import ProviderSelect from '@components/ProviderSelect';
 import DatasetSelect from '@components/DatasetSelect';
+import Feedback from '@components/Feedback';
 
 export default function FormAddReplication(props) {
   const [providerID, setProviderID] = React.useState('');
@@ -18,21 +19,25 @@ export default function FormAddReplication(props) {
   const [delayStartDays, setDelayStartDays] = React.useState(3);
 
   const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState('');
+  const [feedback, setFeedback] = React.useState(<Feedback />);
 
   async function onSubmit(e) {
     e.preventDefault();
     e.target.reportValidity();
 
+    
     try {
+      setFeedback(undefined);
       setLoading(true);
 
       await addReplication(providerID, datasetName, numDeals, delayStartDays);
 
       await props.updateState();
-      props.onOutsideClick();
+      
+      setFeedback(<Feedback type='success' />);
+      setTimeout(props.onOutsideClick, 1000);
     } catch (e) {
-      setError(e.toString());
+      setFeedback(<Feedback type='error'>{e.toString()}</Feedback>);
     } finally {
       setLoading(false);
     }
@@ -64,7 +69,7 @@ export default function FormAddReplication(props) {
           <Button loading={loading}>Add</Button>
         </div>
       </form>
-      {error && <p className={styles.error}>{error}</p>}
+      {feedback}
     </Dismissible>
   )
 }

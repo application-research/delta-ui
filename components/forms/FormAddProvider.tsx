@@ -6,6 +6,7 @@ import styles from './FormAddProvider.module.scss';
 import Dismissible from '@components/Dismissible';
 import Button from '@components/Button';
 import Input from '@components/Input';
+import Feedback from '@components/Feedback';
 
 export default function FormAddProvider(props) {
 
@@ -13,20 +14,22 @@ export default function FormAddProvider(props) {
   let [providerName, setProviderName] = React.useState('');
 
   let [loading, setLoading] = React.useState(false);
-  let [error, setError] = React.useState('');
+  let [feedback, setFeedback] = React.useState(<Feedback />);
 
   async function onSubmit(e) {
     e.preventDefault();
 
     try {
+      setFeedback(undefined);
       setLoading(true);
 
       await addProvider(providerID, providerName);
-
       await props.updateState();
-      props.onOutsideClick();
+
+      setFeedback(<Feedback type='success' />);
+      setTimeout(props.onOutsideClick, 1000);
     } catch (e) {
-      setError(e.toString());
+      setFeedback(<Feedback type='error'>{e.toString()}</Feedback>);
     } finally {
       setLoading(false);
     }
@@ -59,6 +62,6 @@ export default function FormAddProvider(props) {
         <Button disabled={!(providerID)} loading={loading}>Add</Button>
       </div>
     </form>
-    {error && <p className={styles.error}>{error}</p>}
+    {feedback}
   </Dismissible>)
 }
