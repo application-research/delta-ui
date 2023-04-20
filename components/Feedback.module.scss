@@ -8,14 +8,15 @@
 .success {
   @extend .body;
 
-  color: var(--color-primary);
+  color: var(--color-positive);
+  border-color: var(--color-positive);
 }
 
 .error {
   @extend .body;
   
-  color: #f44;
-  border-color: #f44;
+  color: var(--color-negative);
+  border-color: var(--color-negative);
 }
 
 .icon {
@@ -28,4 +29,5 @@
   border-color: inherit;
   padding-top: 1rem;
   margin-top: 0.5rem;
+  width: 100%;
 }

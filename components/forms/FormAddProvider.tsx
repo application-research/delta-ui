@@ -24,7 +24,7 @@ export default function FormAddProvider(props) {
       setLoading(true);
 
       await addProvider(providerID, providerName);
-      await props.updateState();
+      props.updateState();
 
       setFeedback(<Feedback type='success' />);
       setTimeout(props.onOutsideClick, 1000);

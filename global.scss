@@ -112,6 +112,10 @@ body {
   --color-primary: #1d724c;
   --color-text: #fff;
 
+  --color-positive: var(--color-primary);
+  --color-negative: #e44;
+  --color-warning: #ee4;
+
   font-size: 14px;
   background: var(--color-background);
   color: var(--color-text);
