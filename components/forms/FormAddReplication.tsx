@@ -53,12 +53,12 @@ export default function FormAddReplication(props) {
             type='number'
             label='Number of Deals'
             value={numDeals}
-            onChange={e => setNumDeals(e.target.value)}
+            onChange={e => setNumDeals(parseInt(e.target.value))}
             required
           />
         </div>
         <div className={styles.formRow}>
-          <Input type='number' label='Delay Start (Days)' value={delayStartDays} onChange={e => setDelayStartDays(e.target.value)} required />
+          <Input type='number' label='Delay Start (Days)' value={delayStartDays} onChange={e => setDelayStartDays(parseInt(e.target.value))} required />
         </div>
         <div className={styles.formRow}>
           <Button loading={loading}>Add</Button>

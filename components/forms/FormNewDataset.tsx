@@ -71,10 +71,10 @@ export default function FormNewDataset(props) {
           <Input label="Dataset Name" id="dataset-name" value={name} placeholder="a friendly name" required autoFocus onChange={e => setName(normalizeName(e.target.value))} />
         </div>
         <div className={styles.formRow}>
-          <Input type="number" label="Replication Count" value={replications} id="dataset-replications" required onChange={e => setReplications(e.target.value)} />
+          <Input type="number" label="Replication Count" value={replications} id="dataset-replications" required onChange={e => setReplications(parseInt(e.target.value))} />
         </div>
         <div className={styles.formRow}>
-          <Input type="number" label="Deal Duration (Days)" value={duration} onChange={e => setDuration(e.target.value)} />
+          <Input type="number" label="Deal Duration (Days)" value={duration} onChange={e => setDuration(parseInt(e.target.value))} />
         </div>
         <div className={styles.formRow}>
           <Input type="checkbox" label="Publish to indexer?" checked={indexed} id="dataset-indexed" onChange={e => setIndexed(e.target.checked)} />

@@ -13,9 +13,17 @@ import ProviderRef from '@components/ProviderRef';
 export default function SceneReplications(props) {
   return (
     <div className={styles.body}>
-      <Input label={props.searchLabel} id="scene-replications-search" placeholder={props.placeholder} value={props.search} onChange={props.onSearchChange} />
       {props.state.replications &&
         <div className={tableStyles.body}>
+          <Input
+            labelClassName={tableStyles.searchLabel}
+            inputClassName={tableStyles.searchInput}
+            label={props.searchLabel}
+            id="scene-replications-search"
+            placeholder={props.placeholder}
+            value={props.search}
+            onChange={props.onSearchChange}
+          />
           <div className={tableStyles.header}>
             <div className={tableStyles.column}>Dataset</div>
             <div className={tableStyles.column}>Status</div>

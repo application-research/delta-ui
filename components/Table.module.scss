@@ -1,3 +1,16 @@
+.searchLabel {
+  padding: 1rem 1.5rem 0.5rem;
+  font-size: 0.8rem;
+}
+
+.searchInput {
+  background: none;
+  outline: none;
+  padding: 0 1.5rem 1rem;
+  font-size: 1.0rem;
+  box-sizing: border-box;
+}
+
 .header {
   display: flex;
   align-items: center;

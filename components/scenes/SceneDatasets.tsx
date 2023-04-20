@@ -12,9 +12,17 @@ import WalletRef from '@components/WalletRef';
 
 export default function SceneDatasets(props) {
   return (<div className={styles.body}>
-    <Input label={props.searchLabel} id="scene-datasets-search" placeholder={props.placeholder} value={props.search} onChange={props.onSearchChange} />
     {props.state.datasets &&
       <div className={tableStyles.body}>
+        <Input
+          labelClassName={tableStyles.searchLabel}
+          inputClassName={tableStyles.searchInput}
+          label={props.searchLabel}
+          id="scene-datasets-search"
+          placeholder={props.placeholder}
+          value={props.search}
+          onChange={props.onSearchChange}
+        />
         <div className={tableStyles.header}>
           <span className={tableStyles.column}>Name</span>
           <span className={tableStyles.column}>Size</span>
