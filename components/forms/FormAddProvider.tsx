@@ -27,7 +27,7 @@ export default function FormAddProvider(props) {
       props.updateState();
 
       setFeedback(<Feedback type='success' />);
-      setTimeout(props.onOutsideClick, 1000);
+      setTimeout(props.onOutsideClick, 2500);
     } catch (e) {
       setFeedback(<Feedback type='error'>{e.toString()}</Feedback>);
     } finally {

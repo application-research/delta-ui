@@ -64,7 +64,7 @@ export default function FormUploadData(props: {
           {res.fail && <p>Skipped {res.fail.length} duplicate {pluralize('content', res.fail.length)}</p>}
         </Feedback>
       );
-      // setTimeout(props.onOutsideClick, 1000);
+      setTimeout(props.onOutsideClick, 2500);
     } catch (e) {
       setFeedback(<Feedback type='error'>{e.toString()}</Feedback>);
     } finally {
