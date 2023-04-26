@@ -9,6 +9,7 @@ import Button from '@components/Button';
 import Dismissible from '@components/Dismissible';
 import FileUpload from '@components/FileUpload';
 import Feedback from '@components/Feedback';
+import { pluralize, truncCid } from '@root/common/utilities';
 
 export default function FormUploadData(props: {
   selectedDataset: string,
@@ -24,6 +25,7 @@ export default function FormUploadData(props: {
   async function onUpload(e) {
     e.preventDefault();
 
+    setFeedback(<Feedback />)
     setLoading(true);
 
     const readFileContents = (file) => {
@@ -50,7 +52,16 @@ export default function FormUploadData(props: {
 
       setFeedback(
         <Feedback type='success'>
-          {JSON.stringify(res)}
+          {res.success &&
+            <>
+              <p>Attached {res.success.length} {pluralize('content', res.success.length)}</p>
+              <ul>
+                {res.success.map((cid, i) => <li>{truncCid(cid)}</li>)}
+              </ul>
+            </>
+          }
+          <br />
+          {res.fail && <p>Skipped {res.fail.length} duplicate {pluralize('content', res.fail.length)}</p>}
         </Feedback>
       );
       // setTimeout(props.onOutsideClick, 1000);

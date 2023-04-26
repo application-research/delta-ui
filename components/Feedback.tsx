@@ -3,7 +3,7 @@ import * as React from 'react';
 import styles from './Feedback.module.scss';
 
 export default function Feedback(props: {
-  children?: string,
+  children?: React.ReactNode,
   type?: 'success' | 'error'
 }) {
   if (!props.type) return null;
