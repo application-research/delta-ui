@@ -1,13 +1,15 @@
 'use client';
 
+import React from 'react';
+import { addDataset } from '@root/data/api';
+import { createSlug } from '@root/common/utilities';
+
 import styles from './FormNewDataset.module.scss';
 
 import Dismissible from '@components/Dismissible';
 import Input from '@components/Input';
 import Button from '@components/Button';
-import React from 'react';
-import { addDataset } from '@root/data/api';
-import { createSlug } from '@root/common/utilities';
+import Feedback from '@components/Feedback';
 
 export default function FormNewDataset(props) {
   let [name, setName] = React.useState('');
@@ -17,13 +19,14 @@ export default function FormNewDataset(props) {
   let [unsealed, setUnsealed] = React.useState(false);
 
   let [loading, setLoading] = React.useState(false);
-  let [error, setError] = React.useState('');
+  let [feedback, setFeedback] = React.useState(<Feedback />);
 
   async function onSubmit(e) {
     e.preventDefault();
 
 
     try {
+      setFeedback(<Feedback />)
       setLoading(true);
 
       await addDataset(
@@ -33,11 +36,12 @@ export default function FormNewDataset(props) {
         unsealed,
         indexed
       );
+      props.updateState();
 
-      await props.updateState();
-      props.onOutsideClick();
+      setFeedback(<Feedback type='success' />)
+      setTimeout(props.onOutsideClick, 2500);
     } catch (e) {
-      setError(e.toString());
+      setFeedback(<Feedback type='error'>{e.toString()}</Feedback>);
     } finally {
       setLoading(false);
     }
@@ -86,7 +90,7 @@ export default function FormNewDataset(props) {
           <Button disabled={!isFormValid()} loading={loading}>Create</Button>
         </div>
       </form>
-      {error && <p className={styles.error}>{error}</p>}
+      {feedback}
     </Dismissible>
   );
 }

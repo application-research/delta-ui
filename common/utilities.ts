@@ -5,6 +5,10 @@ const nonLocalhostDomainRE = /^[^\s\.]+\.\S{2,}$/;
 
 export const noop = () => {};
 
+export function truncCid(cid: string): string {
+  return cid.substring(0, 4) + '...' + cid.substring(cid.length - 4, cid.length)
+}
+
 export const pluralize = (text, count) => {
   return count > 1 || count === 0 ? `${text}s` : text;
 };
