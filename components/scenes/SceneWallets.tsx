@@ -19,7 +19,7 @@ export default function SceneWallets(props) {
             <span className={tableStyles.fluidColumn}>Address</span>
             <span className={tableStyles.column}>Filecoin Balance</span>
             <span className={tableStyles.column}>Datacap Balance</span>
-            <span className={tableStyles.column}>Dataset Name</span>
+            <span className={tableStyles.column}>Datasets</span>
           </div>
           {props.state.wallets.map((wallet, i) => {
             return (
@@ -30,12 +30,14 @@ export default function SceneWallets(props) {
                   </span>
                   <span className={tableStyles.column}>{wallet.balance.balance_filecoin / 1000000000000000000} FIL</span>
                   <span className={tableStyles.column}>{Utilities.bytesToSize(wallet.balance.balance_datacap)}</span>
-                  <span className={tableStyles.column}>{wallet.dataset_name}</span>
+                  <span className={tableStyles.column}>{wallet.datasets?.map((dataset, i) => {
+                    return <div>{dataset.name}</div>
+                  })}</span>
                 </div>
-                {!wallet.dataset_name && <div className={tableStyles.rowButton} onClick={e => {
+                {!wallet.datasets?.length && <div className={tableStyles.rowButton} onClick={e => {
                   props.setSelectedWallet(wallet.address);
                   props.onAssociateWallet();
-                }}>➟ Associate with dataset</div>}
+                }}>➟ Associate with datasets</div>}
               </div>
             )
           })}

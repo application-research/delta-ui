@@ -225,13 +225,13 @@ export async function getWallets() {
   return await res.json();
 }
 
-export async function associateWallet(address: string, datasetName: string) {
+export async function associateWallet(address: string, datasets: string[]) {
   const res = await fetch(apiURL() + '/api/v1/wallets/associate', {
     method: 'post',
     headers: defaultHeaders(),
     body: JSON.stringify({
       'address': address,
-      'dataset': datasetName
+      'datasets': datasets
     })
   });
 

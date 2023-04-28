@@ -48,7 +48,9 @@ export default function SceneDatasets(props) {
                   <span className={tableStyles.column}>{dataset.deal_duration} days</span>
                   <span className={tableStyles.column}>{dataset.unsealed ? "true" : "false"}</span>
                   <span className={tableStyles.column}>{dataset.indexed ? "true" : "false"}</span>
-                  <span className={tableStyles.fluidColumn}><div>{dataset.wallet?.map((wallet, i) => <div key={i}><WalletRef address={wallet.address} /></div>)}</div></span>
+                  <span className={tableStyles.fluidColumn}><div>{dataset.wallets?.map((wallet, i) => {
+                    return <div key={i}><WalletRef address={wallet.address} /></div>
+                  })}</div></span>
                 </div>
                 <div className={tableStyles.progress}>
                   <div className={tableStyles.progressBar} style={{ width: `${progress * 100}%` }} />
