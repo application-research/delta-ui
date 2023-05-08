@@ -8,31 +8,34 @@ import styles from './FormAssociateWallet.module.scss';
 import Button from '@components/Button';
 import Dismissible from '@components/Dismissible';
 import DatasetSelect from '@components/DatasetSelect';
+import TagSelect from '@components/TagSelect';
+import Feedback from '@components/Feedback';
 
 export default function FormAssociateWallet(props) {
-  const [datasetName, setDatasetName] = React.useState('');
+  const [datasets, setDatasets] = React.useState([]);
 
   const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState('');
+  const [feedback, setFeedback] = React.useState(<Feedback />);
 
   async function onSubmit(e) {
     e.preventDefault();
 
     try {
       setLoading(true);
-      
-      await associateWallet(props.selectedWallet, datasetName);
+
+      await associateWallet(props.selectedWallet, datasets);
+      props.updateState();
+
+      setTimeout(props.onOutsideClick, 2500);
     } catch (e) {
-      setError(e.toString());
+      setFeedback(<Feedback type='error'>{e.toString()}</Feedback>);
     } finally {
       setLoading(false);
     }
-
-    props.updateState();
   }
 
   function isFormValid() {
-    return !!datasetName;
+    return datasets.length !== 0;
   }
 
   return (
@@ -40,10 +43,14 @@ export default function FormAssociateWallet(props) {
       <h2 className={styles.heading}>Associate wallet</h2>
       <p className={styles.paragraph}>{props.selectedWallet}</p>
       <form onSubmit={onSubmit}>
-        <DatasetSelect id='dataset-name' label='Dataset Name' value={datasetName} onChange={e => setDatasetName(e.target.value)} datasets={props.state.datasets} required autoFocus />
-        <Button disabled={!isFormValid()} loading={loading}>Apply</Button>
+        <div className={styles.formRow}>
+          <TagSelect selected={datasets} setSelected={setDatasets} options={props.state.datasets.map((dataset, i) => dataset.name)} />
+        </div>
+        <div className={styles.formRow}>
+          <Button disabled={!isFormValid()} loading={loading}>Apply</Button>
+        </div>
       </form>
-      {error && <div className={styles.error}>{error}</div>}
+      {feedback && <div className={styles.error}>{feedback}</div>}
     </Dismissible>
   )
 }

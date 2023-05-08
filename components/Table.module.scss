@@ -87,6 +87,20 @@
   }
 }
 
+
+.columnButtonManage {
+  @extend .columnButton;
+}
+
+.columnButtonCancel {
+  @extend .columnButton;
+}
+
+.columnButtonSave {
+  @extend .columnButton;
+  background: var(--color-primary);
+}
+
 .progress {
   height: 4px;
   width: 100%;

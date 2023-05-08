@@ -47,19 +47,6 @@
   @extend .fluidColumn
 }
 
-.columnButtonManage {
-  @extend .columnButton;
-}
-
-.columnButtonCancel {
-  @extend .columnButton;
-}
-
-.columnButtonSave {
-  @extend .columnButton;
-  background: var(--color-primary);
-}
-
 .providerCard {
   margin: 0.5rem;
   padding: 1.5rem;
