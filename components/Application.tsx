@@ -170,6 +170,7 @@ export default function Application(props) {
       {appNavigationState === navigationStates.wallets && (
         <SceneWallets
           state={state}
+          updateState={updateState}
           onAssociateWallet={() => setAppTooltipState(tooltipStates.associateWallet)}
           setSelectedWallet={setSelectedWallet}
         />

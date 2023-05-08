@@ -1,0 +1,6 @@
+@import '@components/Table.module.scss';
+
+.columnAddress {
+  @extend .column;
+  min-width: 35rem;
+}
