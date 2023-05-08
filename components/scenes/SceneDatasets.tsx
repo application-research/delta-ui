@@ -55,7 +55,7 @@ export default function SceneDatasets(props) {
                 <div className={tableStyles.progress}>
                   <div className={tableStyles.progressBar} style={{ width: `${progress * 100}%` }} />
                 </div>
-                <div className={tableStyles.rowButton}>➟ Make storage deals for this dataset</div>
+                {/* <div className={tableStyles.rowButton}>➟ Make storage deals for this dataset</div> */}
                 <div className={tableStyles.rowButton} onClick={e => {
                   props.setSelectedDataset(dataset.name);
                   props.onAttachContent();
