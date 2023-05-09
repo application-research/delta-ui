@@ -13,3 +13,8 @@ export const tooltipStates = {
   addReplication: 5,
   associateWallet: 6,
 };
+
+export const apps = {
+  ddm: 1,
+  ptolemy: 2,
+}
