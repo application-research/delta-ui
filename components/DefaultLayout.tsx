@@ -8,6 +8,8 @@ export default function DefaultLayout(props: {
   onSwitchApp: (app: string) => void,
   children: any,
 }) {
+  const [showApps, setShowApps] = React.useState(false);
+  
   let title = props.children?.find(child => child.type === AppTitle);
   let version = props.children?.find(child => child.type === AppVersion);
   let nav = props.children?.find(child => child.type === AppNav);
@@ -17,7 +19,12 @@ export default function DefaultLayout(props: {
     <div className={styles.body}>
       <div className={styles.top}>
         <div className={styles.left}>
-          <div className={styles.appTitle}>{title}</div>
+          <div className={styles.appTitle}>
+            <span onClick={e => setShowApps(!showApps)}>{title}</span>
+            {showApps && <div>
+              {props.apps.map((app, i) => <div key={i} onClick={e => props.onSwitchApp(app)}>{app}</div>)}
+            </div>}
+          </div>
         </div>
         <div className={styles.topRight}>
           <div className={styles.appVersion}>{version}</div>

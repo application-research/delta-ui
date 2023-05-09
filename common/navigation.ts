@@ -15,6 +15,6 @@ export const tooltipStates = {
 };
 
 export const apps = {
-  ddm: 1,
-  ptolemy: 2,
+  ddm: 'ddm',
+  ptolemy: 'ptolemy',
 }
