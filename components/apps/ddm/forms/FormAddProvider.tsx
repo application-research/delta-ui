@@ -10,11 +10,11 @@ import Feedback from '@components/Feedback';
 
 export default function FormAddProvider(props) {
 
-  let [providerID, setProviderID] = React.useState('');
-  let [providerName, setProviderName] = React.useState('');
+  const [providerID, setProviderID] = React.useState('');
+  const [providerName, setProviderName] = React.useState('');
 
-  let [loading, setLoading] = React.useState(false);
-  let [feedback, setFeedback] = React.useState(<Feedback />);
+  const [loading, setLoading] = React.useState(false);
+  const [feedback, setFeedback] = React.useState(<Feedback />);
 
   async function onSubmit(e) {
     e.preventDefault();
