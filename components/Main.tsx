@@ -7,9 +7,14 @@ import styles from './Main.module.scss';
 
 import AppDDM from '@components/apps/ddm/DDM';
 import AppPtolemy from '@components/apps/ptolemy/Ptolemy';
+import { getCookie, setCookie } from '@root/modules/cookies';
 
 export default function Main(props) {
-  const [activeApp, setActiveApp] = React.useState(apps.ddm);
+  const [activeApp, _setActiveApp] = React.useState(getCookie('active-app') || apps.ddm);
+  function setActiveApp(app: string) {
+    _setActiveApp(app);
+    setCookie('active-app', app);
+  }
   const appNames = Object.keys(apps);
 
   switch (activeApp) {
