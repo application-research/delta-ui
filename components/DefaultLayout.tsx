@@ -5,25 +5,30 @@ import * as React from 'react';
 
 export default function DefaultLayout(props: {
   apps: string[],
+  activeApp: string,
   onSwitchApp: (app: string) => void,
   children: any,
 }) {
-  const [showApps, setShowApps] = React.useState(false);
-  
   let title = props.children?.find(child => child.type === AppTitle);
   let version = props.children?.find(child => child.type === AppVersion);
   let nav = props.children?.find(child => child.type === AppNav);
-  let body = props.children?.find(child => child.type === AppBody)
+  let body = props.children?.find(child => child.type === AppBody);
+
+  // NOTE(@elijaharita): this works right now because there are only 2 apps
+  // (ptolemy and ddm). It will need to be changed in the future if more apps
+  // are added.
+  function toggleApp() {
+    let otherApp = props.apps.filter(app => app != props.activeApp)[0];
+    props.onSwitchApp(otherApp);
+    console.log('switching to app ' + otherApp);
+  }
   
   return (
     <div className={styles.body}>
       <div className={styles.top}>
         <div className={styles.left}>
           <div className={styles.appTitle}>
-            <span onClick={e => setShowApps(!showApps)}>{title}</span>
-            {showApps && <div>
-              {props.apps.map((app, i) => <div key={i} onClick={e => props.onSwitchApp(app)}>{app}</div>)}
-            </div>}
+            <span onClick={e => toggleApp()}>{title}</span>
           </div>
         </div>
         <div className={styles.topRight}>

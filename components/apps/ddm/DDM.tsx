@@ -102,7 +102,7 @@ export default function DDM(props) {
   }
 
   return (
-    <DefaultLayout apps={props.apps} onSwitchApp={props.onSwitchApp}>
+    <DefaultLayout apps={props.apps} onSwitchApp={props.onSwitchApp} activeApp={props.activeApp}>
       <AppTitle>Delta DM</AppTitle>
       <AppVersion>{`
         UUID: ${health?.uuid || 'not set'} 

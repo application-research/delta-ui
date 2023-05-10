@@ -48,6 +48,7 @@ export default function TagSelect(props: {
           <span
             className={props.disabled ? styles.selected : styles.selectedInteractive}
             onClick={props.disabled ? undefined : (e => deselect(option))}
+            key={i}
           >{option}</span>
         )
       })}
