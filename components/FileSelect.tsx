@@ -2,7 +2,12 @@ import * as React from 'react';
 
 import FileList from '@components/FileList';
 
-export default function FileSelect(props) {
+export default function FileSelect(props: {
+  label: string,
+  root: string,
+  onSelectFile: (path: string) => void,
+  onChangeRoot: (path: string) => void,
+}) {
   const [root, setRoot] = React.useState('/home/elijah');
   
   return (
