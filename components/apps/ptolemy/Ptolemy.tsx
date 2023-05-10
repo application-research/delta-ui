@@ -39,16 +39,16 @@ export default function Ptolemy(props) {
             <Input label='Job Name' />
           </div>
           <div className={styles.formRow}>
-            <Select label='Encryption' />
+            <Select label='Encryption' disabled default='to be implemented...' />
           </div>
           <div className={styles.formRow}>
-            {/* <FileSelect label='Target Area' /> */}
+            <FileSelect label='Target Area' />
           </div>
           <div className={styles.formRow}>
-            {/* <FileSelect label='Staging Area' /> */}
+            <FileSelect label='Staging Area' />
           </div>
           <div className={styles.formRow}>
-            <Input type='number' label='Thread Count'  />
+            <Input type='number' label='Thread Count' value='1' />
           </div>
           <div className={styles.formRow}>
             <Input type='range' label='Shard Size' min='1' max='31' />
