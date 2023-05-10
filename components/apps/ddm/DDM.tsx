@@ -14,12 +14,12 @@ import Replications from '@root/components/apps/ddm/scenes/Replications';
 import Wallets from '@components/apps/ddm/scenes/Wallets';
 import Auth from '@root/components/apps/ddm/scenes/Auth';
 
-import FormUploadData from '@components/forms/FormUploadData';
-import FormAddWallet from '@components/forms/FormAddWallet';
-import FormAddProvider from '@components/forms/FormAddProvider';
-import FormAddReplication from '@components/forms/FormAddReplication';
-import FormNewDataset from '@components/forms/FormNewDataset';
-import FormAssociateWallet from '@components/forms/FormAssociateWallet';
+import FormUploadData from '@root/components/apps/ddm/forms/FormUploadData';
+import FormAddWallet from '@root/components/apps/ddm/forms/FormAddWallet';
+import FormAddProvider from '@root/components/apps/ddm/forms/FormAddProvider';
+import FormAddReplication from '@root/components/apps/ddm/forms/FormAddReplication';
+import FormNewDataset from '@root/components/apps/ddm/forms/FormNewDataset';
+import FormAssociateWallet from '@root/components/apps/ddm/forms/FormAssociateWallet';
 
 export default function DDM(props) {
   const [appNavigationState, setAppNavigationState] = React.useState(1);

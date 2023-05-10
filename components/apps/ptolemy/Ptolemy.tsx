@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import DefaultLayout, { AppBody, AppNav, AppTitle, AppVersion } from '@components/DefaultLayout';
+import DefaultLayout, { AppBody, AppNav, AppNavItem, AppNavSubItem, AppTitle, AppVersion } from '@components/DefaultLayout';
 
 export default function Ptolemy(props) {
   return (
@@ -8,7 +8,8 @@ export default function Ptolemy(props) {
       <AppTitle>Ptolemy</AppTitle>
       <AppVersion>Vesion Placeholder</AppVersion>
       <AppNav>
-        Placeholder Nav
+        <AppNavItem>Jobs</AppNavItem>
+        <AppNavSubItem>+ Create job</AppNavSubItem>
       </AppNav>
       <AppBody>
         Placeholder Body
