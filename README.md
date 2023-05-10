@@ -11,7 +11,7 @@ npm install
 npm run dev
 ```
 
-UI will connect to a delta-dm instance at `http://localhost:1314` by default. Set `NEXT_PUBLIC_API_URL` to override this. 
+UI will connect to a delta-dm instance at `http://localhost:1415` by default. Set `NEXT_PUBLIC_API_URL` to override this. 
 
 Go to `http://localhost:3005` in your browser of choice. Enjoy!
 
