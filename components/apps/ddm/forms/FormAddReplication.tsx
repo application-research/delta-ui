@@ -7,7 +7,7 @@ import styles from './FormAddReplication.module.scss';
 
 import Dismissible from '@components/Dismissible';
 import Button from '@components/Button';
-import Input from 'components/Input';
+import Input from 'components/basic/Input';
 import ProviderSelect from '@components/ProviderSelect';
 import DatasetSelect from '@components/DatasetSelect';
 import Feedback from '@components/Feedback';

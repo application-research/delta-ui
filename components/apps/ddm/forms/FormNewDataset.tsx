@@ -7,7 +7,7 @@ import { createSlug } from '@root/common/utilities';
 import styles from './FormNewDataset.module.scss';
 
 import Dismissible from '@components/Dismissible';
-import Input from '@components/Input';
+import Input from '@components/basic/Input';
 import Button from '@components/Button';
 import Feedback from '@components/Feedback';
 

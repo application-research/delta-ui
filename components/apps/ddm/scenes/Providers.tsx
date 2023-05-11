@@ -7,7 +7,7 @@ import { updateProvider } from '@root/data/api';
 import styles from './Providers.module.scss';
 import tableStyles from '@components/Table.module.scss';
 
-import Input from '@components/Input';
+import Input from '@components/basic/Input';
 import LoadingIndicator from '@components/LoadingIndicator';
 import ProviderRef from '@components/ProviderRef';
 import Button from '@components/Button';

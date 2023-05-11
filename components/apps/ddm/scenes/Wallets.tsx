@@ -8,7 +8,7 @@ import * as Utilities from '@common/utilities';
 import apiIndex from '@root/pages/api';
 import { associateWallet } from '@root/data/api';
 
-import Input from '@components/Input';
+import Input from '@components/basic/Input';
 import LoadingIndicator from '@components/LoadingIndicator';
 import WalletRef from '@components/WalletRef';
 import TagSelect from '@components/TagSelect';

@@ -6,7 +6,7 @@ import { checkAuth, checkAuthFormat } from '@data/api';
 import styles from './Auth.module.scss';
 
 import Button from '@components/Button';
-import Input from '@components/Input';
+import Input from '@components/basic/Input';
 
 export default function Auth(props) {
   // Store a tmp auth token in the component so the main application auth token

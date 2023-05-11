@@ -1,9 +1,9 @@
 'use client';
 
-import styles from '@components/Input.module.scss';
+import * as React from 'react';
 import { createSlug } from '@root/common/utilities';
 
-import * as React from 'react';
+import styles from './Input.module.scss';
 
 export default function Input(props: {
   label?: any,

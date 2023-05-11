@@ -6,7 +6,7 @@ import * as Utilities from '@common/utilities';
 import styles from './Datasets.module.scss';
 import tableStyles from '@components/Table.module.scss';
 
-import Input from '@components/Input';
+import Input from '@components/basic/Input';
 import LoadingIndicator from '@components/LoadingIndicator';
 import WalletRef from '@components/WalletRef';
 

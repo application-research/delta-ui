@@ -4,9 +4,10 @@ import styles from '@components/Form.module.scss';
 
 import DefaultLayout, { AppBody, AppNav, AppNavItem, AppNavSubItem, AppTitle, AppVersion } from '@components/DefaultLayout';
 import Modal from '@components/Modal';
-import Input from '@components/Input';
+import Input from '@components/basic/Input';
 import Select from '@components/Select';
 import FileSelect from '@components/FileSelect';
+import Slider from '@components/basic/Slider';
 
 const formStates = {
   none: 0,
@@ -51,7 +52,7 @@ export default function Ptolemy(props) {
             <Input type='number' label='Thread Count' value='1' />
           </div>
           <div className={styles.formRow}>
-            <Input type='range' label='Shard Size' min='1' max='31' />
+            <Slider label='Shard Size' min={1} max={31} />
           </div>
         </Modal>}
       </AppNav>
