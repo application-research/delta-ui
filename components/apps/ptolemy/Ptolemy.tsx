@@ -5,8 +5,8 @@ import styles from '@components/Form.module.scss';
 import DefaultLayout, { AppBody, AppNav, AppNavItem, AppNavSubItem, AppTitle, AppVersion } from '@components/DefaultLayout';
 import Modal from '@components/Modal';
 import Input from '@components/basic/Input';
-import Select from '@components/Select';
 import FileSelect from '@components/FileSelect';
+import Select from '@components/basic/Select';
 import Slider from '@components/basic/Slider';
 
 const formStates = {
@@ -40,7 +40,7 @@ export default function Ptolemy(props) {
             <Input label='Job Name' />
           </div>
           <div className={styles.formRow}>
-            <Select label='Encryption' disabled default='to be implemented...' />
+            <Select label='Encryption' disabled placeholder='to be implemented...' />
           </div>
           <div className={styles.formRow}>
             <FileSelect label='Target Area' />

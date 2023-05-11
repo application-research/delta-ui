@@ -44,14 +44,14 @@ export default function FormAddReplication(props) {
   }
 
   return (
-    <Dismissible className={styles.body} onOutsideClick={props.onOutsideClick}>
+    <div>
       <h2 className={styles.heading}>Add replication</h2>
       <form onSubmit={onSubmit}>
         <div className={styles.formRow}>
           <ProviderSelect id='provider-id' label='Provider' providers={props.providers} onChange={e => setProviderID(e.target.value)} required autoFocus />
         </div>
         <div className={styles.formRow}>
-          <DatasetSelect id='dataset-name' label='Dataset' default='any' datasets={props.datasets} onChange={e => setDatasetName(e.target.value)} />
+          <DatasetSelect id='dataset-name' label='Dataset' placeholder='<< any dataset >>' datasets={props.datasets} onChange={e => setDatasetName(e.target.value)} />
         </div>
         <div className={styles.formRow}>
           <Input
@@ -70,6 +70,6 @@ export default function FormAddReplication(props) {
         </div>
       </form>
       {feedback}
-    </Dismissible>
+    </div>
   )
 }

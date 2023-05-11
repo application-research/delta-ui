@@ -11,6 +11,7 @@ export default function Slider(props: {
   label?: string,
   onChange?: React.ChangeEventHandler<HTMLInputElement>,
   value?: number,
+  required?: boolean
 }) {
   const id = props.id || 'slider-' + Math.floor(Math.random() * 100000).toString();
 
@@ -31,6 +32,7 @@ export default function Slider(props: {
         }}
         value={props.value}
         step={props.step} 
+        required={props.required}
       />
     </div>
   )

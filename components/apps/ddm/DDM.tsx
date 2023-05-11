@@ -7,6 +7,7 @@ import { getCookie, setCookie } from '@modules/cookies';
 import { associateWallet, checkAuth, getDatasets, getHealth, getProviders, getReplications, getWallets } from '@data/api';
 
 import DefaultLayout, { AppBody, AppNav, AppNavItem, AppNavSubItem, AppTitle, AppVersion } from '@components/DefaultLayout';
+import Modal from '@root/components/Modal';
 
 import Datasets from '@root/components/apps/ddm/scenes/Datasets';
 import Providers from '@root/components/apps/ddm/scenes/Providers';
@@ -47,6 +48,9 @@ export default function DDM(props) {
     setCookie('ddm-address', ddmAddress);
   };
 
+  const addProviderButton = React.useRef(null);
+  const addReplicationButton = React.useRef(null);
+
   async function updateState() {
     setState({
       datasets: await getDatasets(),
@@ -64,8 +68,10 @@ export default function DDM(props) {
     setCommitHash((await (await fetch('/api')).json()).commit_hash)
   }
 
-  function dismissTooltip() {
-    setAppTooltipState(0);
+  function dismissTooltip(id) {
+    if (appTooltipState === id) {
+      setAppTooltipState(0);
+    }
   }
 
   React.useEffect(() => {
@@ -124,13 +130,13 @@ export default function DDM(props) {
           Providers {appNavigationState === navigationStates.providers && '➝'}
         </AppNavItem>
         <AppNavSubItem onClick={e => setAppTooltipState(tooltipStates.addProvider)}>
-          + Add provider
+          <span ref={addProviderButton}>+ Add provider</span>
         </AppNavSubItem>
         <AppNavItem onClick={e => setAppNavigationState(navigationStates.replications)}>
           Replications {appNavigationState === navigationStates.replications && '➝'}
         </AppNavItem>
         <AppNavSubItem onClick={e => setAppTooltipState(tooltipStates.addReplication)}>
-          + Add replication
+          <span ref={addReplicationButton}>+ Add replication</span>
         </AppNavSubItem>
         <AppNavItem onClick={e => setAppNavigationState(navigationStates.wallets)}>
           Wallets {appNavigationState === navigationStates.wallets && '➝'}
@@ -193,10 +199,11 @@ export default function DDM(props) {
           />
         )}
         {appTooltipState === tooltipStates.addProvider && (
-          <FormAddProvider
-            onOutsideClick={dismissTooltip}
-            updateState={updateState}
-          />
+          <Modal anchor={addProviderButton} modalID={tooltipStates.addProvider} onClose={dismissTooltip}>
+            <FormAddProvider
+              updateState={updateState}
+            />
+          </Modal>
         )}
         {appTooltipState === tooltipStates.addWallet && (
           <FormAddWallet
@@ -211,12 +218,14 @@ export default function DDM(props) {
           />
         )}
         {appTooltipState === tooltipStates.addReplication && (
-          <FormAddReplication
-            onOutsideClick={dismissTooltip}
-            updateState={updateState}
-            providers={state.providers}
-            datasets={state.datasets}
-          />
+          <Modal anchor={addReplicationButton} modalID={tooltipStates.addReplication} onClose={dismissTooltip}>
+            <FormAddReplication
+              onOutsideClick={dismissTooltip}
+              updateState={updateState}
+              providers={state.providers}
+              datasets={state.datasets}
+            />
+          </Modal>
         )}
         {appTooltipState === tooltipStates.associateWallet && (
           <FormAssociateWallet
