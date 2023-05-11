@@ -30,7 +30,7 @@ export default function Slider(props: {
           setValue(Number.parseFloat(e.target.value));
           props.onChange && props.onChange(e);
         }}
-        value={props.value}
+        value={value}
         step={props.step} 
         required={props.required}
       />

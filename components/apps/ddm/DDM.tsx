@@ -48,8 +48,10 @@ export default function DDM(props) {
     setCookie('ddm-address', ddmAddress);
   };
 
+  const newDatasetButton = React.useRef(null);
   const addProviderButton = React.useRef(null);
   const addReplicationButton = React.useRef(null);
+  const addWalletButton = React.useRef(null);
 
   async function updateState() {
     setState({
@@ -69,6 +71,7 @@ export default function DDM(props) {
   }
 
   function dismissTooltip(id) {
+    console.log('closing ' + id + ', currently active ' + appTooltipState);
     if (appTooltipState === id) {
       setAppTooltipState(0);
     }
@@ -124,7 +127,7 @@ export default function DDM(props) {
           Datasets {appNavigationState === navigationStates.datasets && '➝'}
         </AppNavItem>
         <AppNavSubItem onClick={e => setAppTooltipState(tooltipStates.newDataset)}>
-          + New dataset
+          <span ref={newDatasetButton}>+ New dataset</span>
         </AppNavSubItem>
         <AppNavItem onClick={e => setAppNavigationState(navigationStates.providers)}>
           Providers {appNavigationState === navigationStates.providers && '➝'}
@@ -142,7 +145,7 @@ export default function DDM(props) {
           Wallets {appNavigationState === navigationStates.wallets && '➝'}
         </AppNavItem>
         <AppNavSubItem onClick={e => setAppTooltipState(tooltipStates.addWallet)}>
-          + Add wallet
+          <span ref={addWalletButton}>+ Add wallet</span>
         </AppNavSubItem>
       </AppNav>
       <AppBody>
@@ -193,10 +196,12 @@ export default function DDM(props) {
         )}
 
         {appTooltipState === tooltipStates.newDataset && (
-          <FormNewDataset
-            onOutsideClick={dismissTooltip}
-            updateState={updateState}
-          />
+          <Modal anchor={newDatasetButton} modalID={tooltipStates.newDataset} onClose={dismissTooltip}>
+            <FormNewDataset
+              onOutsideClick={dismissTooltip}
+              updateState={updateState}
+            />
+          </Modal>
         )}
         {appTooltipState === tooltipStates.addProvider && (
           <Modal anchor={addProviderButton} modalID={tooltipStates.addProvider} onClose={dismissTooltip}>
@@ -206,9 +211,11 @@ export default function DDM(props) {
           </Modal>
         )}
         {appTooltipState === tooltipStates.addWallet && (
-          <FormAddWallet
-            onOutsideClick={dismissTooltip}
-          />
+          <Modal anchor={addWalletButton} modalID={tooltipStates.addWallet} onClose={dismissTooltip}>
+            <FormAddWallet
+              onOutsideClick={dismissTooltip}
+            />
+          </Modal>
         )}
         {appTooltipState === tooltipStates.attachContent && (
           <FormUploadData

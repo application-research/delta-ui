@@ -68,7 +68,7 @@ export default function FormNewDataset(props) {
   }
 
   return (
-    <Dismissible className={styles.body} onOutsideClick={props.onOutsideClick}>
+    <div>
       <form onSubmit={onSubmit}>
         <h2 className={styles.heading}>New dataset</h2>
         <div className={styles.formRow}>
@@ -91,6 +91,6 @@ export default function FormNewDataset(props) {
         </div>
       </form>
       {feedback}
-    </Dismissible>
+    </div>
   );
 }
