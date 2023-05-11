@@ -8,7 +8,7 @@
   transition: 0.25s;
   width: 100%;
   display: block;
-  -webkit-appearance: none;
+  appearance: none;
   background: var(--color-border);
   height: 2px;
   padding: 0;
@@ -16,7 +16,7 @@
 
   &::-webkit-slider-thumb {
     background: var(--color-primary);
-    -webkit-appearance: none;
+    appearance: none;
     display: block;
     width: 1rem;
     height: 1rem;
