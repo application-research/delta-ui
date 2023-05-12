@@ -9,21 +9,47 @@ import tableStyles from '@components/Table.module.scss';
 import Input from '@components/basic/Input';
 import LoadingIndicator from '@components/LoadingIndicator';
 import ProviderRef from '@components/ProviderRef';
+import Button from '@components/Button';
 
 export default function Replications(props) {
   return (
     <div className={styles.body}>
       {props.state.replications &&
         <div className={tableStyles.body}>
-          <Input
-            labelClassName={tableStyles.searchLabel}
-            inputClassName={tableStyles.searchInput}
-            label={props.searchLabel}
-            id="scene-replications-search"
-            placeholder={props.placeholder}
-            value={props.search}
-            onChange={props.onSearchChange}
-          />
+          <div className={styles.filterMenu}>
+            <form className={styles.filterMenuBody} onClick={e => e.preventDefault()}>
+              <div className={styles.filterMenuRow}>
+                <div className={styles.filterMenuColumn}>
+                  <Input label='Datasets (Comma-Separated)' placeholder='one-dataset,two-dataset' />
+                </div>
+                <div className={styles.filterMenuColumn}>
+                  <Input label='Providers (Comma-Separated)' placeholder='f012345,f067890' />
+                </div>
+                <div className={styles.filterMenuColumn}>
+                  <Input type='datetime-local' label='Deal Time Min.' />
+                </div>
+                <div className={styles.filterMenuColumn}>
+                  <Input type='datetime-local' label='Deal Time Max.' />
+                </div>
+              </div>
+              <div className={styles.filterMenuRow}>
+                <div className={styles.filterMenuColumn}>
+                  <Input label='Proposal CID' autoComplete='disabled' spellCheck='false' />
+                </div>
+                <div className={styles.filterMenuColumn}>
+                  <Input label='Piece CID' autoComplete='off' />
+                </div>
+              </div>
+              <div className={styles.filterMenuRow}>
+                <div className={styles.filterMenuColumn}>
+                  <Input label='Message' />
+                </div>
+                <div className={styles.filterMenuButtonColumn}>
+                  <Button>Apply</Button>
+                </div>
+              </div>
+            </form>
+          </div>
           <div className={tableStyles.header}>
             <div className={tableStyles.column}>Dataset</div>
             <div className={tableStyles.column}>Status</div>
