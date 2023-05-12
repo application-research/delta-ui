@@ -1,9 +1,5 @@
 @import 'Label.module.scss';
 
-.body {
-  
-}
-
 .slider {
   transition: 0.25s;
   width: 100%;
@@ -12,7 +8,7 @@
   background: var(--color-border);
   height: 2px;
   padding: 0;
-  margin: 0.5rem 0;
+  margin: 0.75rem 0;
 
   &::-webkit-slider-thumb {
     background: var(--color-primary);
