@@ -14,10 +14,10 @@ import WalletRef from '@components/WalletRef';
 import TagSelect from '@components/TagSelect';
 import Button from '@components/Button';
 
-export default function Wallets(props) {
+export default function Wallets(props: { wallets: any[], updateWallets: () => void, datasets: any[], updateDatasets: () => void }) {
   return (
     <div className={styles.body}>
-      {props.state.wallets &&
+      {props.wallets && (
         <div className={tableStyles.body}>
           <div className={tableStyles.header}>
             <span className={styles.columnAddress}>Address</span>
@@ -25,30 +25,23 @@ export default function Wallets(props) {
             <span className={tableStyles.column}>Datacap Balance</span>
             <span className={tableStyles.fluidColumn}>Datasets</span>
           </div>
-          {props.state.wallets.map((wallet, i) => {
+          {props.wallets.map((wallet, i) => {
             return (
               <div key={i}>
-                <WalletCard 
-                wallet={wallet} 
-                datasets={props.state.datasets?.map((dataset, i) => dataset.name)} 
-                updateState={props.updateState} />
+                <WalletCard wallet={wallet} datasets={props.datasets?.map((dataset, i) => dataset.name)} updateDatasets={props.updateDatasets} />
               </div>
             );
           })}
         </div>
-      }
-      {props.state.wallets === undefined && <LoadingIndicator padded />}
-    </div >
-  )
+      )}
+      {props.wallets === undefined && <LoadingIndicator padded />}
+    </div>
+  );
 }
 
-function WalletCard(props: {
-  wallet: any,
-  datasets: string[],
-  updateState: CallableFunction
-}) {
+function WalletCard(props: { wallet: any, datasets: string[], updateDatasets: () => void }) {
   let selectedDefault = () => props.wallet.datasets.map((dataset, i) => dataset.name);
-  
+
   const [selected, setSelected] = React.useState(selectedDefault());
 
   const [editing, setEditing] = React.useState(false);
@@ -73,7 +66,7 @@ function WalletCard(props: {
       setSaving(false);
     }
 
-    props.updateState();
+    props.updateDatasets();
   }
 
   return (
@@ -86,16 +79,22 @@ function WalletCard(props: {
       <span className={tableStyles.fluidColumn}>
         <TagSelect disabled={!editing} options={props.datasets} selected={selected} setSelected={setSelected} />
       </span>
-      {
-        editing 
-          ? <>
-            <Button className={tableStyles.columnButtonCancel} onClick={e => cancelEdit()} disabled={saving}>Cancel</Button>
-            <Button className={tableStyles.columnButtonSave} onClick={e => submitEdit()} loading={saving}>Save</Button>
-          </>
-          : <>
-            <Button className={tableStyles.columnButtonManage} onClick={e => setEditing(true)}>Manage</Button>
-          </>
-      }
+      {editing ? (
+        <>
+          <Button className={tableStyles.columnButtonCancel} onClick={(e) => cancelEdit()} disabled={saving}>
+            Cancel
+          </Button>
+          <Button className={tableStyles.columnButtonSave} onClick={(e) => submitEdit()} loading={saving}>
+            Save
+          </Button>
+        </>
+      ) : (
+        <>
+          <Button className={tableStyles.columnButtonManage} onClick={(e) => setEditing(true)}>
+            Manage
+          </Button>
+        </>
+      )}
     </div>
   );
 }

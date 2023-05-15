@@ -11,7 +11,9 @@ import Input from '@components/basic/Input';
 import Button from '@components/Button';
 import Feedback from '@components/Feedback';
 
-export default function FormNewDataset(props) {
+export default function FormNewDataset(props: {
+  updateDatasets: () => void,
+}) {
   let [name, setName] = React.useState('');
   let [replications, setReplications] = React.useState(6);
   let [duration, setDuration] = React.useState(540);
@@ -36,10 +38,9 @@ export default function FormNewDataset(props) {
         unsealed,
         indexed
       );
-      props.updateState();
+      props.updateDatasets();
 
       setFeedback(<Feedback type='success' />)
-      setTimeout(props.onOutsideClick, 2500);
     } catch (e) {
       setFeedback(<Feedback type='error'>{e.toString()}</Feedback>);
     } finally {

@@ -8,7 +8,9 @@ import Button from '@components/Button';
 import Input from '@components/basic/Input';
 import Feedback from '@components/Feedback';
 
-export default function FormAddProvider(props) {
+export default function FormAddProvider(props: {
+  updateProviders: () => void,
+}) {
 
   const [providerID, setProviderID] = React.useState('');
   const [providerName, setProviderName] = React.useState('');
@@ -24,10 +26,9 @@ export default function FormAddProvider(props) {
       setLoading(true);
 
       await addProvider(providerID, providerName);
-      props.updateState();
+      props.updateProviders();
 
       setFeedback(<Feedback type='success' />);
-      setTimeout(props.onOutsideClick, 2500);
     } catch (e) {
       setFeedback(<Feedback type='error'>{e.toString()}</Feedback>);
     } finally {

@@ -4,7 +4,7 @@ import * as React from 'react';
 import PackageJSON from '@root/package.json';
 import { navigationStates, tooltipStates } from '@common/navigation';
 import { getCookie, setCookie } from '@modules/cookies';
-import { associateWallet, checkAuth, getDatasets, getHealth, getProviders, getReplications, getWallets } from '@data/api';
+import { associateWallet, checkAuth, getDatasets, getHealth, getProviders, getReplications, GetReplicationsConfig, getWallets } from '@data/api';
 
 import DefaultLayout, { AppBody, AppNav, AppNavItem, AppNavSubItem, AppTitle, AppVersion } from '@components/DefaultLayout';
 import Modal from '@root/components/Modal';
@@ -20,7 +20,6 @@ import FormAddWallet from '@root/components/apps/ddm/forms/FormAddWallet';
 import FormAddProvider from '@root/components/apps/ddm/forms/FormAddProvider';
 import FormAddReplication from '@root/components/apps/ddm/forms/FormAddReplication';
 import FormNewDataset from '@root/components/apps/ddm/forms/FormNewDataset';
-import FormAssociateWallet from '@root/components/apps/ddm/forms/FormAssociateWallet';
 
 export default function DDM(props) {
   const [appNavigationState, setAppNavigationState] = React.useState(1);
@@ -30,11 +29,10 @@ export default function DDM(props) {
   const [selectedProvider, setSelectedProvider] = React.useState('');
   const [selectedDataset, setSelectedDataset] = React.useState('');
   const [selectedWallet, setSelectedWallet] = React.useState('');
-  const [state, setState] = React.useState({
-    datasets: undefined,
-    providers: undefined,
-    wallets: undefined,
-  });
+  const [datasets, setDatasets] = React.useState([]);
+  const [providers, setProviders] = React.useState([]);
+  const [replications, setReplications] = React.useState([]);
+  const [wallets, setWallets] = React.useState([]);
   const [health, setHealth] = React.useState(undefined);
   const [commitHash, setCommitHash] = React.useState(undefined);
   const [appTooltipState, setAppTooltipState] = React.useState(0);
@@ -47,18 +45,18 @@ export default function DDM(props) {
     setCookie('ddm-address', ddmAddress);
   };
 
+  const getReplicationsConfig = React.useRef<GetReplicationsConfig>();
+  const setGetReplicationsConfig = (cfg: GetReplicationsConfig) => getReplicationsConfig.current = cfg;
+
+  const updateDatasets = async () => setDatasets(await getDatasets());
+  const updateProviders = async () => setProviders(await getProviders());
+  const updateReplications = async () => setReplications(await getReplications(getReplicationsConfig.current));
+  const updateWallets = async () => setWallets(await getWallets());
+
   const newDatasetButton = React.useRef(null);
   const addProviderButton = React.useRef(null);
   const addReplicationButton = React.useRef(null);
   const addWalletButton = React.useRef(null);
-
-  async function updateState() {
-    setState({
-      datasets: await getDatasets(),
-      providers: await getProviders(),
-      wallets: await getWallets(),
-    });
-  }
 
   async function updateHealth() {
     setHealth(await getHealth());
@@ -92,7 +90,11 @@ export default function DDM(props) {
 
   React.useEffect(() => {
     if (authToken) {
-      updateState();
+      updateDatasets();
+      updateProviders();
+      updateReplications();
+      updateWallets();
+
       updateHealth();
       updateCommitHash();
     }
@@ -139,49 +141,42 @@ export default function DDM(props) {
             onSearchChange={(e) => setDatasetSearch(e.target.value)}
             searchLabel="Search datasets"
             placeholder="(example: university-bird-sounds)"
-            state={state}
+            datasets={datasets}
             onAttachContent={() => setAppTooltipState(tooltipStates.attachContent)}
-            selectedDataset={selectedDataset}
+            // selectedDataset={selectedDataset}
             setSelectedDataset={setSelectedDataset}
           />
         )}
         {appNavigationState === navigationStates.providers && (
           <Providers
+            providers={providers}
+            datasets={datasets}
+            updateDatasets={updateDatasets}
             search={providerSearch}
             onSearchChange={(e) => setProviderSearch(e.target.value)}
             providerLabel="Search providers"
             placeholder="(example: f0123456)"
-            state={state}
-            updateState={updateState}
           />
         )}
-        {appNavigationState === navigationStates.replications && (
-          <Replications
-            search={replicationSearch}
-            onSearchChange={(e) => setReplicationSearch(e.target.value)}
-            searchLabel="Search replications"
-            placeholder="search any field (replication filtering is w.i.p.)"
-            selectedProvider={selectedProvider}
-            setSelectedProvider={() => {
-              alert('test');
-            }}
-            selectedDataset={selectedDataset}
-            setSelectedDataset={() => {}}
-            state={state}
-          />
-        )}
+        {appNavigationState === navigationStates.replications && <Replications replications={replications} updateReplications={updateReplications} setGetReplicationsConfig={setGetReplicationsConfig} />}
         {appNavigationState === navigationStates.wallets && (
-          <Wallets state={state} updateState={updateState} onAssociateWallet={() => setAppTooltipState(tooltipStates.associateWallet)} setSelectedWallet={setSelectedWallet} />
+          <Wallets
+            wallets={wallets}
+            updateWallets={updateWallets}
+            datasets={datasets}
+            updateDatasets={updateDatasets}
+            // setSelectedWallet={setSelectedWallet}
+          />
         )}
 
         {appTooltipState === tooltipStates.newDataset && (
           <Modal anchor={newDatasetButton} modalID={tooltipStates.newDataset} onClose={dismissTooltip}>
-            <FormNewDataset onOutsideClick={dismissTooltip} updateState={updateState} />
+            <FormNewDataset updateDatasets={updateDatasets} />
           </Modal>
         )}
         {appTooltipState === tooltipStates.addProvider && (
           <Modal anchor={addProviderButton} modalID={tooltipStates.addProvider} onClose={dismissTooltip}>
-            <FormAddProvider updateState={updateState} />
+            <FormAddProvider updateProviders={updateProviders} />
           </Modal>
         )}
         {appTooltipState === tooltipStates.addWallet && (
@@ -189,14 +184,11 @@ export default function DDM(props) {
             <FormAddWallet onOutsideClick={dismissTooltip} />
           </Modal>
         )}
-        {appTooltipState === tooltipStates.attachContent && <FormUploadData onOutsideClick={dismissTooltip} updateState={updateState} selectedDataset={selectedDataset} />}
+        {appTooltipState === tooltipStates.attachContent && <FormUploadData onOutsideClick={dismissTooltip} updateDatasets={updateDatasets} selectedDataset={selectedDataset} />}
         {appTooltipState === tooltipStates.addReplication && (
           <Modal anchor={addReplicationButton} modalID={tooltipStates.addReplication} onClose={dismissTooltip}>
-            <FormAddReplication onOutsideClick={dismissTooltip} updateState={updateState} providers={state.providers} datasets={state.datasets} />
+            <FormAddReplication providers={providers} datasets={datasets} updateReplications={updateReplications} />
           </Modal>
-        )}
-        {appTooltipState === tooltipStates.associateWallet && (
-          <FormAssociateWallet onOutsideClick={dismissTooltip} selectedWallet={selectedWallet} state={state} updateState={updateState} />
         )}
       </AppBody>
     </DefaultLayout>

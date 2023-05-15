@@ -12,7 +12,11 @@ import ProviderSelect from '@components/ProviderSelect';
 import DatasetSelect from '@components/DatasetSelect';
 import Feedback from '@components/Feedback';
 
-export default function FormAddReplication(props) {
+export default function FormAddReplication(props: {
+  providers: any[],
+  datasets: any[],
+  updateReplications: () => void,
+}) {
   const [providerID, setProviderID] = React.useState('');
   const [datasetName, setDatasetName] = React.useState('');
   const [numDeals, setNumDeals] = React.useState(1);
@@ -31,11 +35,9 @@ export default function FormAddReplication(props) {
       setLoading(true);
 
       await addReplication(providerID, datasetName, numDeals, delayStartDays);
-
-      await props.updateState();
+      props.updateReplications();
       
       setFeedback(<Feedback type='success' />);
-      setTimeout(props.onOutsideClick, 2500);
     } catch (e) {
       setFeedback(<Feedback type='error'>{e.toString()}</Feedback>);
     } finally {
