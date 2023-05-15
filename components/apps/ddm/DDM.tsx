@@ -30,21 +30,20 @@ export default function DDM(props) {
   const [selectedProvider, setSelectedProvider] = React.useState('');
   const [selectedDataset, setSelectedDataset] = React.useState('');
   const [selectedWallet, setSelectedWallet] = React.useState('');
-  const [state, setState] = React.useState({ 
-    datasets: undefined, 
-    providers: undefined, 
-    replications: undefined, 
-    wallets: undefined 
+  const [state, setState] = React.useState({
+    datasets: undefined,
+    providers: undefined,
+    wallets: undefined,
   });
   const [health, setHealth] = React.useState(undefined);
   const [commitHash, setCommitHash] = React.useState(undefined);
   const [appTooltipState, setAppTooltipState] = React.useState(0);
   const [authToken, setAuthTokenEphemeral] = React.useState('');
-  const setAuthToken = authToken => {
+  const setAuthToken = (authToken) => {
     setAuthTokenEphemeral(authToken);
     setCookie('auth', authToken);
   };
-  const setDDMAddress = ddmAddress => {
+  const setDDMAddress = (ddmAddress) => {
     setCookie('ddm-address', ddmAddress);
   };
 
@@ -57,7 +56,6 @@ export default function DDM(props) {
     setState({
       datasets: await getDatasets(),
       providers: await getProviders(),
-      replications: await getReplications(),
       wallets: await getWallets(),
     });
   }
@@ -67,7 +65,7 @@ export default function DDM(props) {
   }
 
   async function updateCommitHash() {
-    setCommitHash((await (await fetch('/api')).json()).commit_hash)
+    setCommitHash((await (await fetch('/api')).json()).commit_hash);
   }
 
   function dismissTooltip(id) {
@@ -82,7 +80,7 @@ export default function DDM(props) {
       setAuthTokenEphemeral(getCookie('auth'));
 
       try {
-        if (!await checkAuth()) {
+        if (!(await checkAuth())) {
           throw new Error();
         }
       } catch {
@@ -101,13 +99,7 @@ export default function DDM(props) {
   }, [authToken]);
 
   if (!authToken) {
-    return (
-      <Auth
-        authToken={authToken}
-        setAuthToken={setAuthToken}
-        setDDMAddress={setDDMAddress}
-      ></Auth>
-    )
+    return <Auth authToken={authToken} setAuthToken={setAuthToken} setDDMAddress={setDDMAddress}></Auth>;
   }
 
   return (
@@ -123,28 +115,20 @@ export default function DDM(props) {
         UI Version: ${PackageJSON.version} (${commitHash})
       `}</AppVersion>
       <AppNav>
-        <AppNavItem onClick={e => setAppNavigationState(navigationStates.datasets)}>
-          Datasets {appNavigationState === navigationStates.datasets && '➝'}
-        </AppNavItem>
-        <AppNavSubItem onClick={e => setAppTooltipState(tooltipStates.newDataset)}>
+        <AppNavItem onClick={(e) => setAppNavigationState(navigationStates.datasets)}>Datasets {appNavigationState === navigationStates.datasets && '➝'}</AppNavItem>
+        <AppNavSubItem onClick={(e) => setAppTooltipState(tooltipStates.newDataset)}>
           <span ref={newDatasetButton}>+ New dataset</span>
         </AppNavSubItem>
-        <AppNavItem onClick={e => setAppNavigationState(navigationStates.providers)}>
-          Providers {appNavigationState === navigationStates.providers && '➝'}
-        </AppNavItem>
-        <AppNavSubItem onClick={e => setAppTooltipState(tooltipStates.addProvider)}>
+        <AppNavItem onClick={(e) => setAppNavigationState(navigationStates.providers)}>Providers {appNavigationState === navigationStates.providers && '➝'}</AppNavItem>
+        <AppNavSubItem onClick={(e) => setAppTooltipState(tooltipStates.addProvider)}>
           <span ref={addProviderButton}>+ Add provider</span>
         </AppNavSubItem>
-        <AppNavItem onClick={e => setAppNavigationState(navigationStates.replications)}>
-          Replications {appNavigationState === navigationStates.replications && '➝'}
-        </AppNavItem>
-        <AppNavSubItem onClick={e => setAppTooltipState(tooltipStates.addReplication)}>
+        <AppNavItem onClick={(e) => setAppNavigationState(navigationStates.replications)}>Replications {appNavigationState === navigationStates.replications && '➝'}</AppNavItem>
+        <AppNavSubItem onClick={(e) => setAppTooltipState(tooltipStates.addReplication)}>
           <span ref={addReplicationButton}>+ Add replication</span>
         </AppNavSubItem>
-        <AppNavItem onClick={e => setAppNavigationState(navigationStates.wallets)}>
-          Wallets {appNavigationState === navigationStates.wallets && '➝'}
-        </AppNavItem>
-        <AppNavSubItem onClick={e => setAppTooltipState(tooltipStates.addWallet)}>
+        <AppNavItem onClick={(e) => setAppNavigationState(navigationStates.wallets)}>Wallets {appNavigationState === navigationStates.wallets && '➝'}</AppNavItem>
+        <AppNavSubItem onClick={(e) => setAppTooltipState(tooltipStates.addWallet)}>
           <span ref={addWalletButton}>+ Add wallet</span>
         </AppNavSubItem>
       </AppNav>
@@ -174,75 +158,47 @@ export default function DDM(props) {
         {appNavigationState === navigationStates.replications && (
           <Replications
             search={replicationSearch}
-            onSearchChange={e => setReplicationSearch(e.target.value)}
-            searchLabel='Search replications'
-            placeholder='search any field (replication filtering is w.i.p.)'
+            onSearchChange={(e) => setReplicationSearch(e.target.value)}
+            searchLabel="Search replications"
+            placeholder="search any field (replication filtering is w.i.p.)"
             selectedProvider={selectedProvider}
             setSelectedProvider={() => {
               alert('test');
             }}
             selectedDataset={selectedDataset}
-            setSelectedDataset={() => { }}
+            setSelectedDataset={() => {}}
             state={state}
           />
         )}
         {appNavigationState === navigationStates.wallets && (
-          <Wallets
-            state={state}
-            updateState={updateState}
-            onAssociateWallet={() => setAppTooltipState(tooltipStates.associateWallet)}
-            setSelectedWallet={setSelectedWallet}
-          />
+          <Wallets state={state} updateState={updateState} onAssociateWallet={() => setAppTooltipState(tooltipStates.associateWallet)} setSelectedWallet={setSelectedWallet} />
         )}
 
         {appTooltipState === tooltipStates.newDataset && (
           <Modal anchor={newDatasetButton} modalID={tooltipStates.newDataset} onClose={dismissTooltip}>
-            <FormNewDataset
-              onOutsideClick={dismissTooltip}
-              updateState={updateState}
-            />
+            <FormNewDataset onOutsideClick={dismissTooltip} updateState={updateState} />
           </Modal>
         )}
         {appTooltipState === tooltipStates.addProvider && (
           <Modal anchor={addProviderButton} modalID={tooltipStates.addProvider} onClose={dismissTooltip}>
-            <FormAddProvider
-              updateState={updateState}
-            />
+            <FormAddProvider updateState={updateState} />
           </Modal>
         )}
         {appTooltipState === tooltipStates.addWallet && (
           <Modal anchor={addWalletButton} modalID={tooltipStates.addWallet} onClose={dismissTooltip}>
-            <FormAddWallet
-              onOutsideClick={dismissTooltip}
-            />
+            <FormAddWallet onOutsideClick={dismissTooltip} />
           </Modal>
         )}
-        {appTooltipState === tooltipStates.attachContent && (
-          <FormUploadData
-            onOutsideClick={dismissTooltip}
-            updateState={updateState}
-            selectedDataset={selectedDataset}
-          />
-        )}
+        {appTooltipState === tooltipStates.attachContent && <FormUploadData onOutsideClick={dismissTooltip} updateState={updateState} selectedDataset={selectedDataset} />}
         {appTooltipState === tooltipStates.addReplication && (
           <Modal anchor={addReplicationButton} modalID={tooltipStates.addReplication} onClose={dismissTooltip}>
-            <FormAddReplication
-              onOutsideClick={dismissTooltip}
-              updateState={updateState}
-              providers={state.providers}
-              datasets={state.datasets}
-            />
+            <FormAddReplication onOutsideClick={dismissTooltip} updateState={updateState} providers={state.providers} datasets={state.datasets} />
           </Modal>
         )}
         {appTooltipState === tooltipStates.associateWallet && (
-          <FormAssociateWallet
-            onOutsideClick={dismissTooltip}
-            selectedWallet={selectedWallet}
-            state={state}
-            updateState={updateState}
-          />
+          <FormAssociateWallet onOutsideClick={dismissTooltip} selectedWallet={selectedWallet} state={state} updateState={updateState} />
         )}
       </AppBody>
     </DefaultLayout>
-  )
+  );
 }
