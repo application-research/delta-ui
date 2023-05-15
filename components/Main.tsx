@@ -10,12 +10,19 @@ import AppPtolemy from '@components/apps/ptolemy/Ptolemy';
 import { getCookie, setCookie } from '@root/modules/cookies';
 
 export default function Main(props) {
-  const [activeApp, _setActiveApp] = React.useState(getCookie('active-app') || apps.ddm);
+  const [activeApp, _setActiveApp] = React.useState(apps.ddm);
   function setActiveApp(app: string) {
     _setActiveApp(app);
     setCookie('active-app', app);
   }
   const appNames = Object.keys(apps);
+
+  React.useEffect(() => {
+    let savedState = getCookie('active-app');
+    if (savedState) {
+      _setActiveApp(savedState);
+    }
+  })
 
   switch (activeApp) {
     case apps.ddm:
