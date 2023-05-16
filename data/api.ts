@@ -1,7 +1,7 @@
 import { getCookie } from '@root/modules/cookies';
 
 function apiURL() {
-  return (getCookie('ddm-address') || process.env.NEXT_PUBLIC_API_URL)?.replace(/\/$/, '') || 'http://localhost:1314';
+  return (getCookie('ddm-address') || process.env.NEXT_PUBLIC_API_URL)?.replace(/\/$/, '') || "http://localhost:1415";
 }
 
 function defaultHeaders() {
