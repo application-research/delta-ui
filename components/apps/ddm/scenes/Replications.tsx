@@ -26,7 +26,7 @@ export default function Replications(props: {
   const [searchPieceCID, setSearchPieceCID] = React.useState('');
   const [searchMessage, setSearchMessage] = React.useState('');
   const [offset, setOffset] = React.useState(0);
-  const limit = 5;
+  const limit = 100;
 
   React.useEffect(() => {
     applySearch();
@@ -96,7 +96,7 @@ export default function Replications(props: {
             <div className={tableStyles.fluidColumn}>Piece CID (CommP)</div>
             <div className={tableStyles.fluidColumn}>Message</div>
           </div>
-          {props.replications?.data.map((replication, i) => {
+          {props.replications?.data?.map((replication, i) => {
             return (
               <div key={i}>
                 <div className={tableStyles.row}>
@@ -138,22 +138,22 @@ function PageIndex(props: { offset: number, onChangeOffset: (number) => void, li
   const lastItem = props.offset + itemCount;
 
   return (
-    <div>
+    <div className={styles.pageIndex}>
       <span>
         Showing {firstItem} - {lastItem} of {props.total} results
       </span>
-      <span className={styles.indexButton} onClick={(e) => props.onChangeOffset(props.offset - props.limit)}>
-        &lt;
+      <span className={styles.indexButton} onClick={(e) => props.onChangeOffset(0)}>
+        &lt;&lt;
       </span>
       {...Array(pageCount || 1)
         .fill(0)
         .map((_, i) => (
-          <span className={styles.indexButton} onClick={(e) => props.onChangeOffset(i * props.limit)}>
+          <span className={i == currPage ? styles.indexButtonActive : styles.indexButton} onClick={(e) => props.onChangeOffset(i * props.limit)}>
             {i + 1}
           </span>
         ))}
-      <span className={styles.indexButton} onClick={(e) => props.onChangeOffset(props.offset + props.limit)}>
-        &gt;
+      <span className={styles.indexButton} onClick={(e) => props.onChangeOffset((pageCount - 1) * props.limit)}>
+        &gt;&gt;
       </span>
     </div>
   );
