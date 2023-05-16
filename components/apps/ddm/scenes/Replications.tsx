@@ -10,9 +10,14 @@ import Input from '@components/basic/Input';
 import LoadingIndicator from '@components/LoadingIndicator';
 import ProviderRef from '@components/ProviderRef';
 import Button from '@components/Button';
-import { GetReplicationsConfig } from '@root/data/api';
+import { GetReplicationsConfig, updateProvider } from '@root/data/api';
 
-export default function Replications(props: { replications: any[], updateReplications: () => void, setGetReplicationsConfig: (cfg: GetReplicationsConfig) => void }) {
+export default function Replications(props: {
+  replications: any,
+  updateReplications: () => void,
+  getReplicationsConfig: GetReplicationsConfig,
+  setGetReplicationsConfig: (cfg: GetReplicationsConfig) => void,
+}) {
   const [searchDatasets, setSearchDatasets] = React.useState('');
   const [searchProviders, setSearchProviders] = React.useState('');
   const [searchTimeMin, setSearchTimeMin] = React.useState('');
@@ -20,9 +25,18 @@ export default function Replications(props: { replications: any[], updateReplica
   const [searchProposalCID, setSearchProposalCID] = React.useState('');
   const [searchPieceCID, setSearchPieceCID] = React.useState('');
   const [searchMessage, setSearchMessage] = React.useState('');
+  const [offset, setOffset] = React.useState(0);
+  const limit = 5;
+
+  React.useEffect(() => {
+    applySearch();
+    props.updateReplications();
+  }, [offset]);
 
   function applySearch() {
     props.setGetReplicationsConfig({
+      offset: offset,
+      limit: limit,
       datasets: searchDatasets.split(',').map((dataset) => dataset.trim()),
       providers: searchProviders.split(',').map((provider) => provider.trim()),
       timeMin: searchTimeMin && new Date(searchTimeMin),
@@ -82,7 +96,7 @@ export default function Replications(props: { replications: any[], updateReplica
             <div className={tableStyles.fluidColumn}>Piece CID (CommP)</div>
             <div className={tableStyles.fluidColumn}>Message</div>
           </div>
-          {props.replications?.map((replication, i) => {
+          {props.replications?.data.map((replication, i) => {
             return (
               <div key={i}>
                 <div className={tableStyles.row}>
@@ -102,7 +116,45 @@ export default function Replications(props: { replications: any[], updateReplica
           })}
         </div>
       }
+      <PageIndex
+        offset={offset}
+        onChangeOffset={(offset) => {
+          setOffset(offset);
+        }}
+        limit={limit}
+        total={props.replications?.totalCount}
+      />
       {props.replications === undefined && <LoadingIndicator padded />}
+    </div>
+  );
+}
+
+function PageIndex(props: { offset: number, onChangeOffset: (number) => void, limit: number, total: number }) {
+  const pageCount = Math.ceil(props.total / props.limit);
+  const currPage = Math.floor(props.offset / props.limit);
+
+  const itemCount = Math.min(props.limit, props.total - props.offset);
+  const firstItem = props.offset + 1;
+  const lastItem = props.offset + itemCount;
+
+  return (
+    <div>
+      <span>
+        Showing {firstItem} - {lastItem} of {props.total} results
+      </span>
+      <span className={styles.indexButton} onClick={(e) => props.onChangeOffset(props.offset - props.limit)}>
+        &lt;
+      </span>
+      {...Array(pageCount || 1)
+        .fill(0)
+        .map((_, i) => (
+          <span className={styles.indexButton} onClick={(e) => props.onChangeOffset(i * props.limit)}>
+            {i + 1}
+          </span>
+        ))}
+      <span className={styles.indexButton} onClick={(e) => props.onChangeOffset(props.offset + props.limit)}>
+        &gt;
+      </span>
     </div>
   );
 }

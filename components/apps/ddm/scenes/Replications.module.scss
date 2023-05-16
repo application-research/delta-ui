@@ -30,3 +30,13 @@
   flex-grow: 0;
   min-width: 10rem;
 }
+
+.indexButton {
+  // text-decoration: underline;
+  color: var(--color-primary);
+  margin: 0 0.5rem;
+
+  &:hover {
+    cursor: pointer;
+  }
+}

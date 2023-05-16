@@ -29,10 +29,10 @@ export default function DDM(props) {
   const [selectedProvider, setSelectedProvider] = React.useState('');
   const [selectedDataset, setSelectedDataset] = React.useState('');
   const [selectedWallet, setSelectedWallet] = React.useState('');
-  const [datasets, setDatasets] = React.useState([]);
-  const [providers, setProviders] = React.useState([]);
-  const [replications, setReplications] = React.useState([]);
-  const [wallets, setWallets] = React.useState([]);
+  const [datasets, setDatasets] = React.useState(undefined);
+  const [providers, setProviders] = React.useState(undefined);
+  const [replications, setReplications] = React.useState(undefined);
+  const [wallets, setWallets] = React.useState(undefined);
   const [health, setHealth] = React.useState(undefined);
   const [commitHash, setCommitHash] = React.useState(undefined);
   const [appTooltipState, setAppTooltipState] = React.useState(0);
@@ -46,12 +46,12 @@ export default function DDM(props) {
   };
 
   const getReplicationsConfig = React.useRef<GetReplicationsConfig>();
-  const setGetReplicationsConfig = (cfg: GetReplicationsConfig) => getReplicationsConfig.current = cfg;
+  const setGetReplicationsConfig = (cfg: GetReplicationsConfig) => (getReplicationsConfig.current = cfg);
 
-  const updateDatasets = async () => setDatasets(await getDatasets());
-  const updateProviders = async () => setProviders(await getProviders());
-  const updateReplications = async () => setReplications(await getReplications(getReplicationsConfig.current));
-  const updateWallets = async () => setWallets(await getWallets());
+  const updateDatasets = async () => { setDatasets(undefined); setDatasets(await getDatasets()) };
+  const updateProviders = async () => { setProviders(undefined); setProviders(await getProviders()) };
+  const updateReplications = async () => { setReplications(undefined); setReplications(await getReplications(getReplicationsConfig.current)) };
+  const updateWallets = async () => { setWallets(undefined); setWallets(await getWallets()) };
 
   const newDatasetButton = React.useRef(null);
   const addProviderButton = React.useRef(null);
@@ -67,10 +67,7 @@ export default function DDM(props) {
   }
 
   function dismissTooltip(id) {
-    console.log('closing ' + id + ', currently active ' + appTooltipState);
-    if (appTooltipState === id) {
-      setAppTooltipState(0);
-    }
+    setAppTooltipState((prev) => (prev === id ? 0 : prev));
   }
 
   React.useEffect(() => {
@@ -92,7 +89,7 @@ export default function DDM(props) {
     if (authToken) {
       updateDatasets();
       updateProviders();
-      updateReplications();
+      // updateReplications();
       updateWallets();
 
       updateHealth();
@@ -158,7 +155,14 @@ export default function DDM(props) {
             placeholder="(example: f0123456)"
           />
         )}
-        {appNavigationState === navigationStates.replications && <Replications replications={replications} updateReplications={updateReplications} setGetReplicationsConfig={setGetReplicationsConfig} />}
+        {appNavigationState === navigationStates.replications && (
+          <Replications
+            replications={replications}
+            updateReplications={updateReplications}
+            getReplicationsConfig={getReplicationsConfig.current}
+            setGetReplicationsConfig={setGetReplicationsConfig}
+          />
+        )}
         {appNavigationState === navigationStates.wallets && (
           <Wallets
             wallets={wallets}

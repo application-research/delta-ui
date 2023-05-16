@@ -169,6 +169,8 @@ export async function updateProvider(id: string, name: string, allowSelfService:
 }
 
 export interface GetReplicationsConfig {
+  offset: number,
+  limit: number,
   datasets: string[];
   providers: string[];
   timeMin: Date;
@@ -183,6 +185,8 @@ export async function getReplications(cfg: GetReplicationsConfig) {
 
   if (cfg) {
     path += '?' + new URLSearchParams({
+      offset: cfg.offset.toString(),
+      limit: cfg.limit.toString(),
       datasets: cfg.datasets?.join(','),
       providers: cfg.providers?.join(','),
       deal_time_start: cfg.timeMin && Math.floor(cfg.timeMin.getTime() / 1000).toString(),
