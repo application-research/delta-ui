@@ -175,6 +175,7 @@ export interface GetReplicationsConfig {
   providers: string[];
   timeMin: Date;
   timeMax: Date;
+  selfService: boolean,
   proposalCID: string;
   pieceCID: string;
   message: string;
@@ -191,6 +192,7 @@ export async function getReplications(cfg: GetReplicationsConfig) {
       providers: cfg.providers?.join(','),
       deal_time_start: cfg.timeMin && Math.floor(cfg.timeMin.getTime() / 1000).toString(),
       deal_time_end: cfg.timeMax && Math.floor(cfg.timeMax.getTime() / 1000).toString(),
+      self_service: cfg.selfService.toString(),
       proposal_cid: cfg.proposalCID,
       piece_cid: cfg.pieceCID,
       message: cfg.message,

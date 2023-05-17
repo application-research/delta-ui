@@ -11,6 +11,7 @@ import LoadingIndicator from '@components/LoadingIndicator';
 import ProviderRef from '@components/ProviderRef';
 import Button from '@components/Button';
 import { GetReplicationsConfig, updateProvider } from '@root/data/api';
+import Select from '@root/components/basic/Select';
 
 export default function Replications(props: {
   replications: any,
@@ -22,6 +23,7 @@ export default function Replications(props: {
   const [searchProviders, setSearchProviders] = React.useState('');
   const [searchTimeMin, setSearchTimeMin] = React.useState('');
   const [searchTimeMax, setSearchTimeMax] = React.useState('');
+  const [searchSelfService, setSearchSelfService] = React.useState('');
   const [searchProposalCID, setSearchProposalCID] = React.useState('');
   const [searchPieceCID, setSearchPieceCID] = React.useState('');
   const [searchMessage, setSearchMessage] = React.useState('');
@@ -41,6 +43,7 @@ export default function Replications(props: {
       providers: searchProviders.split(',').map((provider) => provider.trim()),
       timeMin: searchTimeMin && new Date(searchTimeMin),
       timeMax: searchTimeMax && new Date(searchTimeMax),
+      selfService: !!searchSelfService,
       proposalCID: searchProposalCID.trim(),
       pieceCID: searchPieceCID.trim(),
       message: searchMessage.trim(),
@@ -66,6 +69,12 @@ export default function Replications(props: {
                 </div>
                 <div className={styles.filterMenuColumn}>
                   <Input type="datetime-local" label="Deal Time Max." onChange={(e) => setSearchTimeMax(e.target.value)} />
+                </div>
+                <div className={styles.filterMenuColumn}>
+                  <Select label="Self-Service" onChange={e => setSearchSelfService(e.target.value)}>
+                    <option value="">Any</option>
+                    <option value="true">Self-Service Only</option>
+                  </Select>
                 </div>
               </div>
               <div className={styles.filterMenuRow}>
