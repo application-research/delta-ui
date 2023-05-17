@@ -12,6 +12,9 @@ import { getCookie, setCookie } from '@root/modules/cookies';
 export default function Main(props) {
   const [activeApp, _setActiveApp] = React.useState(apps.ddm);
   function setActiveApp(app: string) {
+    // TODO: app switching temporarily disabled
+    return;
+    
     _setActiveApp(app);
     setCookie('active-app', app);
   }
