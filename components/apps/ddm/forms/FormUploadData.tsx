@@ -14,7 +14,7 @@ import { pluralize, truncCid } from '@root/common/utilities';
 export default function FormUploadData(props: {
   selectedDataset: string,
   onOutsideClick: React.MouseEventHandler,
-  updateState: () => void,
+  updateDatasets: () => void,
 }) {
   const [datasetName, setDatasetName] = React.useState(props.selectedDataset || '');
   const [file, setFile] = React.useState(null);
@@ -48,7 +48,7 @@ export default function FormUploadData(props: {
       JSON.parse(fileContents);
 
       let res = await addContents(props.selectedDataset, fileContents);
-      props.updateState();
+      props.updateDatasets();
 
       setFeedback(
         <Feedback type='success'>

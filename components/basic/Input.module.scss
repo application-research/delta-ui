@@ -1,3 +1,5 @@
+@import './Label.module.scss';
+
 .body {
   position: relative;
 }
@@ -70,11 +72,4 @@
       color: var(--color-primary);
     }
   }
-}
-
-.label {
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  display: block;
-  color: gray;
 }

@@ -1,0 +1,55 @@
+.body {
+}
+
+.filterMenu {
+  border-bottom: 1px solid var(--color-border);
+  padding: 1.5rem;
+}
+
+.filterMenuBody {
+  display: flex;
+  flex-direction: column;
+  margin: 0 -1rem -1.5rem;
+}
+
+.filterMenuColumn {
+  flex-grow: 1;
+  flex-basis: 0;
+  margin: 0 1rem;
+}
+
+.filterMenuRow {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 1.5rem;
+}
+
+.filterMenuButtonColumn {
+  @extend .filterMenuColumn;
+
+  flex-grow: 0;
+  min-width: 10rem;
+}
+
+.indexButton {
+  // text-decoration: underline;
+  color: var(--color-primary);
+  margin: 0 0.5rem;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.pageIndex {
+  margin: 1.5rem;
+}
+
+.indexButtonActive {
+  @extend .indexButton;
+
+  // color: var(--color-text);
+  font-size: 1.2em;
+  font-weight: bold;
+  text-decoration: underline;
+}

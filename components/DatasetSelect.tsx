@@ -1,8 +1,8 @@
-import Select from '@components/Select';
+import Select from '@components/basic/Select';
 
 export default function ProviderSelect(props) {
   return (
-    <Select default={'select a dataset...'} {...props}>
+    <Select placeholder={'select a dataset...'} {...props}>
       {props.datasets?.map((dataset, i) => {
         return (
           <option value={dataset.name}>{dataset.name}</option>

@@ -7,9 +7,9 @@ function apiURL() {
 function defaultHeaders() {
   return {
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer ' + getCookie('auth'),
-  }
-};
+    Authorization: 'Bearer ' + getCookie('auth'),
+  };
+}
 
 // Checks only whether an auth key is in a valid format, without contacting
 // delta-dm API. Optionally accepts an auth key parameter - if not provided, the
@@ -38,7 +38,7 @@ export async function checkAuth(auth?: string, ddmAddress?: string): Promise<boo
     res = await fetch((ddmAddress || apiURL()) + '/api/v1/health', {
       headers: {
         ...defaultHeaders(),
-        'Authorization': 'Bearer ' + auth,
+        Authorization: 'Bearer ' + auth,
       },
       signal: abortController.signal,
     });
@@ -57,7 +57,7 @@ export async function checkAuth(auth?: string, ddmAddress?: string): Promise<boo
   }
 
   if (!res.ok) {
-    throw new Error('Unknown authorization failure: ' + await res.text());
+    throw new Error('Unknown authorization failure: ' + (await res.text()));
   }
 
   return true;
@@ -77,33 +77,27 @@ export async function getHealth() {
 
 export async function getDatasets() {
   const res = await fetch(apiURL() + '/api/v1/datasets', {
-    headers: defaultHeaders()
+    headers: defaultHeaders(),
   });
 
   if (!res.ok) {
     throw new Error(await res.text());
   }
-  
+
   return await res.json();
 }
 
-export async function addDataset(
-  name: string,
-  replications: number,
-  durationDays: number,
-  unsealed: boolean,
-  indexed: boolean,
-) {
+export async function addDataset(name: string, replications: number, durationDays: number, unsealed: boolean, indexed: boolean) {
   const res = await fetch(apiURL() + '/api/v1/datasets', {
     method: 'post',
     headers: defaultHeaders(),
     body: JSON.stringify({
-      'name': name,
-      'replication_quota': Number(replications),
-      'deal_duration': Number(durationDays),
-      'unsealed': unsealed,
-      'indexed': indexed,
-    })
+      name: name,
+      replication_quota: Number(replications),
+      deal_duration: Number(durationDays),
+      unsealed: unsealed,
+      indexed: indexed,
+    }),
   });
 
   if (!res.ok) {
@@ -113,14 +107,11 @@ export async function addDataset(
   return await res.json();
 }
 
-export async function addContents(
-  datasetName: string,
-  body: string,
-) {
+export async function addContents(datasetName: string, body: string) {
   const res = await fetch(apiURL() + '/api/v1/contents/' + datasetName, {
     method: 'post',
     headers: defaultHeaders(),
-    body: body
+    body: body,
   });
 
   if (!res.ok) {
@@ -132,13 +123,13 @@ export async function addContents(
 
 export async function getProviders() {
   const res = await fetch(apiURL() + '/api/v1/providers', {
-    headers: defaultHeaders()
+    headers: defaultHeaders(),
   });
 
   if (!res.ok) {
     throw new Error(await res.text());
   }
-  
+
   return await res.json();
 }
 
@@ -147,9 +138,9 @@ export async function addProvider(id: string, name: string) {
     method: 'post',
     headers: defaultHeaders(),
     body: JSON.stringify({
-      'actor_id': id,
-      'actor_name': name,
-    })
+      actor_id: id,
+      actor_name: name,
+    }),
   });
 
   if (!res.ok) {
@@ -164,10 +155,10 @@ export async function updateProvider(id: string, name: string, allowSelfService:
     method: 'put',
     headers: defaultHeaders(),
     body: JSON.stringify({
-      'actor_name': name,
-      'allow_self_service': allowSelfService ? 'on' : 'off',
-      'allowed_datasets': allowedDatasets
-    })
+      actor_name: name,
+      allow_self_service: allowSelfService ? 'on' : 'off',
+      allowed_datasets: allowedDatasets,
+    }),
   });
 
   if (!res.ok) {
@@ -177,32 +168,60 @@ export async function updateProvider(id: string, name: string, allowSelfService:
   return await res.json();
 }
 
-export async function getReplications() {
-  const res = await fetch(apiURL() + '/api/v1/replications', {
-    headers: defaultHeaders()
-  });
+export interface GetReplicationsConfig {
+  offset: number,
+  limit: number,
+  datasets: string[];
+  providers: string[];
+  timeMin: Date;
+  timeMax: Date;
+  selfService: boolean,
+  proposalCID: string;
+  pieceCID: string;
+  message: string;
+}
 
-  if (!res.ok) {
-    throw new Error(await res.text());
+export async function getReplications(cfg: GetReplicationsConfig) {
+  let path = '/api/v1/replications';
+
+  if (cfg) {
+    path += '?' + new URLSearchParams({
+      offset: cfg.offset.toString(),
+      limit: cfg.limit.toString(),
+      datasets: cfg.datasets?.join(','),
+      providers: cfg.providers?.join(','),
+      deal_time_start: cfg.timeMin && Math.floor(cfg.timeMin.getTime() / 1000).toString(),
+      deal_time_end: cfg.timeMax && Math.floor(cfg.timeMax.getTime() / 1000).toString(),
+      self_service: cfg.selfService.toString(),
+      proposal_cid: cfg.proposalCID,
+      piece_cid: cfg.pieceCID,
+      message: cfg.message,
+    });
   }
   
+  const res = await fetch(
+    apiURL() + path,
+    {
+      headers: defaultHeaders(),
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(await res.text());
+  }
+
   return await res.json();
 }
 
-export async function addReplication(
-  providerID: string,
-  datasetName: string,
-  numDeals: number,
-  delayStartDays: number,
-) {
+export async function addReplication(providerID: string, datasetName: string, numDeals: number, delayStartDays: number) {
   const res = await fetch(apiURL() + '/api/v1/replications', {
     method: 'post',
     headers: defaultHeaders(),
     body: JSON.stringify({
-      'provider': providerID,
-      'dataset': datasetName,
-      'num_deals': Number(numDeals),
-      'delay_start_days': Number(delayStartDays),
+      provider: providerID,
+      dataset: datasetName,
+      num_deals: Number(numDeals),
+      delay_start_days: Number(delayStartDays),
     }),
   });
 
@@ -230,9 +249,9 @@ export async function associateWallet(address: string, datasets: string[]) {
     method: 'post',
     headers: defaultHeaders(),
     body: JSON.stringify({
-      'address': address,
-      'datasets': datasets
-    })
+      address: address,
+      datasets: datasets,
+    }),
   });
 
   if (!res.ok) {

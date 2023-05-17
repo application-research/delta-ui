@@ -7,12 +7,16 @@ import styles from './FormAddReplication.module.scss';
 
 import Dismissible from '@components/Dismissible';
 import Button from '@components/Button';
-import Input from 'components/Input';
+import Input from 'components/basic/Input';
 import ProviderSelect from '@components/ProviderSelect';
 import DatasetSelect from '@components/DatasetSelect';
 import Feedback from '@components/Feedback';
 
-export default function FormAddReplication(props) {
+export default function FormAddReplication(props: {
+  providers: any[],
+  datasets: any[],
+  updateReplications: () => void,
+}) {
   const [providerID, setProviderID] = React.useState('');
   const [datasetName, setDatasetName] = React.useState('');
   const [numDeals, setNumDeals] = React.useState(1);
@@ -31,11 +35,9 @@ export default function FormAddReplication(props) {
       setLoading(true);
 
       await addReplication(providerID, datasetName, numDeals, delayStartDays);
-
-      await props.updateState();
+      props.updateReplications();
       
       setFeedback(<Feedback type='success' />);
-      setTimeout(props.onOutsideClick, 2500);
     } catch (e) {
       setFeedback(<Feedback type='error'>{e.toString()}</Feedback>);
     } finally {
@@ -44,14 +46,14 @@ export default function FormAddReplication(props) {
   }
 
   return (
-    <Dismissible className={styles.body} onOutsideClick={props.onOutsideClick}>
+    <div>
       <h2 className={styles.heading}>Add replication</h2>
       <form onSubmit={onSubmit}>
         <div className={styles.formRow}>
           <ProviderSelect id='provider-id' label='Provider' providers={props.providers} onChange={e => setProviderID(e.target.value)} required autoFocus />
         </div>
         <div className={styles.formRow}>
-          <DatasetSelect id='dataset-name' label='Dataset' default='any' datasets={props.datasets} onChange={e => setDatasetName(e.target.value)} />
+          <DatasetSelect id='dataset-name' label='Dataset' placeholder='<< any dataset >>' datasets={props.datasets} onChange={e => setDatasetName(e.target.value)} />
         </div>
         <div className={styles.formRow}>
           <Input
@@ -70,6 +72,6 @@ export default function FormAddReplication(props) {
         </div>
       </form>
       {feedback}
-    </Dismissible>
+    </div>
   )
 }

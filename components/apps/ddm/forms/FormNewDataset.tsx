@@ -7,11 +7,13 @@ import { createSlug } from '@root/common/utilities';
 import styles from './FormNewDataset.module.scss';
 
 import Dismissible from '@components/Dismissible';
-import Input from '@components/Input';
+import Input from '@components/basic/Input';
 import Button from '@components/Button';
 import Feedback from '@components/Feedback';
 
-export default function FormNewDataset(props) {
+export default function FormNewDataset(props: {
+  updateDatasets: () => void,
+}) {
   let [name, setName] = React.useState('');
   let [replications, setReplications] = React.useState(6);
   let [duration, setDuration] = React.useState(540);
@@ -36,10 +38,9 @@ export default function FormNewDataset(props) {
         unsealed,
         indexed
       );
-      props.updateState();
+      props.updateDatasets();
 
       setFeedback(<Feedback type='success' />)
-      setTimeout(props.onOutsideClick, 2500);
     } catch (e) {
       setFeedback(<Feedback type='error'>{e.toString()}</Feedback>);
     } finally {
@@ -68,7 +69,7 @@ export default function FormNewDataset(props) {
   }
 
   return (
-    <Dismissible className={styles.body} onOutsideClick={props.onOutsideClick}>
+    <div>
       <form onSubmit={onSubmit}>
         <h2 className={styles.heading}>New dataset</h2>
         <div className={styles.formRow}>
@@ -91,6 +92,6 @@ export default function FormNewDataset(props) {
         </div>
       </form>
       {feedback}
-    </Dismissible>
+    </div>
   );
 }

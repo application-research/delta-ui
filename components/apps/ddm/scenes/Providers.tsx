@@ -4,19 +4,27 @@ import * as React from 'react';
 import * as Utilities from '@common/utilities';
 import { updateProvider } from '@root/data/api';
 
-import styles from './SceneProviders.module.scss';
+import styles from './Providers.module.scss';
 import tableStyles from '@components/Table.module.scss';
 
-import Input from '@components/Input';
+import Input from '@components/basic/Input';
 import LoadingIndicator from '@components/LoadingIndicator';
 import ProviderRef from '@components/ProviderRef';
 import Button from '@components/Button';
 import TagSelect from '@components/TagSelect';
 
-export default function SceneProviders(props) {
+export default function Providers(props: {
+  providers: any[],
+  datasets: any[],
+  updateDatasets: () => void,
+  providerLabel: string,
+  placeholder: string,
+  search: string,
+  onSearchChange: (string) => void,
+}) {
   return (
     <div className={styles.body}>
-      {props.state.providers &&
+      {props.providers && (
         <div className={tableStyles.body}>
           <Input
             labelClassName={tableStyles.searchLabel}
@@ -34,24 +42,19 @@ export default function SceneProviders(props) {
             <span className={styles.columnProviderKey}>Provider Key</span>
             <span className={styles.columnAllowedDatasets}>Allowed Datasets</span>
           </div>
-          {props.state.providers
-            .filter(
-              (provider, i) => !props.search || provider.actor_id.includes(props.search)
-            )
-            .map(
-              (provider, i) => {
-                return <ProviderCard provider={provider} state={props.state} updateState={props.updateState} key={i} />
-              }
-            )
-          }
+          {props.providers
+            .filter((provider, i) => !props.search || provider.actor_id.includes(props.search))
+            .map((provider, i) => {
+              return <ProviderCard provider={provider} datasets={props.datasets} updateDatasets={props.updateDatasets} key={i} />;
+            })}
         </div>
-      }
-      {props.state.providers === undefined && <LoadingIndicator padded />}
+      )}
+      {props.providers === undefined && <LoadingIndicator padded />}
     </div>
   );
 }
 
-function ProviderCard(props) {
+function ProviderCard(props: { provider: any, datasets: any[], updateDatasets: () => void }) {
   let provider = props.provider;
 
   let [editing, setEditing] = React.useState(false);
@@ -60,7 +63,7 @@ function ProviderCard(props) {
   let [saving, setSaving] = React.useState(false);
   let [allowedDatasets, setAllowedDatasets] = React.useState(provider.allowed_datasets?.map((dataset, i) => dataset.name) || []);
 
-  let datasetNames = props.state.datasets?.map((dataset, i) => dataset.name) || [];
+  let datasetNames = props.datasets?.map((dataset, i) => dataset.name) || [];
 
   function cancelEdit() {
     setAllowSelfService(provider.allow_self_service);
@@ -82,40 +85,47 @@ function ProviderCard(props) {
       setSaving(false);
     }
 
-    props.updateState();
+    props.updateDatasets();
   }
 
-  if (editing) return (
-    <div className={tableStyles.row}>
-      <span className={styles.columnProviderInfo}>
-        <Input
-          placeholder='unnamed'
-          label={<span>Rename <span style={{ textTransform: 'lowercase' }}>{provider.actor_id}</span></span>}
-          value={name}
-          onChange={e => setName(e.target.value)}
-        />
-      </span>
-      <span className={styles.columnBytesReplicated}>
-        <div>{Utilities.bytesToSize(provider.bytes_replicated.padded)} (padded)</div>
-        <div>{Utilities.bytesToSize(provider.bytes_replicated.raw)} (unpadded)</div>
-      </span>
-      <span className={styles.columnFlags}>
-        <Input type='checkbox' label='Allow self service' checked={allowSelfService} onChange={e => setAllowSelfService(e.target.checked)} />
-      </span>
-      <span className={styles.columnProviderKey}><ProviderKey providerKey={provider.key} /></span>
-      <span className={styles.columnAllowedDatasets}>
-        <TagSelect
-          selected={allowedDatasets}
-          setSelected={setAllowedDatasets}
-          options={datasetNames}
-        />
-      </span>
-      <Button className={styles.columnButtonCancel} onClick={e => cancelEdit()} disabled={saving}>Cancel Edit</Button>
-      <Button className={styles.columnButtonSave} onClick={e => submitEdit()} loading={saving}>
-        <span>Save <span style={{ textTransform: 'lowercase' }}>{provider.actor_id}</span></span>
-      </Button>
-    </div>
-  );
+  if (editing)
+    return (
+      <div className={tableStyles.row}>
+        <span className={styles.columnProviderInfo}>
+          <Input
+            placeholder="unnamed"
+            label={
+              <span>
+                Rename <span style={{ textTransform: 'lowercase' }}>{provider.actor_id}</span>
+              </span>
+            }
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </span>
+        <span className={styles.columnBytesReplicated}>
+          <div>{Utilities.bytesToSize(provider.bytes_replicated.padded)} (padded)</div>
+          <div>{Utilities.bytesToSize(provider.bytes_replicated.raw)} (unpadded)</div>
+        </span>
+        <span className={styles.columnFlags}>
+          <Input type="checkbox" label="Allow self service" checked={allowSelfService} onChange={(e) => setAllowSelfService(e.target.checked)} />
+        </span>
+        <span className={styles.columnProviderKey}>
+          <ProviderKey providerKey={provider.key} />
+        </span>
+        <span className={styles.columnAllowedDatasets}>
+          <TagSelect selected={allowedDatasets} setSelected={setAllowedDatasets} options={datasetNames} />
+        </span>
+        <Button className={styles.columnButtonCancel} onClick={(e) => cancelEdit()} disabled={saving}>
+          Cancel Edit
+        </Button>
+        <Button className={styles.columnButtonSave} onClick={(e) => submitEdit()} loading={saving}>
+          <span>
+            Save <span style={{ textTransform: 'lowercase' }}>{provider.actor_id}</span>
+          </span>
+        </Button>
+      </div>
+    );
 
   return (
     <div className={tableStyles.row}>
@@ -128,26 +138,24 @@ function ProviderCard(props) {
         <div>{Utilities.bytesToSize(provider.bytes_replicated.raw)} (unpadded)</div>
       </span>
       <span className={styles.columnFlags}>
-        <Input type='checkbox' label='Allow self service' checked={provider.allow_self_service} disabled />
+        <Input type="checkbox" label="Allow self service" checked={provider.allow_self_service} disabled />
       </span>
-      <span className={styles.columnProviderKey}><ProviderKey providerKey={provider.key} /></span>
+      <span className={styles.columnProviderKey}>
+        <ProviderKey providerKey={provider.key} />
+      </span>
       <span className={styles.columnAllowedDatasets}>
-        <TagSelect
-          selected={allowedDatasets}
-          setSelected={setAllowedDatasets}
-          options={datasetNames}
-          disabled
-        />
+        <TagSelect selected={allowedDatasets} setSelected={setAllowedDatasets} options={datasetNames} disabled />
       </span>
-      <Button className={styles.columnButtonManage} onClick={e => setEditing(true)}>
-        <span>Manage <span style={{ textTransform: 'lowercase' }}>{provider.actor_id}</span></span>
+      <Button className={styles.columnButtonManage} onClick={(e) => setEditing(true)}>
+        <span>
+          Manage <span style={{ textTransform: 'lowercase' }}>{provider.actor_id}</span>
+        </span>
       </Button>
     </div>
   );
 }
 
 function ProviderKey(props) {
-
   const [copied, setCopied] = React.useState(false);
 
   function copy() {
@@ -160,7 +168,9 @@ function ProviderKey(props) {
   return (
     <span>
       <span className={styles.secret}>{props.providerKey}</span>
-      <span className={styles.copy} onClick={copy}>{copied ? 'copied ✓' : 'copy 📋'}</span>
+      <span className={styles.copy} onClick={copy}>
+        {copied ? 'copied ✓' : 'copy 📋'}
+      </span>
     </span>
   );
 }

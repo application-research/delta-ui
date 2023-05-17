@@ -3,16 +3,24 @@
 import * as React from 'react';
 import * as Utilities from '@common/utilities';
 
-import styles from './SceneDatasets.module.scss';
+import styles from './Datasets.module.scss';
 import tableStyles from '@components/Table.module.scss';
 
-import Input from '@components/Input';
+import Input from '@components/basic/Input';
 import LoadingIndicator from '@components/LoadingIndicator';
 import WalletRef from '@components/WalletRef';
 
-export default function SceneDatasets(props) {
+export default function Datasets(props: {
+  datasets: any[],
+  searchLabel: string,
+  search: string,
+  onSearchChange: (string) => void,
+  placeholder: string,
+  setSelectedDataset: (string) => void,
+  onAttachContent: () => void,
+}) {
   return (<div className={styles.body}>
-    {props.state.datasets &&
+    {props.datasets &&
       <div className={tableStyles.body}>
         <Input
           labelClassName={tableStyles.searchLabel}
@@ -33,7 +41,7 @@ export default function SceneDatasets(props) {
           <span className={tableStyles.column}>Indexed</span>
           <span className={tableStyles.fluidColumn}>Wallets</span>
         </div>
-        {props.state.datasets
+        {props.datasets
           .filter((dataset, i) => !props.search || dataset.name.includes(props.search))
           .map((dataset, i) => {
             let progress = dataset.bytes_replicated.padded / dataset.bytes_total.padded / dataset.replication_quota;
@@ -66,6 +74,6 @@ export default function SceneDatasets(props) {
         }
       </div>
     }
-    {props.state.datasets === undefined && <LoadingIndicator padded />}
+    {props.datasets === undefined && <LoadingIndicator padded />}
   </div>);
 }
