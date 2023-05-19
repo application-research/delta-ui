@@ -18,6 +18,7 @@ export default function Datasets(props: {
   placeholder: string,
   setSelectedDataset: (string) => void,
   onAttachContent: () => void,
+  attachContentButton: React.MutableRefObject<any>
 }) {
   return (<div className={styles.body}>
     {props.datasets &&
@@ -37,8 +38,6 @@ export default function Datasets(props: {
           <span className={tableStyles.column}>Deals Made</span>
           <span className={tableStyles.column}>Replication Quota</span>
           <span className={tableStyles.column}>Duration</span>
-          <span className={tableStyles.column}>Unsealed</span>
-          <span className={tableStyles.column}>Indexed</span>
           <span className={tableStyles.fluidColumn}>Wallets</span>
         </div>
         {props.datasets
@@ -54,8 +53,6 @@ export default function Datasets(props: {
                   <span className={tableStyles.column}>{dataset.count_replicated}</span>
                   <span className={tableStyles.column}>{dataset.replication_quota}</span>
                   <span className={tableStyles.column}>{dataset.deal_duration} days</span>
-                  <span className={tableStyles.column}>{dataset.unsealed ? "true" : "false"}</span>
-                  <span className={tableStyles.column}>{dataset.indexed ? "true" : "false"}</span>
                   <span className={tableStyles.fluidColumn}><div>{dataset.wallets?.map((wallet, i) => {
                     return <div key={i}><WalletRef address={wallet.address} /></div>
                   })}</div></span>
@@ -67,7 +64,7 @@ export default function Datasets(props: {
                 <div className={tableStyles.rowButton} onClick={e => {
                   props.setSelectedDataset(dataset.name);
                   props.onAttachContent();
-                }}>➟ Attach content</div>
+                }}><span ref={props.attachContentButton}>➟ Attach content</span></div>
               </div>
             )
           })

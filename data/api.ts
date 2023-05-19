@@ -1,7 +1,7 @@
 import { getCookie } from '@root/modules/cookies';
 
 function apiURL() {
-  return (getCookie('ddm-address') || process.env.NEXT_PUBLIC_API_URL)?.replace(/\/$/, '') || "http://localhost:1415";
+  return (getCookie('ddm-address') || process.env.NEXT_PUBLIC_API_URL)?.replace(/\/$/, '') || 'http://localhost:1415';
 }
 
 function defaultHeaders() {
@@ -87,7 +87,7 @@ export async function getDatasets() {
   return await res.json();
 }
 
-export async function addDataset(name: string, replications: number, durationDays: number, unsealed: boolean, indexed: boolean) {
+export async function addDataset(name: string, replications: number, durationDays: number) {
   const res = await fetch(apiURL() + '/api/v1/datasets', {
     method: 'post',
     headers: defaultHeaders(),
@@ -95,8 +95,6 @@ export async function addDataset(name: string, replications: number, durationDay
       name: name,
       replication_quota: Number(replications),
       deal_duration: Number(durationDays),
-      unsealed: unsealed,
-      indexed: indexed,
     }),
   });
 
@@ -168,14 +166,45 @@ export async function updateProvider(id: string, name: string, allowSelfService:
   return await res.json();
 }
 
+export async function getReplicationProfiles() {
+  const res = await fetch(apiURL() + '/api/v1/replication-profiles', {
+    headers: defaultHeaders(),
+  });
+
+  if (!res.ok) {
+    throw new Error(await res.text());
+  }
+
+  return await res.json();
+}
+
+export async function addReplicationProfile(provider: string, dataset: string, indexed: boolean, unsealed: boolean) {
+  const res = await fetch(apiURL() + '/api/v1/replication-profiles', {
+    method: 'post',
+    headers: defaultHeaders(),
+    body: JSON.stringify({
+      provider_actor_id: provider,
+      dataset_name: dataset,
+      indexed: indexed,
+      unsealed: unsealed,
+    }),
+  });
+
+  if (!res.ok) {
+    throw new Error(await res.text());
+  }
+
+  return await res.json();
+}
+
 export interface GetReplicationsConfig {
-  offset: number,
-  limit: number,
+  offset: number;
+  limit: number;
   datasets: string[];
   providers: string[];
   timeMin: Date;
   timeMax: Date;
-  selfService: boolean,
+  selfService: boolean;
   proposalCID: string;
   pieceCID: string;
   message: string;
@@ -185,26 +214,25 @@ export async function getReplications(cfg: GetReplicationsConfig) {
   let path = '/api/v1/replications';
 
   if (cfg) {
-    path += '?' + new URLSearchParams({
-      offset: cfg.offset.toString(),
-      limit: cfg.limit.toString(),
-      datasets: cfg.datasets?.join(','),
-      providers: cfg.providers?.join(','),
-      deal_time_start: cfg.timeMin && Math.floor(cfg.timeMin.getTime() / 1000).toString(),
-      deal_time_end: cfg.timeMax && Math.floor(cfg.timeMax.getTime() / 1000).toString(),
-      self_service: cfg.selfService.toString(),
-      proposal_cid: cfg.proposalCID,
-      piece_cid: cfg.pieceCID,
-      message: cfg.message,
-    });
+    path +=
+      '?' +
+      new URLSearchParams({
+        offset: cfg.offset.toString(),
+        limit: cfg.limit.toString(),
+        datasets: cfg.datasets?.join(','),
+        providers: cfg.providers?.join(','),
+        deal_time_start: cfg.timeMin && Math.floor(cfg.timeMin.getTime() / 1000).toString(),
+        deal_time_end: cfg.timeMax && Math.floor(cfg.timeMax.getTime() / 1000).toString(),
+        self_service: cfg.selfService.toString(),
+        proposal_cid: cfg.proposalCID,
+        piece_cid: cfg.pieceCID,
+        message: cfg.message,
+      });
   }
-  
-  const res = await fetch(
-    apiURL() + path,
-    {
-      headers: defaultHeaders(),
-    }
-  );
+
+  const res = await fetch(apiURL() + path, {
+    headers: defaultHeaders(),
+  });
 
   if (!res.ok) {
     throw new Error(await res.text());

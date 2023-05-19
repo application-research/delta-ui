@@ -4,7 +4,7 @@ export default function ProviderSelect(props) {
   return (
     <Select placeholder='select a provider...' {...props}>
       {props.providers?.map((provider, i) => 
-        <option value={provider.actor_id} key={provider}>
+        <option value={provider.actor_id} key={provider.actor_id}>
           {provider.actor_id} {provider.actor_name && `(${provider.actor_name})`}
         </option>
       )}

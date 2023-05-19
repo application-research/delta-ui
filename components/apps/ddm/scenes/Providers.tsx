@@ -40,7 +40,6 @@ export default function Providers(props: {
             <span className={styles.columnBytesReplicated}>Bytes Replicated</span>
             <span className={styles.columnFlags}>Flags</span>
             <span className={styles.columnProviderKey}>Provider Key</span>
-            <span className={styles.columnAllowedDatasets}>Allowed Datasets</span>
           </div>
           {props.providers
             .filter((provider, i) => !props.search || provider.actor_id.includes(props.search))
@@ -113,9 +112,6 @@ function ProviderCard(props: { provider: any, datasets: any[], updateDatasets: (
         <span className={styles.columnProviderKey}>
           <ProviderKey providerKey={provider.key} />
         </span>
-        <span className={styles.columnAllowedDatasets}>
-          <TagSelect selected={allowedDatasets} setSelected={setAllowedDatasets} options={datasetNames} />
-        </span>
         <Button className={styles.columnButtonCancel} onClick={(e) => cancelEdit()} disabled={saving}>
           Cancel Edit
         </Button>
@@ -142,9 +138,6 @@ function ProviderCard(props: { provider: any, datasets: any[], updateDatasets: (
       </span>
       <span className={styles.columnProviderKey}>
         <ProviderKey providerKey={provider.key} />
-      </span>
-      <span className={styles.columnAllowedDatasets}>
-        <TagSelect selected={allowedDatasets} setSelected={setAllowedDatasets} options={datasetNames} disabled />
       </span>
       <Button className={styles.columnButtonManage} onClick={(e) => setEditing(true)}>
         <span>

@@ -1,8 +1,9 @@
 export const navigationStates = {
   datasets: 1,
   providers: 2,
-  replications: 3,
-  wallets: 4,
+  replicationProfiles: 3,
+  replications: 4,
+  wallets: 5,
 };
 
 export const tooltipStates = {
@@ -10,8 +11,9 @@ export const tooltipStates = {
   attachContent: 2,
   addProvider: 3,
   addWallet: 4,
-  addReplication: 5,
-  associateWallet: 6,
+  addReplicationProfile: 5,
+  addReplication: 6,
+  associateWallet: 7,
 };
 
 export const apps = {

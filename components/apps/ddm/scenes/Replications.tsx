@@ -56,7 +56,7 @@ export default function Replications(props: {
       {
         <div className={tableStyles.body}>
           <div className={styles.filterMenu}>
-            <form className={styles.filterMenuBody} onClick={(e) => e.preventDefault()}>
+            <form className={styles.filterMenuBody} onSubmit={(e) => e.preventDefault()}>
               <div className={styles.filterMenuRow}>
                 <div className={styles.filterMenuColumn}>
                   <Input label="Datasets (Comma-Separated)" placeholder="one-dataset,two-dataset" onChange={(e) => setSearchDatasets(e.target.value)} />

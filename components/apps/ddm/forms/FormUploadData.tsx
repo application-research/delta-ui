@@ -77,7 +77,7 @@ export default function FormUploadData(props: {
   }
 
   return (
-    <Dismissible className={styles.body} onOutsideClick={props.onOutsideClick}>
+    <div>
       <h2 className={styles.heading}>Attach data for {props.selectedDataset}</h2>
       <p className={styles.paragraph}>Upload a <em>.json</em> dataset file describing contents to upload to the Filecoin network.</p>
       <form onSubmit={onUpload}>
@@ -92,6 +92,6 @@ export default function FormUploadData(props: {
         </div>
       </form>
       {feedback}
-    </Dismissible>
+    </div>
   );
 }

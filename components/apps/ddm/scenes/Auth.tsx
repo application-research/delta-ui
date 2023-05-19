@@ -12,7 +12,7 @@ export default function Auth(props) {
   // Store a tmp auth token in the component so the main application auth token
   // state doesn't update until the user submits the form
   const [tmpAuthToken, setTmpAuthToken] = React.useState(props.authToken || '');
-  const [tmpDDMAddress, setTmpDDMAddress] = React.useState(props.authToken || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1314');
+  const [tmpDDMAddress, setTmpDDMAddress] = React.useState(props.authToken || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1415');
   const [loading, setLoading] = React.useState(false);
 
   async function onSubmit(e) {
