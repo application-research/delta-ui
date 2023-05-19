@@ -21,34 +21,56 @@ export default function Replications(props: {
 }) {
   const [searchDatasets, setSearchDatasets] = React.useState('');
   const [searchProviders, setSearchProviders] = React.useState('');
-  const [searchTimeMin, setSearchTimeMin] = React.useState('');
-  const [searchTimeMax, setSearchTimeMax] = React.useState('');
+  const [searchTimeStart, setSearchTimeStart] = React.useState('');
+  const [searchTimeEnd, setSearchTimeEnd] = React.useState('');
   const [searchSelfService, setSearchSelfService] = React.useState('');
   const [searchProposalCID, setSearchProposalCID] = React.useState('');
   const [searchPieceCID, setSearchPieceCID] = React.useState('');
   const [searchMessage, setSearchMessage] = React.useState('');
   const [offset, setOffset] = React.useState(0);
+  const [refreshTrigger, setRefreshTrigger] = React.useState(false);
+
+  
   const limit = 100;
+  
+  function refresh() {
+    setRefreshTrigger(val => !val);
+  }
 
   React.useEffect(() => {
-    applySearch();
     props.updateReplications();
-  }, [offset]);
+  }, [JSON.stringify(props.getReplicationsConfig), offset, refreshTrigger]);
 
+  React.useEffect(() => applySearch(), []);
+  
   function applySearch() {
+    setOffset(0);
     props.setGetReplicationsConfig({
       offset: offset,
       limit: limit,
       datasets: searchDatasets.split(',').map((dataset) => dataset.trim()),
       providers: searchProviders.split(',').map((provider) => provider.trim()),
-      timeMin: searchTimeMin && new Date(searchTimeMin),
-      timeMax: searchTimeMax && new Date(searchTimeMax),
-      selfService: !!searchSelfService,
+      timeStart: searchTimeStart && new Date(searchTimeStart),
+      timeEnd: searchTimeEnd && new Date(searchTimeEnd),
+      selfService: searchSelfService === 'true' ? true : searchSelfService === 'false' ? false : undefined,
       proposalCID: searchProposalCID.trim(),
       pieceCID: searchPieceCID.trim(),
       message: searchMessage.trim(),
     });
-    props.updateReplications();
+    refresh();
+  }
+
+  function resetSearch() {
+    setSearchDatasets('');
+    setSearchProviders('');
+    setSearchTimeStart('');
+    setSearchTimeEnd('');
+    setSearchSelfService('');
+    setSearchProposalCID('');
+    setSearchPieceCID('');
+    setSearchMessage('');
+
+    props.setGetReplicationsConfig(null);
   }
 
   return (
@@ -56,41 +78,45 @@ export default function Replications(props: {
       {
         <div className={tableStyles.body}>
           <div className={styles.filterMenu}>
-            <form className={styles.filterMenuBody} onClick={(e) => e.preventDefault()}>
+            <form className={styles.filterMenuBody} onSubmit={(e) => e.preventDefault()}>
               <div className={styles.filterMenuRow}>
                 <div className={styles.filterMenuColumn}>
-                  <Input label="Datasets (Comma-Separated)" placeholder="one-dataset,two-dataset" onChange={(e) => setSearchDatasets(e.target.value)} />
+                  <Input label="Datasets (Comma-Separated)" placeholder="one-dataset, two-dataset" value={searchDatasets} onChange={(e) => setSearchDatasets(e.target.value)} />
                 </div>
                 <div className={styles.filterMenuColumn}>
-                  <Input label="Providers (Comma-Separated)" placeholder="f012345,f067890" onChange={(e) => setSearchProviders(e.target.value)} />
+                  <Input label="Providers (Comma-Separated)" placeholder="f012345, f067890" value={searchProviders} onChange={(e) => setSearchProviders(e.target.value)} />
                 </div>
                 <div className={styles.filterMenuColumn}>
-                  <Input type="datetime-local" label="Deal Time Min." onChange={(e) => setSearchTimeMin(e.target.value)} />
+                  <Input type="datetime-local" label="Deal Time Min." value={searchTimeStart} onChange={(e) => setSearchTimeStart(e.target.value)} />
                 </div>
                 <div className={styles.filterMenuColumn}>
-                  <Input type="datetime-local" label="Deal Time Max." onChange={(e) => setSearchTimeMax(e.target.value)} />
+                  <Input type="datetime-local" label="Deal Time Max." value={searchTimeEnd} onChange={(e) => setSearchTimeEnd(e.target.value)} />
                 </div>
                 <div className={styles.filterMenuColumn}>
-                  <Select label="Self-Service" onChange={e => setSearchSelfService(e.target.value)}>
+                  <Select label="Self-Service" value={searchSelfService} onChange={(e) => setSearchSelfService(e.target.value)}>
                     <option value="">Any</option>
-                    <option value="true">Self-Service Only</option>
+                    <option value="true">True</option>
+                    <option value="false">False</option>
                   </Select>
                 </div>
               </div>
               <div className={styles.filterMenuRow}>
                 <div className={styles.filterMenuColumn}>
-                  <Input label="Proposal CID" autoComplete="disabled" spellCheck="false" onChange={(e) => setSearchProposalCID(e.target.value)} />
+                  <Input label="Proposal CID" autoComplete="disabled" spellCheck="false" value={searchProposalCID} onChange={(e) => setSearchProposalCID(e.target.value)} />
                 </div>
                 <div className={styles.filterMenuColumn}>
-                  <Input label="Piece CID" autoComplete="off" onChange={(e) => setSearchPieceCID(e.target.value)} />
+                  <Input label="Piece CID" autoComplete="off" value={searchPieceCID} onChange={(e) => setSearchPieceCID(e.target.value)} />
                 </div>
               </div>
               <div className={styles.filterMenuRow}>
                 <div className={styles.filterMenuColumn}>
-                  <Input label="Message" onChange={(e) => setSearchMessage(e.target.value)} />
+                  <Input label="Message" value={searchMessage} onChange={(e) => setSearchMessage(e.target.value)} />
                 </div>
                 <div className={styles.filterMenuButtonColumn}>
-                  <Button onClick={applySearch}>Apply</Button>
+                  <Button onClick={resetSearch}>Reset</Button>
+                </div>
+                <div className={styles.filterMenuButtonColumn}>
+                  <Button onClick={applySearch} primary>Apply</Button>
                 </div>
               </div>
             </form>
@@ -146,6 +172,14 @@ function PageIndex(props: { offset: number, onChangeOffset: (number) => void, li
   const firstItem = props.offset + 1;
   const lastItem = props.offset + itemCount;
 
+  if (!props.total) {
+    return (
+      <div className={styles.pageIndex}>
+        <span>No results</span>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.pageIndex}>
       <span>
@@ -154,7 +188,7 @@ function PageIndex(props: { offset: number, onChangeOffset: (number) => void, li
       <span className={styles.indexButton} onClick={(e) => props.onChangeOffset(0)}>
         &lt;&lt;
       </span>
-      {...Array(pageCount || 1)
+      {...Array(pageCount)
         .fill(0)
         .map((_, i) => (
           <span className={i == currPage ? styles.indexButtonActive : styles.indexButton} onClick={(e) => props.onChangeOffset(i * props.limit)}>

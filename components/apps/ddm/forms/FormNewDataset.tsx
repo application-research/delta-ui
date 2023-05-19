@@ -88,7 +88,7 @@ export default function FormNewDataset(props: {
           <Input type="checkbox" label="Keep unsealed copy?" checked={unsealed} id="dataset-unsealed" onChange={e => setUnsealed(e.target.checked)} />
         </div>
         <div className={styles.formRow}>
-          <Button disabled={!isFormValid()} loading={loading}>Create</Button>
+          <Button disabled={!isFormValid()} loading={loading} primary>Create</Button>
         </div>
       </form>
       {feedback}
