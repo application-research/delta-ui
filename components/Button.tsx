@@ -11,6 +11,7 @@ const Button = (props: {
   disabled?: boolean,
   loading?: boolean,
   primary?: boolean,
+  type?: 'button' | 'reset' | 'submit',
   children?: React.ReactNode,
 }) => {
   return (
@@ -19,6 +20,7 @@ const Button = (props: {
       className={props.className || (props.primary ? styles.buttonPrimary : styles.button)}
       onClick={props.onClick}
       disabled={props.disabled || props.loading}
+      type={props.type}
     >
       {props.loading ? <LoadingIndicator /> : props.children}
     </button>

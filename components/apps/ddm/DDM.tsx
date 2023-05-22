@@ -45,7 +45,7 @@ export default function DDM(props) {
     setCookie('ddm-address', ddmAddress);
   };
 
-  const [getReplicationsConfig, setGetReplicationsConfig] = React.useState<GetReplicationsConfig>();
+  const [getReplicationsConfig, setGetReplicationsConfig] = React.useState({ limit: 3 } as GetReplicationsConfig);
 
   const updateDatasets = async () => { setDatasets(undefined); setDatasets(await getDatasets()) };
   const updateProviders = async () => { setProviders(undefined); setProviders(await getProviders()) };
