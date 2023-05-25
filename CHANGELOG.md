@@ -29,4 +29,4 @@ Based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and [Semantic 
   - Wallet CLI registration guide
   - Editable dataset / wallet association
 
-[0.1.0]: https://github.com/application-research/delta-ui
+[0.1.0]: https://github.com/application-research/delta-ui/releases/tag/v0.1.0
