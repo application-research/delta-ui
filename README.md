@@ -1,4 +1,4 @@
-# DELTA-NEXTJS-CLIENT
+# DELTA UI
 
 ### Setup
 

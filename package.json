@@ -1,6 +1,6 @@
 {
-  "name": "delta-data-manager",
-  "description": "delta data manager for import deals",
+  "name": "delta-ui",
+  "description": "React UI for Delta deal engine",
   "engines": {
     "node": ">=18"
   },
