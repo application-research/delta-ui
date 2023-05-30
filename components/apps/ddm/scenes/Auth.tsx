@@ -41,7 +41,7 @@ export default function Auth(props) {
       <form onSubmit={onSubmit}>
         <Input label="Delta API Authorization Token" id="auth-token" value={tmpAuthToken} onChange={e => setTmpAuthToken(e.target.value)} />
         <Input label="Delta-DM API Address" id='ddm-address' value={tmpDDMAddress} onChange={e => setTmpDDMAddress(e.target.value)} />
-        <Button disabled={!checkAuthFormat(tmpAuthToken)} loading={loading}>{tmpAuthToken == '' || checkAuthFormat(tmpAuthToken) ? 'Connect' : 'Invalid Token Format'}</Button>
+        <Button disabled={!checkAuthFormat(tmpAuthToken)} loading={loading} primary>{tmpAuthToken == '' || checkAuthFormat(tmpAuthToken) ? 'Connect' : 'Invalid Token Format'}</Button>
       </form>
     </div>
   )

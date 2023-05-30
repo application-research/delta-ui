@@ -19,36 +19,74 @@ export default function Replications(props: {
   getReplicationsConfig: GetReplicationsConfig,
   setGetReplicationsConfig: (cfg: GetReplicationsConfig) => void,
 }) {
-  const [searchDatasets, setSearchDatasets] = React.useState('');
-  const [searchProviders, setSearchProviders] = React.useState('');
-  const [searchTimeMin, setSearchTimeMin] = React.useState('');
-  const [searchTimeMax, setSearchTimeMax] = React.useState('');
-  const [searchSelfService, setSearchSelfService] = React.useState('');
-  const [searchProposalCID, setSearchProposalCID] = React.useState('');
-  const [searchPieceCID, setSearchPieceCID] = React.useState('');
-  const [searchMessage, setSearchMessage] = React.useState('');
-  const [offset, setOffset] = React.useState(0);
-  const limit = 100;
+  
+  const [refreshTrigger, setRefreshTrigger] = React.useState(false);
+  const cfg = React.useRef(props.getReplicationsConfig);
+  
+  function setSearchDatasets(val: string) { 
+    cfg.current.datasets = val.split(',').map((dataset) => dataset.trim());
+  }
+  function setSearchProviders(val: string) {
+    cfg.current.providers = val.split(',').map((provider) => provider.trim());
+  }
+  function setSearchTimeStart(val: string) {
+    cfg.current.timeStart = val && new Date(val);
+  }
+  function setSearchTimeEnd(val: string) {
+    cfg.current.timeEnd = val && new Date(val);
+  }
+  function setSearchSelfService(val: string) {
+    cfg.current.selfService = val === 'true' ? true : val === 'false' ? false : undefined;
+  }
+  function setSearchProposalCID(val: string) {
+    cfg.current.proposalCID = val.trim();
+  }
+  function setSearchPieceCID(val: string) {
+    cfg.current.pieceCID = val.trim();
+  } 
+  function setSearchMessage(val: string) {
+    cfg.current.message = val.trim();
+  }
+  function setSearchOffset(offset: number) {
+    cfg.current.offset = offset;
+    applySearch();
+  }
+  function setSearchLimit(limit: number) {
+    cfg.current.limit = limit;
+  }
 
+  let formRef = React.useRef();
+  
+  function refresh() {
+    setRefreshTrigger(val => !val);
+  }
+  
   React.useEffect(() => {
     applySearch();
+  }, []);
+  React.useEffect(() => {
     props.updateReplications();
-  }, [offset]);
-
+    console.log(props.getReplicationsConfig);
+  }, [JSON.stringify(props.getReplicationsConfig), refreshTrigger]);
+  
   function applySearch() {
-    props.setGetReplicationsConfig({
-      offset: offset,
-      limit: limit,
-      datasets: searchDatasets.split(',').map((dataset) => dataset.trim()),
-      providers: searchProviders.split(',').map((provider) => provider.trim()),
-      timeMin: searchTimeMin && new Date(searchTimeMin),
-      timeMax: searchTimeMax && new Date(searchTimeMax),
-      selfService: !!searchSelfService,
-      proposalCID: searchProposalCID.trim(),
-      pieceCID: searchPieceCID.trim(),
-      message: searchMessage.trim(),
-    });
-    props.updateReplications();
+    props.setGetReplicationsConfig(cfg.current);
+    refresh();
+  }
+
+  function resetSearch() {
+    (formRef.current as HTMLFormElement)?.reset();
+    cfg.current = {
+      limit: cfg.current.limit,
+      offset: 0,
+    } as GetReplicationsConfig;
+    applySearch();
+  }
+
+  function onSubmit(e) {
+    cfg.current.offset = 0;
+    e.preventDefault();
+    applySearch();
   }
 
   return (
@@ -56,24 +94,25 @@ export default function Replications(props: {
       {
         <div className={tableStyles.body}>
           <div className={styles.filterMenu}>
-            <form className={styles.filterMenuBody} onSubmit={(e) => e.preventDefault()}>
+            <form className={styles.filterMenuBody} ref={formRef} onSubmit={onSubmit}>
               <div className={styles.filterMenuRow}>
                 <div className={styles.filterMenuColumn}>
-                  <Input label="Datasets (Comma-Separated)" placeholder="one-dataset,two-dataset" onChange={(e) => setSearchDatasets(e.target.value)} />
+                  <Input label="Datasets (Comma-Separated)" placeholder="one-dataset, two-dataset" onChange={(e) => setSearchDatasets(e.target.value)} />
                 </div>
                 <div className={styles.filterMenuColumn}>
-                  <Input label="Providers (Comma-Separated)" placeholder="f012345,f067890" onChange={(e) => setSearchProviders(e.target.value)} />
+                  <Input label="Providers (Comma-Separated)" placeholder="f012345, f067890" onChange={(e) => setSearchProviders(e.target.value)} />
                 </div>
                 <div className={styles.filterMenuColumn}>
-                  <Input type="datetime-local" label="Deal Time Min." onChange={(e) => setSearchTimeMin(e.target.value)} />
+                  <Input type="datetime-local" label="Deal Time Min." onChange={(e) => setSearchTimeStart(e.target.value)} />
                 </div>
                 <div className={styles.filterMenuColumn}>
-                  <Input type="datetime-local" label="Deal Time Max." onChange={(e) => setSearchTimeMax(e.target.value)} />
+                  <Input type="datetime-local" label="Deal Time Max." onChange={(e) => setSearchTimeEnd(e.target.value)} />
                 </div>
                 <div className={styles.filterMenuColumn}>
-                  <Select label="Self-Service" onChange={e => setSearchSelfService(e.target.value)}>
+                  <Select label="Self-Service" onChange={(e) => setSearchSelfService(e.target.value)}>
                     <option value="">Any</option>
-                    <option value="true">Self-Service Only</option>
+                    <option value="true">True</option>
+                    <option value="false">False</option>
                   </Select>
                 </div>
               </div>
@@ -90,7 +129,10 @@ export default function Replications(props: {
                   <Input label="Message" onChange={(e) => setSearchMessage(e.target.value)} />
                 </div>
                 <div className={styles.filterMenuButtonColumn}>
-                  <Button onClick={applySearch}>Apply</Button>
+                  <Button type='reset' onClick={resetSearch}>Reset</Button>
+                </div>
+                <div className={styles.filterMenuButtonColumn}>
+                  <Button type='submit' primary>Apply</Button>
                 </div>
               </div>
             </form>
@@ -125,14 +167,14 @@ export default function Replications(props: {
           })}
         </div>
       }
-      <PageIndex
-        offset={offset}
+      {props.replications !== undefined && <PageIndex
+        offset={props.getReplicationsConfig.offset || 0}
         onChangeOffset={(offset) => {
-          setOffset(offset);
+          setSearchOffset(offset);
         }}
-        limit={limit}
-        total={props.replications?.totalCount}
-      />
+        limit={props.getReplicationsConfig.limit || 100}
+        total={props.replications?.totalCount || 0}
+      />}
       {props.replications === undefined && <LoadingIndicator padded />}
     </div>
   );
@@ -145,6 +187,16 @@ function PageIndex(props: { offset: number, onChangeOffset: (number) => void, li
   const itemCount = Math.min(props.limit, props.total - props.offset);
   const firstItem = props.offset + 1;
   const lastItem = props.offset + itemCount;
+
+  if (props.total === null) {
+    return (
+      <div className={styles.pageIndex}>
+        <span>No results</span>
+      </div>
+    );
+  }
+
+  console.log("page count: " + pageCount);
 
   return (
     <div className={styles.pageIndex}>

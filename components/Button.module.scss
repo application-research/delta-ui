@@ -1,11 +1,11 @@
 .button {
-  background-color: var(--color-primary);
+  background: var(--color-border);
+  border: none;
   color: var(--color-text);
   box-sizing: border-box;
   text-transform: uppercase;
   border-radius: 4px;
   outline: 0;
-  border: 0;
   min-height: 40px;
   width: 100%;
   padding: 4px 24px 4px 24px;
@@ -32,4 +32,11 @@
     background: var(--color-border);
     color: var(--color-background);
   }
+}
+
+.buttonPrimary {
+  @extend .button;
+  
+  border: none;
+  background: var(--color-primary);
 }

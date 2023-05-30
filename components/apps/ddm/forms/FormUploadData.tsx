@@ -13,7 +13,6 @@ import { pluralize, truncCid } from '@root/common/utilities';
 
 export default function FormUploadData(props: {
   selectedDataset: string,
-  onOutsideClick: React.MouseEventHandler,
   updateDatasets: () => void,
 }) {
   const [datasetName, setDatasetName] = React.useState(props.selectedDataset || '');
@@ -64,7 +63,6 @@ export default function FormUploadData(props: {
           {res.fail && <p>Skipped {res.fail.length} duplicate {pluralize('content', res.fail.length)}</p>}
         </Feedback>
       );
-      setTimeout(props.onOutsideClick, 2500);
     } catch (e) {
       setFeedback(<Feedback type='error'>{e.toString()}</Feedback>);
     } finally {
@@ -88,7 +86,7 @@ export default function FormUploadData(props: {
           <FileUpload label='Content JSON' onUpload={file => setFile(file)} />
         </div>
         <div className={styles.formRow}>
-          <Button disabled={!isFormValid()} loading={loading}>Upload</Button>
+          <Button disabled={!isFormValid()} loading={loading} primary>Upload</Button>
         </div>
       </form>
       {feedback}

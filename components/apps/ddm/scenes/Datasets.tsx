@@ -17,9 +17,11 @@ export default function Datasets(props: {
   onSearchChange: (string) => void,
   placeholder: string,
   setSelectedDataset: (string) => void,
-  onAttachContent: () => void,
   attachContentButton: React.MutableRefObject<any>
+  onAttachContent: (anchor: React.ReactHTMLElement<any>) => void,
 }) {
+  const modalAnchors = React.useRef({});
+  
   return (<div className={styles.body}>
     {props.datasets &&
       <div className={tableStyles.body}>
@@ -45,8 +47,9 @@ export default function Datasets(props: {
           .map((dataset, i) => {
             let progress = dataset.bytes_replicated.padded / dataset.bytes_total.padded / dataset.replication_quota;
             if (Number.isNaN(progress)) progress = 0;
+            
             return (
-              <div key={i}>
+              <div key={dataset.name}>
                 <div className={tableStyles.row}>
                   <span className={tableStyles.column}>{dataset.name}</span>
                   <span className={tableStyles.column}>{Utilities.bytesToSize(dataset.bytes_total.raw)}</span>
@@ -63,8 +66,8 @@ export default function Datasets(props: {
                 {/* <div className={tableStyles.rowButton}>➟ Make storage deals for this dataset</div> */}
                 <div className={tableStyles.rowButton} onClick={e => {
                   props.setSelectedDataset(dataset.name);
-                  props.onAttachContent();
-                }}><span ref={props.attachContentButton}>➟ Attach content</span></div>
+                  props.onAttachContent(modalAnchors.current[dataset.name]);
+                }}><span ref={el => modalAnchors.current[dataset.name] = el}>➟ Attach content</span></div>
               </div>
             )
           })

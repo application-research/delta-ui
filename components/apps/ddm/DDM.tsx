@@ -38,7 +38,7 @@ export default function DDM(props) {
   const [wallets, setWallets] = React.useState(undefined);
   const [health, setHealth] = React.useState(undefined);
   const [commitHash, setCommitHash] = React.useState(undefined);
-  const [appTooltipState, setAppTooltipState] = React.useState(0);
+  const [appTooltipID, setAppTooltipID] = React.useState(0);
   const [authToken, setAuthTokenEphemeral] = React.useState('');
   const setAuthToken = (authToken) => {
     setAuthTokenEphemeral(authToken);
@@ -48,13 +48,12 @@ export default function DDM(props) {
     setCookie('ddm-address', ddmAddress);
   };
 
-  const getReplicationsConfig = React.useRef<GetReplicationsConfig>();
-  const setGetReplicationsConfig = (cfg: GetReplicationsConfig) => (getReplicationsConfig.current = cfg);
+  const [getReplicationsConfig, setGetReplicationsConfig] = React.useState({ limit: 100 } as GetReplicationsConfig);
 
   const updateDatasets = async () => { setDatasets(undefined); setDatasets(await getDatasets()) };
   const updateProviders = async () => { setProviders(undefined); setProviders(await getProviders()) };
   const updateReplicationProfiles = async () => { setReplicationProfiles(undefined); setReplicationProfiles(await getReplicationProfiles())}
-  const updateReplications = async () => { setReplications(undefined); setReplications(await getReplications(getReplicationsConfig.current)) };
+  const updateReplications = async () => { setReplications(undefined); setReplications(await getReplications(getReplicationsConfig)) };
   const updateWallets = async () => { setWallets(undefined); setWallets(await getWallets()) };
 
   const newDatasetButton = React.useRef(null);
@@ -63,6 +62,12 @@ export default function DDM(props) {
   const addReplicationProfileButton = React.useRef(null);
   const addWalletButton = React.useRef(null);
   const attachContentButton = React.useRef(null);
+  
+  const anchor = React.useRef(null);
+  function setAppTooltipState(newID: any, newAnchor: React.ReactHTMLElement<any>) {
+    anchor.current = newAnchor;
+    setAppTooltipID(newID);
+  }
 
   async function updateHealth() {
     setHealth(await getHealth());
@@ -73,7 +78,7 @@ export default function DDM(props) {
   }
 
   function dismissTooltip(id) {
-    setAppTooltipState((prev) => (prev === id ? 0 : prev));
+    setAppTooltipID((prev) => (prev === id ? 0 : prev));
   }
 
   React.useEffect(() => {
@@ -121,23 +126,23 @@ export default function DDM(props) {
       `}</AppVersion>
       <AppNav>
         <AppNavItem onClick={(e) => setAppNavigationState(navigationStates.datasets)}>Datasets {appNavigationState === navigationStates.datasets && '➝'}</AppNavItem>
-        <AppNavSubItem onClick={(e) => setAppTooltipState(tooltipStates.newDataset)}>
+        <AppNavSubItem onClick={(e) => setAppTooltipState(tooltipStates.newDataset, newDatasetButton.current)}>
           <span ref={newDatasetButton}>+ New dataset</span>
         </AppNavSubItem>
         <AppNavItem onClick={(e) => setAppNavigationState(navigationStates.providers)}>Providers {appNavigationState === navigationStates.providers && '➝'}</AppNavItem>
-        <AppNavSubItem onClick={(e) => setAppTooltipState(tooltipStates.addProvider)}>
+        <AppNavSubItem onClick={(e) => setAppTooltipState(tooltipStates.addProvider, addProviderButton.current)}>
           <span ref={addProviderButton}>+ Add provider</span>
         </AppNavSubItem>
         <AppNavItem onClick={e => setAppNavigationState(navigationStates.replicationProfiles)}>Repl. Profiles {appNavigationState === navigationStates.replicationProfiles && '➝'}</AppNavItem>
-        <AppNavSubItem onClick={e => setAppTooltipState(tooltipStates.addReplicationProfile)}>
+        <AppNavSubItem onClick={e => setAppTooltipState(tooltipStates.addReplicationProfile, addReplicationProfileButton.current)}>
           <span ref={addReplicationProfileButton}>+ Add profile</span>
         </AppNavSubItem>
         <AppNavItem onClick={(e) => setAppNavigationState(navigationStates.replications)}>Replications {appNavigationState === navigationStates.replications && '➝'}</AppNavItem>
-        <AppNavSubItem onClick={(e) => setAppTooltipState(tooltipStates.addReplication)}>
+        <AppNavSubItem onClick={(e) => setAppTooltipState(tooltipStates.addReplication, addReplicationButton.current)}>
           <span ref={addReplicationButton}>+ Add replication</span>
         </AppNavSubItem>
         <AppNavItem onClick={(e) => setAppNavigationState(navigationStates.wallets)}>Wallets {appNavigationState === navigationStates.wallets && '➝'}</AppNavItem>
-        <AppNavSubItem onClick={(e) => setAppTooltipState(tooltipStates.addWallet)}>
+        <AppNavSubItem onClick={(e) => setAppTooltipState(tooltipStates.addWallet, addWalletButton.current)}>
           <span ref={addWalletButton}>+ Add wallet</span>
         </AppNavSubItem>
       </AppNav>
@@ -149,7 +154,7 @@ export default function DDM(props) {
             searchLabel="Search datasets"
             placeholder="(example: university-bird-sounds)"
             datasets={datasets}
-            onAttachContent={() => setAppTooltipState(tooltipStates.attachContent)}
+            onAttachContent={() => setAppTooltipState(tooltipStates.attachContent, anchor.current)}
             attachContentButton={attachContentButton}
             // selectedDataset={selectedDataset}
             setSelectedDataset={setSelectedDataset}
@@ -173,7 +178,7 @@ export default function DDM(props) {
           <Replications
             replications={replications}
             updateReplications={updateReplications}
-            getReplicationsConfig={getReplicationsConfig.current}
+            getReplicationsConfig={getReplicationsConfig}
             setGetReplicationsConfig={setGetReplicationsConfig}
           />
         )}
@@ -187,27 +192,33 @@ export default function DDM(props) {
           />
         )}
 
-        {appTooltipState === tooltipStates.newDataset && (
-          <Modal anchor={newDatasetButton} modalID={tooltipStates.newDataset} onClose={dismissTooltip}>
+        {appTooltipID === tooltipStates.newDataset && (
+          <Modal anchor={anchor} modalID={tooltipStates.newDataset} onClose={dismissTooltip}>
             <FormNewDataset updateDatasets={updateDatasets} />
           </Modal>
         )}
-        {appTooltipState === tooltipStates.addProvider && (
-          <Modal anchor={addProviderButton} modalID={tooltipStates.addProvider} onClose={dismissTooltip}>
+        {appTooltipID === tooltipStates.addProvider && (
+          <Modal anchor={anchor} modalID={tooltipStates.addProvider} onClose={dismissTooltip}>
             <FormAddProvider updateProviders={updateProviders} />
           </Modal>
         )}
-        {appTooltipState === tooltipStates.addWallet && (
-          <Modal anchor={addWalletButton} modalID={tooltipStates.addWallet} onClose={dismissTooltip}>
+        {appTooltipID === tooltipStates.addWallet && (
+          <Modal anchor={anchor} modalID={tooltipStates.addWallet} onClose={dismissTooltip}>
             <FormAddWallet onOutsideClick={dismissTooltip} />
           </Modal>
         )}
-        {appTooltipState === tooltipStates.attachContent && <Modal anchor={attachContentButton} modalID={tooltipStates.attachContent} onClose={dismissTooltip}><FormUploadData onOutsideClick={dismissTooltip} updateDatasets={updateDatasets} selectedDataset={selectedDataset} /></Modal>}
-        {appTooltipState === tooltipStates.addReplicationProfile && <Modal anchor={addReplicationProfileButton} modalID={tooltipStates.addReplicationProfile} onClose={dismissTooltip}>
-          <AddReplicationProfile datasets={datasets} providers={providers} updateReplicationProfiles={updateReplicationProfiles} />
-        </Modal>}
-        {appTooltipState === tooltipStates.addReplication && (
-          <Modal anchor={addReplicationButton} modalID={tooltipStates.addReplication} onClose={dismissTooltip}>
+        {appTooltipID === tooltipStates.addReplicationProfile && (
+          <Modal anchor={anchor} modalID={tooltipStates.addReplicationProfile} onClose={dismissTooltip}>
+            <AddReplicationProfile datasets={datasets} providers={providers} updateReplicationProfiles={updateReplicationProfiles} />
+          </Modal>
+        )}
+        {appTooltipID === tooltipStates.attachContent && (
+          <Modal anchor={anchor} modalID={tooltipStates.attachContent} onClose={dismissTooltip}>
+            <FormUploadData updateDatasets={updateDatasets} selectedDataset={selectedDataset} />
+          </Modal>
+        )}
+        {appTooltipID === tooltipStates.addReplication && (
+          <Modal anchor={anchor} modalID={tooltipStates.addReplication} onClose={dismissTooltip}>
             <FormAddReplication providers={providers} datasets={datasets} updateReplications={updateReplications} />
           </Modal>
         )}

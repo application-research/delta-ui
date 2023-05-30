@@ -68,7 +68,7 @@ export default function FormAddReplication(props: {
           <Input type='number' label='Delay Start (Days)' value={delayStartDays} onChange={e => setDelayStartDays(parseInt(e.target.value))} required />
         </div>
         <div className={styles.formRow}>
-          <Button loading={loading}>Add</Button>
+          <Button loading={loading} primary>Add</Button>
         </div>
       </form>
       {feedback}

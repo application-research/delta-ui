@@ -202,9 +202,9 @@ export interface GetReplicationsConfig {
   limit: number;
   datasets: string[];
   providers: string[];
-  timeMin: Date;
-  timeMax: Date;
-  selfService: boolean;
+  timeStart: Date;
+  timeEnd: Date;
+  selfService: boolean,
   proposalCID: string;
   pieceCID: string;
   message: string;
@@ -214,25 +214,41 @@ export async function getReplications(cfg: GetReplicationsConfig) {
   let path = '/api/v1/replications';
 
   if (cfg) {
-    path +=
-      '?' +
-      new URLSearchParams({
-        offset: cfg.offset.toString(),
-        limit: cfg.limit.toString(),
-        datasets: cfg.datasets?.join(','),
-        providers: cfg.providers?.join(','),
-        deal_time_start: cfg.timeMin && Math.floor(cfg.timeMin.getTime() / 1000).toString(),
-        deal_time_end: cfg.timeMax && Math.floor(cfg.timeMax.getTime() / 1000).toString(),
-        self_service: cfg.selfService.toString(),
-        proposal_cid: cfg.proposalCID,
-        piece_cid: cfg.pieceCID,
-        message: cfg.message,
-      });
-  }
+    let params = {
+      offset: cfg.offset?.toString(),
+      limit: cfg.limit?.toString(),
+      datasets: cfg.datasets?.join(','),
+      providers: cfg.providers?.join(','),
+      deal_time_start: !!cfg.timeStart && Math.floor(cfg.timeStart.getTime() / 1000).toString(),
+      deal_time_end: !!cfg.timeEnd && Math.floor(cfg.timeEnd.getTime() / 1000).toString(),
+      self_service: cfg.selfService?.toString(),
+      proposal_cid: cfg.proposalCID,
+      piece_cid: cfg.pieceCID,
+      message: cfg.message,
+    };
 
-  const res = await fetch(apiURL() + path, {
-    headers: defaultHeaders(),
-  });
+    // Remove values that are null or undefined
+    let ignoreKeys = [];
+    for (let key in params) {
+      if (!params[key]) {
+        ignoreKeys.push(key);
+      }
+    }
+    for (let key of ignoreKeys) {
+      delete params[key];
+    }
+    
+    path += '?' + new URLSearchParams(params);
+  }
+  
+  console.log(path);
+  
+  const res = await fetch(
+    apiURL() + path,
+    {
+      headers: defaultHeaders(),
+    }
+  );
 
   if (!res.ok) {
     throw new Error(await res.text());
