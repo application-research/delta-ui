@@ -33,6 +33,11 @@
   min-width: 16rem;
 }
 
+.columnCountReplicated {
+  @extend .column;
+  min-width: 16rem;
+}
+
 .columnFlags {
   @extend .column;
   min-width: 14rem;

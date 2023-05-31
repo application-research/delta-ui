@@ -38,6 +38,7 @@ export default function Providers(props: {
           <div className={tableStyles.header}>
             <span className={styles.columnProviderInfo}>Provider Info</span>
             <span className={styles.columnBytesReplicated}>Bytes Replicated</span>
+            <span className={styles.columnCountReplicated}>Count Replicated</span>
             <span className={styles.columnFlags}>Flags</span>
             <span className={styles.columnProviderKey}>Provider Key</span>
             <span className={styles.columnAllowedDatasets}>Allowed Datasets</span>
@@ -107,6 +108,9 @@ function ProviderCard(props: { provider: any, datasets: any[], updateDatasets: (
           <div>{Utilities.bytesToSize(provider.bytes_replicated.padded)} (padded)</div>
           <div>{Utilities.bytesToSize(provider.bytes_replicated.raw)} (unpadded)</div>
         </span>
+        <span className={styles.columnCountReplicated}>
+          <div>{provider.count_replicated}</div>
+        </span>
         <span className={styles.columnFlags}>
           <Input type="checkbox" label="Allow self service" checked={allowSelfService} onChange={(e) => setAllowSelfService(e.target.checked)} />
         </span>
@@ -137,6 +141,9 @@ function ProviderCard(props: { provider: any, datasets: any[], updateDatasets: (
         <div>{Utilities.bytesToSize(provider.bytes_replicated.padded)} (padded)</div>
         <div>{Utilities.bytesToSize(provider.bytes_replicated.raw)} (unpadded)</div>
       </span>
+      <span className={styles.columnCountReplicated}>
+          <div>{provider.count_replicated}</div>
+        </span>
       <span className={styles.columnFlags}>
         <Input type="checkbox" label="Allow self service" checked={provider.allow_self_service} disabled />
       </span>
