@@ -48,6 +48,10 @@
   pointer-events: none;
 }
 
+.disabledText {
+  color: gray;
+}
+
 .pageIndex {
   display: inline-flex;
   flex-direction: row;
@@ -63,6 +67,7 @@
   margin-right: 20px;
   display: inline-flex;
   flexDirection: row;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .indexButtonActive {

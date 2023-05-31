@@ -217,11 +217,13 @@ function PageIndex(props: { offset: number, onChangeOffset: (number) => void, on
         <span className={currPage == 0 ? styles.indexButtonDisable : styles.indexButton} onClick={(e) => props.onChangeOffset(--currPage * props.limit)}>
           &lt;
         </span>
-        <span>{ currPage + 1 } <span style={{color: 'grey'}}>of</span> { pageCount }</span>
+        <span>{ currPage + 1 } <span className={styles.disabledText}>of</span> { pageCount }</span>
         <span className={currPage == pageCount - 1 ? styles.indexButtonDisable : styles.indexButton} onClick={(e) => props.onChangeOffset(++currPage * props.limit)}>
           &gt;
         </span>
-        <span>{props.total} total</span>
+      </div>
+      <div className={styles.indexItems}>
+        <span>{props.total} <span className={styles.disabledText}>total</span></span>
       </div>
       <div className={styles.indexItems}>
         <Select onChange={(e) => props.onSearchLimit(e.target.value)} value={props.limit.toString()}>
@@ -231,7 +233,7 @@ function PageIndex(props: { offset: number, onChangeOffset: (number) => void, on
         </Select>
       </div>
       <div className={styles.indexItems}>
-        <span>Go to</span>
+        <span className={styles.disabledText}>Go to</span>
         <Input type="number" className={styles.goToInput} onKeyDown={ (e) => onGoTo(e)}/>
       </div>
     </div>
