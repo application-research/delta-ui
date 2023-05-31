@@ -234,7 +234,7 @@ function PageIndex(props: { offset: number, onChangeOffset: (number) => void, on
       </div>
       <div className={styles.indexItems}>
         <span className={styles.disabledText}>Go to</span>
-        <Input type="number" className={styles.goToInput} onKeyDown={ (e) => onGoTo(e)}/>
+        <Input type="number" className={styles.goToInput} onKeyDown={(e) => onGoTo(e)}/>
       </div>
     </div>
   );
