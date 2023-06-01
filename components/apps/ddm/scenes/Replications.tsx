@@ -53,6 +53,7 @@ export default function Replications(props: {
   }
   function setSearchLimit(limit: number) {
     cfg.current.limit = limit;
+    localStorage.setItem("settings.replications.limit", limit.toString())
     applySearch();
   }
 
