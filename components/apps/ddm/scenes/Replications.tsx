@@ -190,12 +190,7 @@ function PageIndex(props: { offset: number, onChangeOffset: (number) => void, on
   const pageCount = Math.ceil(props.total / props.limit);
   let currPage = Math.floor(props.offset / props.limit);
 
-  const limitOptions = [
-    {key: '100', label: '100 pp'},
-    {key: '50', label: '50 pp'},
-    {key: '25', label: '25 pp'},
-    {key: '10', label: '10 pp'},
-  ]
+  const limitOptions = [100, 50, 25, 10]
 
   const onGoTo = (e) => {
     if (e.key == 'Enter') {
@@ -229,7 +224,7 @@ function PageIndex(props: { offset: number, onChangeOffset: (number) => void, on
       <div className={styles.indexItems}>
         <Select onChange={(e) => props.onSearchLimit(e.target.value)} value={props.limit.toString()}>
           {limitOptions?.map((item, i) =>
-            <option value={item.key}>{item.label}</option>
+            <option key={i} value={item}>{item} pp</option>
           )}
         </Select>
       </div>
