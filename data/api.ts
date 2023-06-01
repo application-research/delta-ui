@@ -148,14 +148,13 @@ export async function addProvider(id: string, name: string) {
   return await res.json();
 }
 
-export async function updateProvider(id: string, name: string, allowSelfService: boolean, allowedDatasets: string[]) {
+export async function updateProvider(id: string, name: string, allowSelfService: boolean) {
   const res = await fetch(apiURL() + '/api/v1/providers/' + id, {
     method: 'put',
     headers: defaultHeaders(),
     body: JSON.stringify({
       actor_name: name,
       allow_self_service: allowSelfService ? 'on' : 'off',
-      allowed_datasets: allowedDatasets,
     }),
   });
 
@@ -178,13 +177,13 @@ export async function getReplicationProfiles() {
   return await res.json();
 }
 
-export async function addReplicationProfile(provider: string, dataset: string, indexed: boolean, unsealed: boolean) {
+export async function addReplicationProfile(provider: string, datasetID: number, indexed: boolean, unsealed: boolean) {
   const res = await fetch(apiURL() + '/api/v1/replication-profiles', {
     method: 'post',
     headers: defaultHeaders(),
     body: JSON.stringify({
       provider_actor_id: provider,
-      dataset_name: dataset,
+      dataset_id: datasetID,
       indexed: indexed,
       unsealed: unsealed,
     }),
@@ -257,13 +256,13 @@ export async function getReplications(cfg: GetReplicationsConfig) {
   return await res.json();
 }
 
-export async function addReplication(providerID: string, datasetName: string, numDeals: number, delayStartDays: number) {
+export async function addReplication(providerID: string, datasetID: number, numDeals: number, delayStartDays: number) {
   const res = await fetch(apiURL() + '/api/v1/replications', {
     method: 'post',
     headers: defaultHeaders(),
     body: JSON.stringify({
       provider: providerID,
-      dataset: datasetName,
+      dataset_id: datasetID,
       num_deals: Number(numDeals),
       delay_start_days: Number(delayStartDays),
     }),

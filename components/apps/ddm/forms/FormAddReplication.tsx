@@ -18,7 +18,7 @@ export default function FormAddReplication(props: {
   updateReplications: () => void,
 }) {
   const [providerID, setProviderID] = React.useState('');
-  const [datasetName, setDatasetName] = React.useState('');
+  const [datasetID, setDatasetID] = React.useState(0);
   const [numDeals, setNumDeals] = React.useState(1);
   const [delayStartDays, setDelayStartDays] = React.useState(3);
 
@@ -34,7 +34,7 @@ export default function FormAddReplication(props: {
       setFeedback(undefined);
       setLoading(true);
 
-      await addReplication(providerID, datasetName, numDeals, delayStartDays);
+      await addReplication(providerID, datasetID, numDeals, delayStartDays);
       props.updateReplications();
       
       setFeedback(<Feedback type='success' />);
@@ -53,7 +53,7 @@ export default function FormAddReplication(props: {
           <ProviderSelect id='provider-id' label='Provider' providers={props.providers} onChange={e => setProviderID(e.target.value)} required autoFocus />
         </div>
         <div className={styles.formRow}>
-          <DatasetSelect id='dataset-name' label='Dataset' placeholder='<< any dataset >>' datasets={props.datasets} onChange={e => setDatasetName(e.target.value)} />
+          <DatasetSelect id='dataset-name' label='Dataset' placeholder='<< any dataset >>' datasets={props.datasets} onChange={e => setDatasetID(Number(e.target.value))} />
         </div>
         <div className={styles.formRow}>
           <Input

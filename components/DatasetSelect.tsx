@@ -5,7 +5,7 @@ export default function DatasetSelect(props) {
     <Select placeholder={'select a dataset...'} {...props}>
       {props.datasets?.map((dataset, i) => {
         return (
-          <option value={dataset.name} key={dataset.name}>{dataset.name}</option>
+          <option value={dataset.ID} key={dataset.name}>{dataset.name}</option>
         );
       })}
     </Select>

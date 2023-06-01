@@ -13,7 +13,7 @@ export default function (props: { datasets: any[], providers: any[], updateRepli
   const [feedback, setFeedback] = React.useState(null);
   
   const [provider, setProvider] = React.useState('');
-  const [dataset, setDataset] = React.useState('');
+  const [datasetID, setDatasetID] = React.useState(0);
   const [indexed, setIndexed] = React.useState(false);
   const [unsealed, setUnsealed] = React.useState(false);
 
@@ -23,7 +23,7 @@ export default function (props: { datasets: any[], providers: any[], updateRepli
     try {
       setLoading(true);
 
-      await addReplicationProfile(provider, dataset, indexed, unsealed);
+      await addReplicationProfile(provider, datasetID, indexed, unsealed);
       props.updateReplicationProfiles();
 
       setFeedback(<Feedback type="success" />)
@@ -46,7 +46,7 @@ export default function (props: { datasets: any[], providers: any[], updateRepli
           <ProviderSelect providers={props.providers} label="Provider" required onChange={(e) => setProvider(e.target.value)} />
         </div>
         <div className={styles.formRow}>
-          <DatasetSelect datasets={props.datasets} label="Dataset" placeholder="<< any dataset >>" onChange={(e) => setDataset(e.target.value)} />
+          <DatasetSelect datasets={props.datasets} label="Dataset" placeholder="<< any dataset >>" onChange={(e) => setDatasetID(Number(e.target.value))} />
         </div>
         <div className={styles.formRow}>
           <Input type="checkbox" label="Indexed" onChange={(e) => setIndexed(e.target.checked)} />
@@ -55,7 +55,7 @@ export default function (props: { datasets: any[], providers: any[], updateRepli
           <Input type="checkbox" label="Unsealed" onChange={(e) => setUnsealed(e.target.checked)} />
         </div>
         <div className={styles.formRow}>
-          <Button disabled={!formValid() || feedback.type === 'success'} loading={loading}>Add</Button>
+          <Button disabled={!formValid() || feedback?.type === 'success'} loading={loading} primary>Add</Button>
         </div>
       </form>
       {feedback}

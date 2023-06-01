@@ -60,14 +60,10 @@ function ProviderCard(props: { provider: any, datasets: any[], updateDatasets: (
   let [name, setName] = React.useState(provider.actor_name);
   let [allowSelfService, setAllowSelfService] = React.useState(provider.allow_self_service);
   let [saving, setSaving] = React.useState(false);
-  let [allowedDatasets, setAllowedDatasets] = React.useState(provider.allowed_datasets?.map((dataset, i) => dataset.name) || []);
-
-  let datasetNames = props.datasets?.map((dataset, i) => dataset.name) || [];
-
+  
   function cancelEdit() {
     setAllowSelfService(provider.allow_self_service);
     setName(provider.actor_name);
-    setAllowedDatasets(provider.allowed_datasets?.map((dataset, i) => dataset.name) || []);
     setEditing(false);
   }
 
@@ -75,7 +71,7 @@ function ProviderCard(props: { provider: any, datasets: any[], updateDatasets: (
     setSaving(true);
 
     try {
-      await updateProvider(provider.actor_id, name, allowSelfService, allowedDatasets);
+      await updateProvider(provider.actor_id, name, allowSelfService);
       setEditing(false);
     } catch (e) {
       alert('Saving provider failed: ' + e.toString());

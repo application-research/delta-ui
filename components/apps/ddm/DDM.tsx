@@ -101,6 +101,7 @@ export default function DDM(props) {
       updateDatasets();
       updateProviders();
       // updateReplications();
+      updateReplicationProfiles();
       updateWallets();
 
       updateHealth();
@@ -154,7 +155,7 @@ export default function DDM(props) {
             searchLabel="Search datasets"
             placeholder="(example: university-bird-sounds)"
             datasets={datasets}
-            onAttachContent={() => setAppTooltipState(tooltipStates.attachContent, anchor.current)}
+            onAttachContent={(anchor) => setAppTooltipState(tooltipStates.attachContent, anchor)}
             attachContentButton={attachContentButton}
             // selectedDataset={selectedDataset}
             setSelectedDataset={setSelectedDataset}
@@ -172,11 +173,16 @@ export default function DDM(props) {
           />
         )}
         {appNavigationState === navigationStates.replicationProfiles && (
-          <ReplicationProfiles replicationProfiles={replicationProfiles} updateReplicationProfiles={updateReplicationProfiles} />
+          <ReplicationProfiles 
+            datasets={datasets}
+            replicationProfiles={replicationProfiles} 
+            updateReplicationProfiles={updateReplicationProfiles}
+          />
         )}
         {appNavigationState === navigationStates.replications && (
           <Replications
             replications={replications}
+            datasets={datasets}
             updateReplications={updateReplications}
             getReplicationsConfig={getReplicationsConfig}
             setGetReplicationsConfig={setGetReplicationsConfig}
