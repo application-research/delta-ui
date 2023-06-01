@@ -78,7 +78,7 @@ export default function FormNewDataset(props: {
           <Input type="number" label="Deal Duration (Days)" value={duration} onChange={e => setDuration(parseInt(e.target.value))} />
         </div>
         <div className={styles.formRow}>
-          <Button disabled={!isFormValid()} loading={loading} primary>Create</Button>
+          <Button disabled={!isFormValid() || feedback?.props.type === 'success'} loading={loading} primary>Create</Button>
         </div>
       </form>
       {feedback}

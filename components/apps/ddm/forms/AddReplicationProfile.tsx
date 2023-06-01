@@ -55,7 +55,7 @@ export default function (props: { datasets: any[], providers: any[], updateRepli
           <Input type="checkbox" label="Unsealed" onChange={(e) => setUnsealed(e.target.checked)} />
         </div>
         <div className={styles.formRow}>
-          <Button disabled={!formValid() || feedback?.type === 'success'} loading={loading} primary>Add</Button>
+          <Button disabled={!formValid() || feedback?.props.type === 'success'} loading={loading} primary>Add</Button>
         </div>
       </form>
       {feedback}

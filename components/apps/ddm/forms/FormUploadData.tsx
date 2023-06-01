@@ -83,7 +83,7 @@ export default function FormUploadData(props: {
           <FileUpload label='Content JSON' onUpload={file => setFile(file)} />
         </div>
         <div className={styles.formRow}>
-          <Button disabled={!isFormValid()} loading={loading} primary>Upload</Button>
+          <Button disabled={!isFormValid() || feedback?.props.type === 'success'} loading={loading} primary>Upload</Button>
         </div>
       </form>
       {feedback}
