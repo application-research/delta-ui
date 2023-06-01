@@ -29,7 +29,7 @@ export default function FormAddReplication(props: {
     e.preventDefault();
     e.target.reportValidity();
 
-    
+
     try {
       setFeedback(undefined);
       setLoading(true);
@@ -43,6 +43,10 @@ export default function FormAddReplication(props: {
     } finally {
       setLoading(false);
     }
+  }
+
+  function formValid() {
+    return !!providerID;
   }
 
   return (
@@ -68,7 +72,7 @@ export default function FormAddReplication(props: {
           <Input type='number' label='Delay Start (Days)' value={delayStartDays} onChange={e => setDelayStartDays(parseInt(e.target.value))} required />
         </div>
         <div className={styles.formRow}>
-          <Button loading={loading} disabled={feedback?.props.type === 'success'} primary>Add</Button>
+          <Button loading={loading} disabled={!formValid() || feedback?.props.type === 'success'} primary>Add</Button>
         </div>
       </form>
       {feedback}

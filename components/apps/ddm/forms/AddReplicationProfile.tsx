@@ -35,7 +35,7 @@ export default function (props: { datasets: any[], providers: any[], updateRepli
   }
 
   function formValid() {
-    return !!provider;
+    return !!provider && !!datasetID;
   }
 
   return (
@@ -46,7 +46,7 @@ export default function (props: { datasets: any[], providers: any[], updateRepli
           <ProviderSelect providers={props.providers} label="Provider" required onChange={(e) => setProvider(e.target.value)} />
         </div>
         <div className={styles.formRow}>
-          <DatasetSelect datasets={props.datasets} label="Dataset" placeholder="<< any dataset >>" onChange={(e) => setDatasetID(Number(e.target.value))} />
+          <DatasetSelect datasets={props.datasets} label="Dataset" required onChange={(e) => setDatasetID(Number(e.target.value))} />
         </div>
         <div className={styles.formRow}>
           <Input type="checkbox" label="Indexed" onChange={(e) => setIndexed(e.target.checked)} />
