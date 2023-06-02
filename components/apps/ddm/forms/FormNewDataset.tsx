@@ -17,8 +17,6 @@ export default function FormNewDataset(props: {
   let [name, setName] = React.useState('');
   let [replications, setReplications] = React.useState(6);
   let [duration, setDuration] = React.useState(540);
-  let [indexed, setIndexed] = React.useState(false);
-  let [unsealed, setUnsealed] = React.useState(false);
 
   let [loading, setLoading] = React.useState(false);
   let [feedback, setFeedback] = React.useState(<Feedback />);
@@ -35,8 +33,6 @@ export default function FormNewDataset(props: {
         name,
         replications,
         duration,
-        unsealed,
-        indexed
       );
       props.updateDatasets();
 
@@ -82,13 +78,7 @@ export default function FormNewDataset(props: {
           <Input type="number" label="Deal Duration (Days)" value={duration} onChange={e => setDuration(parseInt(e.target.value))} />
         </div>
         <div className={styles.formRow}>
-          <Input type="checkbox" label="Publish to indexer?" checked={indexed} id="dataset-indexed" onChange={e => setIndexed(e.target.checked)} />
-        </div>
-        <div className={styles.formRow}>
-          <Input type="checkbox" label="Keep unsealed copy?" checked={unsealed} id="dataset-unsealed" onChange={e => setUnsealed(e.target.checked)} />
-        </div>
-        <div className={styles.formRow}>
-          <Button disabled={!isFormValid()} loading={loading} primary>Create</Button>
+          <Button disabled={!isFormValid() || feedback?.props.type === 'success'} loading={loading} primary>Create</Button>
         </div>
       </form>
       {feedback}

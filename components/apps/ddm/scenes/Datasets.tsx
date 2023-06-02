@@ -17,6 +17,7 @@ export default function Datasets(props: {
   onSearchChange: (string) => void,
   placeholder: string,
   setSelectedDataset: (string) => void,
+  attachContentButton: React.MutableRefObject<any>
   onAttachContent: (anchor: React.ReactHTMLElement<any>) => void,
 }) {
   const modalAnchors = React.useRef({});
@@ -39,8 +40,6 @@ export default function Datasets(props: {
           <span className={tableStyles.column}>Deals Made</span>
           <span className={tableStyles.column}>Replication Quota</span>
           <span className={tableStyles.column}>Duration</span>
-          <span className={tableStyles.column}>Unsealed</span>
-          <span className={tableStyles.column}>Indexed</span>
           <span className={tableStyles.fluidColumn}>Wallets</span>
         </div>
         {props.datasets
@@ -57,8 +56,6 @@ export default function Datasets(props: {
                   <span className={tableStyles.column}>{dataset.count_replicated}</span>
                   <span className={tableStyles.column}>{dataset.replication_quota}</span>
                   <span className={tableStyles.column}>{dataset.deal_duration} days</span>
-                  <span className={tableStyles.column}>{dataset.unsealed ? "true" : "false"}</span>
-                  <span className={tableStyles.column}>{dataset.indexed ? "true" : "false"}</span>
                   <span className={tableStyles.fluidColumn}><div>{dataset.wallets?.map((wallet, i) => {
                     return <div key={i}><WalletRef address={wallet.address} /></div>
                   })}</div></span>

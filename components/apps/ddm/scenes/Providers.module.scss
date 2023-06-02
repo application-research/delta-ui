@@ -39,12 +39,8 @@
 }
 
 .columnProviderKey {
-  @extend .column;
+  @extend .fluidColumn;
   min-width: 26rem;
-}
-
-.columnAllowedDatasets {
-  @extend .fluidColumn
 }
 
 .providerCard {

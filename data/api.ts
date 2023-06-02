@@ -1,7 +1,7 @@
 import { getCookie } from '@root/modules/cookies';
 
 function apiURL() {
-  return (getCookie('ddm-address') || process.env.NEXT_PUBLIC_API_URL)?.replace(/\/$/, '') || "http://localhost:1415";
+  return (getCookie('ddm-address') || process.env.NEXT_PUBLIC_API_URL)?.replace(/\/$/, '') || 'http://localhost:1415';
 }
 
 function defaultHeaders() {
@@ -87,7 +87,7 @@ export async function getDatasets() {
   return await res.json();
 }
 
-export async function addDataset(name: string, replications: number, durationDays: number, unsealed: boolean, indexed: boolean) {
+export async function addDataset(name: string, replications: number, durationDays: number) {
   const res = await fetch(apiURL() + '/api/v1/datasets', {
     method: 'post',
     headers: defaultHeaders(),
@@ -95,8 +95,6 @@ export async function addDataset(name: string, replications: number, durationDay
       name: name,
       replication_quota: Number(replications),
       deal_duration: Number(durationDays),
-      unsealed: unsealed,
-      indexed: indexed,
     }),
   });
 
@@ -150,14 +148,13 @@ export async function addProvider(id: string, name: string) {
   return await res.json();
 }
 
-export async function updateProvider(id: string, name: string, allowSelfService: boolean, allowedDatasets: string[]) {
+export async function updateProvider(id: string, name: string, allowSelfService: boolean) {
   const res = await fetch(apiURL() + '/api/v1/providers/' + id, {
     method: 'put',
     headers: defaultHeaders(),
     body: JSON.stringify({
       actor_name: name,
       allow_self_service: allowSelfService ? 'on' : 'off',
-      allowed_datasets: allowedDatasets,
     }),
   });
 
@@ -168,9 +165,76 @@ export async function updateProvider(id: string, name: string, allowSelfService:
   return await res.json();
 }
 
+export async function getReplicationProfiles() {
+  const res = await fetch(apiURL() + '/api/v1/replication-profiles', {
+    headers: defaultHeaders(),
+  });
+
+  if (!res.ok) {
+    throw new Error(await res.text());
+  }
+
+  return await res.json();
+}
+
+export async function addReplicationProfile(provider: string, datasetID: number, indexed: boolean, unsealed: boolean) {
+  const res = await fetch(apiURL() + '/api/v1/replication-profiles', {
+    method: 'post',
+    headers: defaultHeaders(),
+    body: JSON.stringify({
+      provider_actor_id: provider,
+      dataset_id: datasetID,
+      indexed: indexed,
+      unsealed: unsealed,
+    }),
+  });
+
+  if (!res.ok) {
+    throw new Error(await res.text());
+  }
+
+  return await res.json();
+}
+
+export async function updateReplicationProfile(provider: string, datasetID: number, indexed: boolean, unsealed: boolean) {
+  const res  = await fetch(apiURL() + '/api/v1/replication-profiles', {
+    method: 'put',
+    headers: defaultHeaders(),
+    body: JSON.stringify({
+      provider_actor_id: provider,
+      dataset_id: datasetID,
+      indexed: indexed,
+      unsealed: unsealed,
+    }),
+  });
+
+  if (!res.ok) {
+    throw new Error(await res.text());
+  }
+
+  return await res.json();
+}
+
+export async function deleteReplicationProfile(provider: string, datasetID: number) {
+  const res = await fetch(apiURL() + '/api/v1/replication-profiles', {
+    method: 'delete',
+    headers: defaultHeaders(),
+    body: JSON.stringify({
+      provider_actor_id: provider,
+      dataset_id: datasetID,
+    }),
+  });
+
+  if (!res.ok)  {
+    throw new Error(await res.text());
+  }
+
+  return await res.json();
+}
+
 export interface GetReplicationsConfig {
-  offset: number,
-  limit: number,
+  offset: number;
+  limit: number;
   datasets: string[];
   providers: string[];
   timeStart: Date;
@@ -228,13 +292,13 @@ export async function getReplications(cfg: GetReplicationsConfig) {
   return await res.json();
 }
 
-export async function addReplication(providerID: string, datasetName: string, numDeals: number, delayStartDays: number) {
+export async function addReplication(providerID: string, datasetID: number, numDeals: number, delayStartDays: number) {
   const res = await fetch(apiURL() + '/api/v1/replications', {
     method: 'post',
     headers: defaultHeaders(),
     body: JSON.stringify({
       provider: providerID,
-      dataset: datasetName,
+      dataset_id: datasetID || undefined,
       num_deals: Number(numDeals),
       delay_start_days: Number(delayStartDays),
     }),
@@ -259,7 +323,7 @@ export async function getWallets() {
   return await res.json();
 }
 
-export async function associateWallet(address: string, datasets: string[]) {
+export async function associateWallet(address: string, datasets: number[]) {
   const res = await fetch(apiURL() + '/api/v1/wallets/associate', {
     method: 'post',
     headers: defaultHeaders(),

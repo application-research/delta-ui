@@ -6,9 +6,9 @@ import Dismissible from '@components/Dismissible';
 
 export default function TagSelect(props: {
   disabled?: boolean,
-  selected: string[],
-  setSelected: (selected: string[]) => void,
-  options: string[],
+  selected: number[],
+  setSelected: (selected: number[]) => void,
+  options: Map<number, string>,
 }) {
   let [showAddMenu, setShowAddMenu] = React.useState(false);
   let [selectMenuPos, setSelectMenuPos] = React.useState({ x: 0, y: 0 });
@@ -28,28 +28,28 @@ export default function TagSelect(props: {
   }, [showAddMenu]);
 
   React.useEffect(() => {
-    if (props.selected.length === props.options.length) {
+    if (props.selected.length === props.options.size) {
       setShowAddMenu(false);
     }
   }, [props.selected])
 
-  function select(value: string) {
+  function select(value: number) {
     props.setSelected([...props.selected, value]);
   }
 
-  function deselect(value: string) {
+  function deselect(value: number) {
     props.setSelected(props.selected.filter((currValue, _) => currValue !== value));
   }
 
   return (
     <div className={styles.body}>
-      {props.selected.map((option, i) => {
+      {props.selected.map((id, i) => {
         return (
           <span
             className={props.disabled ? styles.selected : styles.selectedInteractive}
-            onClick={props.disabled ? undefined : (e => deselect(option))}
+            onClick={props.disabled ? undefined : (e => deselect(id))}
             key={i}
-          >{option}</span>
+          >{props.options.get(id)}</span>
         )
       })}
       {!props.disabled && <span ref={addMenuButton} className={styles.addButton} onClick={e => setShowAddMenu(true)}>
@@ -66,9 +66,9 @@ export default function TagSelect(props: {
             }}
           >
             <ul className={styles.options}>
-              {props.options.filter((option, i) => props.selected.indexOf(option) === -1).map((option, i) => {
+              {Array.from(props.options.entries()).filter(([id, label]) => props.selected.indexOf(id) === -1).map(([id, label]) => {
                 return (
-                  <li className={styles.option} onClick={e => select(option)}>{option}</li>
+                  <li className={styles.option} onClick={e => select(id)}>{label}</li>
                 )
               })}
             </ul>

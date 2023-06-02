@@ -4,13 +4,14 @@ import * as React from 'react';
 import PackageJSON from '@root/package.json';
 import { navigationStates, tooltipStates } from '@common/navigation';
 import { getCookie, setCookie } from '@modules/cookies';
-import { associateWallet, checkAuth, getDatasets, getHealth, getProviders, getReplications, GetReplicationsConfig, getWallets } from '@data/api';
+import { associateWallet, checkAuth, getDatasets, getHealth, getProviders, getReplicationProfiles, getReplications, GetReplicationsConfig, getWallets } from '@data/api';
 
 import DefaultLayout, { AppBody, AppNav, AppNavItem, AppNavSubItem, AppTitle, AppVersion } from '@components/DefaultLayout';
 import Modal from '@root/components/Modal';
 
 import Datasets from '@root/components/apps/ddm/scenes/Datasets';
 import Providers from '@root/components/apps/ddm/scenes/Providers';
+import ReplicationProfiles from '@root/components/apps/ddm/scenes/ReplicationProfiles';
 import Replications from '@root/components/apps/ddm/scenes/Replications';
 import Wallets from '@components/apps/ddm/scenes/Wallets';
 import Auth from '@root/components/apps/ddm/scenes/Auth';
@@ -20,6 +21,7 @@ import FormAddWallet from '@root/components/apps/ddm/forms/FormAddWallet';
 import FormAddProvider from '@root/components/apps/ddm/forms/FormAddProvider';
 import FormAddReplication from '@root/components/apps/ddm/forms/FormAddReplication';
 import FormNewDataset from '@root/components/apps/ddm/forms/FormNewDataset';
+import AddReplicationProfile from '@root/components/apps/ddm/forms/AddReplicationProfile';
 
 export default function DDM(props) {
   const [appNavigationState, setAppNavigationState] = React.useState(1);
@@ -31,6 +33,7 @@ export default function DDM(props) {
   const [selectedWallet, setSelectedWallet] = React.useState('');
   const [datasets, setDatasets] = React.useState(undefined);
   const [providers, setProviders] = React.useState(undefined);
+  const [replicationProfiles, setReplicationProfiles] = React.useState(undefined);
   const [replications, setReplications] = React.useState(undefined);
   const [wallets, setWallets] = React.useState(undefined);
   const [health, setHealth] = React.useState(undefined);
@@ -49,13 +52,16 @@ export default function DDM(props) {
 
   const updateDatasets = async () => { setDatasets(undefined); setDatasets(await getDatasets()) };
   const updateProviders = async () => { setProviders(undefined); setProviders(await getProviders()) };
+  const updateReplicationProfiles = async () => { setReplicationProfiles(undefined); setReplicationProfiles(await getReplicationProfiles())}
   const updateReplications = async () => { setReplications(undefined); setReplications(await getReplications(getReplicationsConfig)) };
   const updateWallets = async () => { setWallets(undefined); setWallets(await getWallets()) };
 
   const newDatasetButton = React.useRef(null);
   const addProviderButton = React.useRef(null);
   const addReplicationButton = React.useRef(null);
+  const addReplicationProfileButton = React.useRef(null);
   const addWalletButton = React.useRef(null);
+  const attachContentButton = React.useRef(null);
   
   const anchor = React.useRef(null);
   function setAppTooltipState(newID: any, newAnchor: React.ReactHTMLElement<any>) {
@@ -95,6 +101,7 @@ export default function DDM(props) {
       updateDatasets();
       updateProviders();
       // updateReplications();
+      updateReplicationProfiles();
       updateWallets();
 
       updateHealth();
@@ -127,6 +134,10 @@ export default function DDM(props) {
         <AppNavSubItem onClick={(e) => setAppTooltipState(tooltipStates.addProvider, addProviderButton.current)}>
           <span ref={addProviderButton}>+ Add provider</span>
         </AppNavSubItem>
+        <AppNavItem onClick={e => setAppNavigationState(navigationStates.replicationProfiles)}>Repl. Profiles {appNavigationState === navigationStates.replicationProfiles && '➝'}</AppNavItem>
+        <AppNavSubItem onClick={e => setAppTooltipState(tooltipStates.addReplicationProfile, addReplicationProfileButton.current)}>
+          <span ref={addReplicationProfileButton}>+ Add profile</span>
+        </AppNavSubItem>
         <AppNavItem onClick={(e) => setAppNavigationState(navigationStates.replications)}>Replications {appNavigationState === navigationStates.replications && '➝'}</AppNavItem>
         <AppNavSubItem onClick={(e) => setAppTooltipState(tooltipStates.addReplication, addReplicationButton.current)}>
           <span ref={addReplicationButton}>+ Add replication</span>
@@ -145,6 +156,7 @@ export default function DDM(props) {
             placeholder="(example: university-bird-sounds)"
             datasets={datasets}
             onAttachContent={(anchor) => setAppTooltipState(tooltipStates.attachContent, anchor)}
+            attachContentButton={attachContentButton}
             // selectedDataset={selectedDataset}
             setSelectedDataset={setSelectedDataset}
           />
@@ -160,9 +172,17 @@ export default function DDM(props) {
             placeholder="(example: f0123456)"
           />
         )}
+        {appNavigationState === navigationStates.replicationProfiles && (
+          <ReplicationProfiles 
+            datasets={datasets}
+            replicationProfiles={replicationProfiles} 
+            updateReplicationProfiles={updateReplicationProfiles}
+          />
+        )}
         {appNavigationState === navigationStates.replications && (
           <Replications
             replications={replications}
+            datasets={datasets}
             updateReplications={updateReplications}
             getReplicationsConfig={getReplicationsConfig}
             setGetReplicationsConfig={setGetReplicationsConfig}
@@ -191,6 +211,11 @@ export default function DDM(props) {
         {appTooltipID === tooltipStates.addWallet && (
           <Modal anchor={anchor} modalID={tooltipStates.addWallet} onClose={dismissTooltip}>
             <FormAddWallet onOutsideClick={dismissTooltip} />
+          </Modal>
+        )}
+        {appTooltipID === tooltipStates.addReplicationProfile && (
+          <Modal anchor={anchor} modalID={tooltipStates.addReplicationProfile} onClose={dismissTooltip}>
+            <AddReplicationProfile datasets={datasets} providers={providers} updateReplicationProfiles={updateReplicationProfiles} />
           </Modal>
         )}
         {appTooltipID === tooltipStates.attachContent && (

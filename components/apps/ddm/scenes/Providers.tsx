@@ -40,7 +40,6 @@ export default function Providers(props: {
             <span className={styles.columnBytesReplicated}>Bytes Replicated</span>
             <span className={styles.columnFlags}>Flags</span>
             <span className={styles.columnProviderKey}>Provider Key</span>
-            <span className={styles.columnAllowedDatasets}>Allowed Datasets</span>
           </div>
           {props.providers
             .filter((provider, i) => !props.search || provider.actor_id.includes(props.search))
@@ -61,14 +60,10 @@ function ProviderCard(props: { provider: any, datasets: any[], updateDatasets: (
   let [name, setName] = React.useState(provider.actor_name);
   let [allowSelfService, setAllowSelfService] = React.useState(provider.allow_self_service);
   let [saving, setSaving] = React.useState(false);
-  let [allowedDatasets, setAllowedDatasets] = React.useState(provider.allowed_datasets?.map((dataset, i) => dataset.name) || []);
-
-  let datasetNames = props.datasets?.map((dataset, i) => dataset.name) || [];
-
+  
   function cancelEdit() {
     setAllowSelfService(provider.allow_self_service);
     setName(provider.actor_name);
-    setAllowedDatasets(provider.allowed_datasets?.map((dataset, i) => dataset.name) || []);
     setEditing(false);
   }
 
@@ -76,7 +71,7 @@ function ProviderCard(props: { provider: any, datasets: any[], updateDatasets: (
     setSaving(true);
 
     try {
-      await updateProvider(provider.actor_id, name, allowSelfService, allowedDatasets);
+      await updateProvider(provider.actor_id, name, allowSelfService);
       setEditing(false);
     } catch (e) {
       alert('Saving provider failed: ' + e.toString());
@@ -113,9 +108,6 @@ function ProviderCard(props: { provider: any, datasets: any[], updateDatasets: (
         <span className={styles.columnProviderKey}>
           <ProviderKey providerKey={provider.key} />
         </span>
-        <span className={styles.columnAllowedDatasets}>
-          <TagSelect selected={allowedDatasets} setSelected={setAllowedDatasets} options={datasetNames} />
-        </span>
         <Button className={styles.columnButtonCancel} onClick={(e) => cancelEdit()} disabled={saving}>
           Cancel Edit
         </Button>
@@ -142,9 +134,6 @@ function ProviderCard(props: { provider: any, datasets: any[], updateDatasets: (
       </span>
       <span className={styles.columnProviderKey}>
         <ProviderKey providerKey={provider.key} />
-      </span>
-      <span className={styles.columnAllowedDatasets}>
-        <TagSelect selected={allowedDatasets} setSelected={setAllowedDatasets} options={datasetNames} disabled />
       </span>
       <Button className={styles.columnButtonManage} onClick={(e) => setEditing(true)}>
         <span>

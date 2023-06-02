@@ -61,7 +61,7 @@ export default function FormAddProvider(props: {
           />
         </div>
         <div className={styles.formRow}>
-          <Button disabled={!(providerID)} loading={loading} primary>Add</Button>
+          <Button disabled={!(providerID) || feedback?.props.type === 'success'} loading={loading} primary>Add</Button>
         </div>
       </form>
       {feedback}

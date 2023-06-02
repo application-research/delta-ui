@@ -79,14 +79,11 @@ export default function FormUploadData(props: {
       <h2 className={styles.heading}>Attach data for {props.selectedDataset}</h2>
       <p className={styles.paragraph}>Upload a <em>.json</em> dataset file describing contents to upload to the Filecoin network.</p>
       <form onSubmit={onUpload}>
-        {/* <div className={styles.formRow}>
-          <DatasetSelect label='Dataset Name' datasets={props.state?.datasets} autoFocus onChange={e => setDatasetName(e.target.value)} />
-        </div> */}
         <div className={styles.formRow}>
           <FileUpload label='Content JSON' onUpload={file => setFile(file)} />
         </div>
         <div className={styles.formRow}>
-          <Button disabled={!isFormValid()} loading={loading} primary>Upload</Button>
+          <Button disabled={!isFormValid() || feedback?.props.type === 'success'} loading={loading} primary>Upload</Button>
         </div>
       </form>
       {feedback}

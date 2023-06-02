@@ -96,6 +96,11 @@
   @extend .columnButton;
 }
 
+.columnButtonDelete {
+  @extend .columnButton;
+  background: var(--color-negative);
+}
+
 .columnButtonSave {
   @extend .columnButton;
   background: var(--color-primary);

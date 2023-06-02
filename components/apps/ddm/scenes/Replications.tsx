@@ -15,6 +15,7 @@ import Select from '@root/components/basic/Select';
 
 export default function Replications(props: {
   replications: any,
+  datasets: any[],
   updateReplications: () => void,
   getReplicationsConfig: GetReplicationsConfig,
   setGetReplicationsConfig: (cfg: GetReplicationsConfig) => void,
@@ -151,7 +152,7 @@ export default function Replications(props: {
             return (
               <div key={i}>
                 <div className={tableStyles.row}>
-                  <div className={tableStyles.column}>{replication.content.dataset_name}</div>
+                  <div className={tableStyles.column}>{props.datasets.find(d => d.ID === replication.content.dataset_id)?.name}</div>
                   <div className={tableStyles.column}>{replication.status}</div>
                   <div className={tableStyles.column}>
                     <ProviderRef providerID={replication.provider_actor_id} />
