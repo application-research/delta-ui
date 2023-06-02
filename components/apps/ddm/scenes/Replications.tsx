@@ -54,6 +54,8 @@ export default function Replications(props: {
   }
   function setSearchLimit(limit: number) {
     cfg.current.limit = limit;
+    localStorage.setItem("settings.replications.limit", limit.toString())
+    applySearch();
   }
 
   let formRef = React.useRef();
@@ -168,26 +170,35 @@ export default function Replications(props: {
           })}
         </div>
       }
+
       {props.replications !== undefined && <PageIndex
         offset={props.getReplicationsConfig.offset || 0}
         onChangeOffset={(offset) => {
           setSearchOffset(offset);
         }}
+        onSearchLimit={(limit) => {
+          setSearchLimit(limit);
+        }}
         limit={props.getReplicationsConfig.limit || 100}
         total={props.replications?.totalCount || 0}
-      />}
+        />}
       {props.replications === undefined && <LoadingIndicator padded />}
     </div>
   );
 }
 
-function PageIndex(props: { offset: number, onChangeOffset: (number) => void, limit: number, total: number }) {
+function PageIndex(props: { offset: number, onChangeOffset: (number) => void, onSearchLimit: (number) => void, limit: number, total: number }) {
   const pageCount = Math.ceil(props.total / props.limit);
-  const currPage = Math.floor(props.offset / props.limit);
+  let currPage = Math.floor(props.offset / props.limit);
 
-  const itemCount = Math.min(props.limit, props.total - props.offset);
-  const firstItem = props.offset + 1;
-  const lastItem = props.offset + itemCount;
+  const limitOptions = [100, 50, 25, 10]
+
+  const onGoTo = (e) => {
+    if (e.key == 'Enter') {
+      const page = e.currentTarget.value > pageCount ? pageCount -1 : e.currentTarget.value -1;
+      props.onChangeOffset(page * props.limit)
+    }
+  }
 
   if (props.total === null) {
     return (
@@ -197,26 +208,31 @@ function PageIndex(props: { offset: number, onChangeOffset: (number) => void, li
     );
   }
 
-  console.log("page count: " + pageCount);
-
   return (
     <div className={styles.pageIndex}>
-      <span>
-        Showing {firstItem} - {lastItem} of {props.total} results
-      </span>
-      <span className={styles.indexButton} onClick={(e) => props.onChangeOffset(0)}>
-        &lt;&lt;
-      </span>
-      {...Array(pageCount || 1)
-        .fill(0)
-        .map((_, i) => (
-          <span className={i == currPage ? styles.indexButtonActive : styles.indexButton} onClick={(e) => props.onChangeOffset(i * props.limit)}>
-            {i + 1}
-          </span>
-        ))}
-      <span className={styles.indexButton} onClick={(e) => props.onChangeOffset((pageCount - 1) * props.limit)}>
-        &gt;&gt;
-      </span>
+      <div className={styles.indexItems}>
+        <span className={currPage == 0 ? styles.indexButtonDisable : styles.indexButton} onClick={(e) => props.onChangeOffset(--currPage * props.limit)}>
+          &lt;
+        </span>
+        <span>{ currPage + 1 } <span className={styles.disabledText}>of</span> { pageCount }</span>
+        <span className={currPage == pageCount - 1 ? styles.indexButtonDisable : styles.indexButton} onClick={(e) => props.onChangeOffset(++currPage * props.limit)}>
+          &gt;
+        </span>
+      </div>
+      <div className={styles.indexItems}>
+        <span>{props.total} <span className={styles.disabledText}>total</span></span>
+      </div>
+      <div className={styles.indexItems}>
+        <Select onChange={(e) => props.onSearchLimit(e.target.value)} value={props.limit.toString()}>
+          {limitOptions?.map((item, i) =>
+            <option key={i} value={item}>{item} pp</option>
+          )}
+        </Select>
+      </div>
+      <div className={styles.indexItems}>
+        <span className={styles.disabledText}>Go to</span>
+        <Input type="number" className={styles.goToInput} onKeyDown={(e) => onGoTo(e)}/>
+      </div>
     </div>
   );
 }

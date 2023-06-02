@@ -48,7 +48,12 @@ export default function DDM(props) {
     setCookie('ddm-address', ddmAddress);
   };
 
-  const [getReplicationsConfig, setGetReplicationsConfig] = React.useState({ limit: 100 } as GetReplicationsConfig);
+  let limit;
+  if (typeof window !== 'undefined') {
+    limit = localStorage.getItem('settings.replications.limit')
+  }
+
+  const [getReplicationsConfig, setGetReplicationsConfig] = React.useState({ limit: limit || 10 } as GetReplicationsConfig);
 
   const updateDatasets = async () => { setDatasets(undefined); setDatasets(await getDatasets()) };
   const updateProviders = async () => { setProviders(undefined); setProviders(await getProviders()) };
