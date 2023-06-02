@@ -323,7 +323,7 @@ export async function getWallets() {
   return await res.json();
 }
 
-export async function associateWallet(address: string, datasets: string[]) {
+export async function associateWallet(address: string, datasets: number[]) {
   const res = await fetch(apiURL() + '/api/v1/wallets/associate', {
     method: 'post',
     headers: defaultHeaders(),

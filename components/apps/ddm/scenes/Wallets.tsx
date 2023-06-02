@@ -28,7 +28,7 @@ export default function Wallets(props: { wallets: any[], updateWallets: () => vo
           {props.wallets.map((wallet, i) => {
             return (
               <div key={i}>
-                <WalletCard wallet={wallet} datasets={props.datasets?.map((dataset, i) => dataset.name)} updateDatasets={props.updateDatasets} />
+                <WalletCard wallet={wallet} datasets={new Map(props.datasets?.map((dataset, i) => [dataset.ID, dataset.name]))} updateDatasets={props.updateDatasets} />
               </div>
             );
           })}
@@ -39,8 +39,8 @@ export default function Wallets(props: { wallets: any[], updateWallets: () => vo
   );
 }
 
-function WalletCard(props: { wallet: any, datasets: string[], updateDatasets: () => void }) {
-  let selectedDefault = () => props.wallet.datasets.map((dataset, i) => dataset.name);
+function WalletCard(props: { wallet: any, datasets: Map<number, string>, updateDatasets: () => void }) {
+  let selectedDefault = () => props.wallet.datasets.map((dataset, i) => dataset.ID);
 
   const [selected, setSelected] = React.useState(selectedDefault());
 
