@@ -195,7 +195,8 @@ function PageIndex(props: { offset: number, onChangeOffset: (number) => void, on
 
   const onGoTo = (e) => {
     if (e.key == 'Enter') {
-      const page = e.currentTarget.value > pageCount ? pageCount -1 : e.currentTarget.value -1;
+      const input = e.currentTarget.value < 0 ? 1 : e.currentTarget.value;
+      const page = input > pageCount ? pageCount -1 : input -1;
       props.onChangeOffset(page * props.limit)
     }
   }
