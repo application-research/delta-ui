@@ -155,7 +155,7 @@ export default function DDM(props) {
         </AppNavSubItem>
         <AppNavItem>Settings</AppNavItem>
         <AppNavSubItem onClick={(e) => setAppTooltipState(tooltipStates.setPreferences, addPreferencesButton.current)}>
-          <span ref={addPreferencesButton}>+ Set Preferences</span>
+          <span ref={addPreferencesButton}>+ Preferences</span>
         </AppNavSubItem>
       </AppNav>
       <AppBody>

@@ -18,7 +18,7 @@ export default function FormSetPreferences(props) {
 
   return (
     <div>
-      <h2 className={styles.heading}>Set Preferences</h2>
+      <h2 className={styles.heading}>Preferences</h2>
       <div className={styles.formRow}>
         <Input type="checkbox"
                label="Display in Local Time"
