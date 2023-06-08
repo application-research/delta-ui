@@ -22,6 +22,7 @@ import FormAddProvider from '@root/components/apps/ddm/forms/FormAddProvider';
 import FormAddReplication from '@root/components/apps/ddm/forms/FormAddReplication';
 import FormNewDataset from '@root/components/apps/ddm/forms/FormNewDataset';
 import AddReplicationProfile from '@root/components/apps/ddm/forms/AddReplicationProfile';
+import FormSetPreferences from '@components/apps/ddm/forms/FormSetPreferences';
 
 export default function DDM(props) {
   const [appNavigationState, setAppNavigationState] = React.useState(1);
@@ -67,6 +68,7 @@ export default function DDM(props) {
   const addReplicationProfileButton = React.useRef(null);
   const addWalletButton = React.useRef(null);
   const attachContentButton = React.useRef(null);
+  const addPreferencesButton = React.useRef(null);
   
   const anchor = React.useRef(null);
   function setAppTooltipState(newID: any, newAnchor: React.ReactHTMLElement<any>) {
@@ -151,6 +153,10 @@ export default function DDM(props) {
         <AppNavSubItem onClick={(e) => setAppTooltipState(tooltipStates.addWallet, addWalletButton.current)}>
           <span ref={addWalletButton}>+ Add wallet</span>
         </AppNavSubItem>
+        <AppNavItem>Preferences</AppNavItem>
+        <AppNavSubItem onClick={(e) => setAppTooltipState(tooltipStates.setPreferences, addPreferencesButton.current)}>
+          <span ref={addPreferencesButton}>+ Set Timezone</span>
+        </AppNavSubItem>
       </AppNav>
       <AppBody>
         {appNavigationState === navigationStates.datasets && (
@@ -231,6 +237,11 @@ export default function DDM(props) {
         {appTooltipID === tooltipStates.addReplication && (
           <Modal anchor={anchor} modalID={tooltipStates.addReplication} onClose={dismissTooltip}>
             <FormAddReplication providers={providers} datasets={datasets} updateReplications={updateReplications} />
+          </Modal>
+        )}
+        {appTooltipID === tooltipStates.setPreferences && (
+          <Modal anchor={anchor} modalID={tooltipStates.setPreferences} onClose={dismissTooltip}>
+            <FormSetPreferences />
           </Modal>
         )}
       </AppBody>

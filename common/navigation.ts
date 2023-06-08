@@ -14,6 +14,7 @@ export const tooltipStates = {
   addReplicationProfile: 5,
   addReplication: 6,
   associateWallet: 7,
+  setPreferences: 8,
 };
 
 export const apps = {
