@@ -153,9 +153,9 @@ export default function DDM(props) {
         <AppNavSubItem onClick={(e) => setAppTooltipState(tooltipStates.addWallet, addWalletButton.current)}>
           <span ref={addWalletButton}>+ Add wallet</span>
         </AppNavSubItem>
-        <AppNavItem>Preferences</AppNavItem>
+        <AppNavItem>Settings</AppNavItem>
         <AppNavSubItem onClick={(e) => setAppTooltipState(tooltipStates.setPreferences, addPreferencesButton.current)}>
-          <span ref={addPreferencesButton}>+ Set Timezone</span>
+          <span ref={addPreferencesButton}>+ Set Preferences</span>
         </AppNavSubItem>
       </AppNav>
       <AppBody>
