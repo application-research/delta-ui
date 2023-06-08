@@ -2,12 +2,9 @@
 
 import * as React from 'react';
 
-import styles from './FormAddWallet.module.scss';
+import styles from './FormSetPreferences.module.scss';
 
-import Button from '@components/Button';
-import Dismissible from '@components/Dismissible';
 import Input from '@components/basic/Input';
-import { is } from 'immutable';
 import { useState } from 'react';
 
 export default function FormSetPreferences(props) {
@@ -17,7 +14,6 @@ export default function FormSetPreferences(props) {
   const handleCheckboxChange = (e) => {
     localStorage.setItem('settings.global.useLocalTime', e.target.checked)
     setIsChecked(!isChecked);
-
   };
 
   return (

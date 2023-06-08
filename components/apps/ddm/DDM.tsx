@@ -22,7 +22,7 @@ import FormAddProvider from '@root/components/apps/ddm/forms/FormAddProvider';
 import FormAddReplication from '@root/components/apps/ddm/forms/FormAddReplication';
 import FormNewDataset from '@root/components/apps/ddm/forms/FormNewDataset';
 import AddReplicationProfile from '@root/components/apps/ddm/forms/AddReplicationProfile';
-import FormSetPreferences from '@components/apps/ddm/forms/FormSetPreferences';
+import FormSetPreferences from '@root/components/apps/ddm/forms/FormSetPreferences';
 
 export default function DDM(props) {
   const [appNavigationState, setAppNavigationState] = React.useState(1);
