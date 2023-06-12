@@ -4,6 +4,7 @@ export const navigationStates = {
   replicationProfiles: 3,
   replications: 4,
   wallets: 5,
+  settings: 6,
 };
 
 export const tooltipStates = {
