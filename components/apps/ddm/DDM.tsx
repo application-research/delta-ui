@@ -6,7 +6,15 @@ import { navigationStates, tooltipStates } from '@common/navigation';
 import { getCookie, setCookie } from '@modules/cookies';
 import { associateWallet, checkAuth, getDatasets, getHealth, getProviders, getReplicationProfiles, getReplications, GetReplicationsConfig, getWallets } from '@data/api';
 
-import DefaultLayout, { AppBody, AppNav, AppNavItem, AppNavSubItem, AppTitle, AppVersion } from '@components/DefaultLayout';
+import DefaultLayout, {
+  AppBody,
+  AppNav,
+  AppNavItem,
+  AppNavSettingItem, AppNavSettings,
+  AppNavSubItem,
+  AppTitle,
+  AppVersion,
+} from '@components/DefaultLayout';
 import Modal from '@root/components/Modal';
 
 import Datasets from '@root/components/apps/ddm/scenes/Datasets';
@@ -153,11 +161,12 @@ export default function DDM(props) {
         <AppNavSubItem onClick={(e) => setAppTooltipState(tooltipStates.addWallet, addWalletButton.current)}>
           <span ref={addWalletButton}>+ Add wallet</span>
         </AppNavSubItem>
-        <AppNavItem>Settings</AppNavItem>
-        <AppNavSubItem onClick={(e) => setAppTooltipState(tooltipStates.setPreferences, addPreferencesButton.current)}>
-          <span ref={addPreferencesButton}>+ Preferences</span>
-        </AppNavSubItem>
       </AppNav>
+      <AppNavSettings>
+        <AppNavSettingItem onClick={(e) => setAppTooltipState(tooltipStates.setPreferences, addPreferencesButton.current)} >
+          <span style={{fontSize: 26}}>&#9881;</span><span style={{marginLeft: 15, paddingTop: 10}} ref={addPreferencesButton}>Settings</span>
+        </AppNavSettingItem>
+      </AppNavSettings>
       <AppBody>
         {appNavigationState === navigationStates.datasets && (
           <Datasets
@@ -240,7 +249,7 @@ export default function DDM(props) {
           </Modal>
         )}
         {appTooltipID === tooltipStates.setPreferences && (
-          <Modal anchor={anchor} modalID={tooltipStates.setPreferences} onClose={dismissTooltip}>
+          <Modal anchor={anchor} modalID={tooltipStates.setPreferences} onClose={dismissTooltip} attach="bottom">
             <FormSetPreferences />
           </Modal>
         )}

@@ -12,6 +12,7 @@ export default function DefaultLayout(props: {
   let title = props.children?.find(child => child.type === AppTitle);
   let version = props.children?.find(child => child.type === AppVersion);
   let nav = props.children?.find(child => child.type === AppNav);
+  let settings = props.children?.find(child => child.type === AppNavSettings);
   let body = props.children?.find(child => child.type === AppBody);
 
   // NOTE(@elijaharita): this works right now because there are only 2 apps
@@ -38,6 +39,7 @@ export default function DefaultLayout(props: {
       <div className={styles.bottom}>
         <div className={styles.left}>
           <nav className={styles.appNavigation}>{nav}</nav>
+          <nav className={styles.appNavigationSettings}>{settings}</nav>
         </div>
         <div className={styles.right}>{body}</div>
       </div>
@@ -57,12 +59,20 @@ export function AppNav(props) {
   return <div>{props.children}</div>;
 }
 
+export function AppNavSettings(props) {
+  return <div className={styles.appNavigationSettings}>{props.children}</div>;
+}
+
 export function AppNavItem(props) {
   return <span className={styles.appNavigationItem} onClick={props.onClick}>{props.children}</span>;
 }
 
 export function AppNavSubItem(props) {
   return <span className={styles.appNavigationSubItem} onClick={props.onClick}>{props.children}</span>;
+}
+
+export function AppNavSettingItem(props) {
+  return <span className={styles.appNavigationSettingItem} onClick={props.onClick}>{props.children}</span>;
 }
 
 export function AppBody(props) {
