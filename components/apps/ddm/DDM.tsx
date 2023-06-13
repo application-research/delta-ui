@@ -6,7 +6,15 @@ import { navigationStates, tooltipStates } from '@common/navigation';
 import { getCookie, setCookie } from '@modules/cookies';
 import { associateWallet, checkAuth, getDatasets, getHealth, getProviders, getReplicationProfiles, getReplications, GetReplicationsConfig, getWallets } from '@data/api';
 
-import DefaultLayout, { AppBody, AppNav, AppNavItem, AppNavSubItem, AppTitle, AppVersion } from '@components/DefaultLayout';
+import DefaultLayout, {
+  AppBody,
+  AppNav,
+  AppNavItem,
+  AppNavSettingItem, AppNavSettings,
+  AppNavSubItem,
+  AppTitle,
+  AppVersion,
+} from '@components/DefaultLayout';
 import Modal from '@root/components/Modal';
 
 import Datasets from '@root/components/apps/ddm/scenes/Datasets';
@@ -22,6 +30,7 @@ import FormAddProvider from '@root/components/apps/ddm/forms/FormAddProvider';
 import FormAddReplication from '@root/components/apps/ddm/forms/FormAddReplication';
 import FormNewDataset from '@root/components/apps/ddm/forms/FormNewDataset';
 import AddReplicationProfile from '@root/components/apps/ddm/forms/AddReplicationProfile';
+import FormSetPreferences from '@root/components/apps/ddm/forms/FormSetPreferences';
 
 export default function DDM(props) {
   const [appNavigationState, setAppNavigationState] = React.useState(1);
@@ -67,6 +76,7 @@ export default function DDM(props) {
   const addReplicationProfileButton = React.useRef(null);
   const addWalletButton = React.useRef(null);
   const attachContentButton = React.useRef(null);
+  const addPreferencesButton = React.useRef(null);
   
   const anchor = React.useRef(null);
   function setAppTooltipState(newID: any, newAnchor: React.ReactHTMLElement<any>) {
@@ -152,6 +162,11 @@ export default function DDM(props) {
           <span ref={addWalletButton}>+ Add wallet</span>
         </AppNavSubItem>
       </AppNav>
+      <AppNavSettings>
+        <AppNavSettingItem onClick={(e) => setAppTooltipState(tooltipStates.setPreferences, addPreferencesButton.current)} >
+          <span style={{fontSize: 26}}>&#9881;</span><span style={{marginLeft: 15, paddingTop: 10}} ref={addPreferencesButton}>Settings</span>
+        </AppNavSettingItem>
+      </AppNavSettings>
       <AppBody>
         {appNavigationState === navigationStates.datasets && (
           <Datasets
@@ -231,6 +246,11 @@ export default function DDM(props) {
         {appTooltipID === tooltipStates.addReplication && (
           <Modal anchor={anchor} modalID={tooltipStates.addReplication} onClose={dismissTooltip}>
             <FormAddReplication providers={providers} datasets={datasets} updateReplications={updateReplications} />
+          </Modal>
+        )}
+        {appTooltipID === tooltipStates.setPreferences && (
+          <Modal anchor={anchor} modalID={tooltipStates.setPreferences} onClose={dismissTooltip} attach="bottom">
+            <FormSetPreferences />
           </Modal>
         )}
       </AppBody>

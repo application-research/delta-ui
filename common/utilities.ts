@@ -23,6 +23,22 @@ export function toDateISOString(data: string) {
   });
 }
 
+export function toPreferedTimezone(data: string) {
+  const date = new Date(Date.parse(data));
+  if (localStorage.getItem("settings.global.useLocalTime") == 'true') {
+    return date.toLocaleString('en-US', {
+      weekday: 'short',
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    });
+  }
+  return date.toUTCString()
+}
+
 export const elide = (string, length = 140, emptyState = '...') => {
   if (isEmpty(string)) {
     return emptyState;

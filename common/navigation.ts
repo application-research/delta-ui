@@ -4,6 +4,7 @@ export const navigationStates = {
   replicationProfiles: 3,
   replications: 4,
   wallets: 5,
+  settings: 6,
 };
 
 export const tooltipStates = {
@@ -14,6 +15,7 @@ export const tooltipStates = {
   addReplicationProfile: 5,
   addReplication: 6,
   associateWallet: 7,
+  setPreferences: 8,
 };
 
 export const apps = {

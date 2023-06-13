@@ -160,7 +160,7 @@ export default function Replications(props: {
                     <ProviderRef providerID={replication.provider_actor_id} />
                   </div>
                   <div className={tableStyles.column}>{replication.self_service.is_self_service ? 'true' : 'false'}</div>
-                  <div className={tableStyles.fluidColumn}>{new Date(Date.parse(replication.deal_time)).toUTCString()}</div>
+                  <div className={tableStyles.fluidColumn}>{Utilities.toPreferedTimezone(replication.deal_time)}</div>
                   <div className={tableStyles.fluidColumn}>{replication.proposal_cid}</div>
                   <div className={tableStyles.fluidColumn}>{replication.content_commp}</div>
                   <div className={tableStyles.fluidColumn}>{replication.delta_message}</div>

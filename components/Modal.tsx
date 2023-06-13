@@ -5,7 +5,7 @@ import styles from './Modal.module.scss';
 // The `onClose` function will pass the provided `id` back to the caller so it
 // can be compared to avoid the case of one modal closing causing another one to
 // close.
-export default function Modal(props: { modalID?: any, anchor: React.RefObject<any>, children: React.ReactNode, onClose: (modalID?: any) => void }) {
+export default function Modal(props: { modalID?: any, anchor: React.RefObject<any>, children: React.ReactNode, onClose: (modalID?: any) => void, attach?: string}) {
   const fadeSeconds = 0.15;
 
   const ref = React.useRef(null);
@@ -55,15 +55,30 @@ export default function Modal(props: { modalID?: any, anchor: React.RefObject<an
   }
 
   return (
-    <div
-      className={hidden ? styles.bodyHidden : styles.body}
-      style={{
-        left: `${modalPos.x}px`,
-        top: `${modalPos.y}px`,
-      }}
-      ref={ref}
-    >
-      {props.children}
+    <div>
+      {props.attach == "bottom" ? (
+        <div
+          className={hidden ? styles.bodyHidden : styles.bottom}
+          style={{
+            left: `${modalPos.x}px`,
+            bottom: '-20px',
+          }}
+          ref={ref}
+        >
+          {props.children}
+        </div>
+      ) : (
+        <div
+          className={hidden ? styles.bodyHidden : styles.body}
+          style={{
+            left: `${modalPos.x}px`,
+            top: `${modalPos.y}px`,
+          }}
+          ref={ref}
+        >
+          {props.children}
+        </div>
+      )}
     </div>
   );
 }

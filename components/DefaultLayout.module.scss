@@ -70,6 +70,11 @@
   padding: 88px 0 0 0;
 }
 
+.appNavigationSettings {
+  position: absolute;
+  bottom: 5px;
+}
+
 .appNavigationItem {
   display: block;
   padding: 12px 24px 12px 24px;
@@ -94,5 +99,18 @@
 
   &:hover {
     opacity: 0.3;
+  }
+}
+
+.appNavigationSettingItem {
+  display: flex;
+  padding: 12px 24px 12px 24px;
+  letter-spacing: 0.1px;
+  transition: 200ms ease all;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    opacity: 0.8;
   }
 }
