@@ -53,7 +53,7 @@ export default function Datasets(props: {
                 <div className={tableStyles.row}>
                   <span className={tableStyles.column}>{dataset.name}</span>
                   <span className={tableStyles.column}>{Utilities.bytesToSize(dataset.bytes_total.raw)}</span>
-                  <span className={tableStyles.column}>{dataset.count_replicated}</span>
+                  <span className={tableStyles.column}>{dataset.count_replicated} / {dataset.count_total}</span>
                   <span className={tableStyles.column}>{dataset.replication_quota}</span>
                   <span className={tableStyles.column}>{dataset.deal_duration} days</span>
                   <span className={tableStyles.fluidColumn}><div>{dataset.wallets?.map((wallet, i) => {
