@@ -51,6 +51,16 @@
   align-items: left;
 }
 
+.columnId {
+  @extend .column;
+  max-width: 100px;
+}
+
+.columnName {
+  @extend .column;
+  min-width: 200px;
+}
+
 .fluidColumn {
   @extend .column;
   flex-grow: 1;
