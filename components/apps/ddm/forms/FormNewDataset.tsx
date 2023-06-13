@@ -24,13 +24,15 @@ export default function FormNewDataset(props: {
   async function onSubmit(e) {
     e.preventDefault();
 
+    const trimName = name.replace(/[\s-]$/, "") // trim space / - if any at the end
+    setName(trimName)
 
     try {
       setFeedback(<Feedback />)
       setLoading(true);
 
       await addDataset(
-        name,
+        trimName,
         replications,
         duration,
       );
