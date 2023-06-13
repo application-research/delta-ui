@@ -35,8 +35,8 @@ export default function Datasets(props: {
           onChange={props.onSearchChange}
         />
         <div className={tableStyles.header}>
-          <span className={tableStyles.column} style={{maxWidth: 100}}>Id</span>
-          <span className={tableStyles.column} style={{minWidth: 200}}>Name</span>
+          <span className={tableStyles.columnId}>Id</span>
+          <span className={tableStyles.columnName}>Name</span>
           <span className={tableStyles.column}>Size</span>
           <span className={tableStyles.column}>Deals Made</span>
           <span className={tableStyles.column}>Replication Quota</span>
@@ -52,8 +52,8 @@ export default function Datasets(props: {
             return (
               <div key={dataset.name}>
                 <div className={tableStyles.row}>
-                  <span className={tableStyles.column} style={{maxWidth: 100}}>{dataset.ID}</span>
-                  <span className={tableStyles.column} style={{minWidth: 200}}>{dataset.name}</span>
+                  <span className={tableStyles.columnId}>{dataset.ID}</span>
+                  <span className={tableStyles.columnName}>{dataset.name}</span>
                   <span className={tableStyles.column}>{Utilities.bytesToSize(dataset.bytes_total.raw)}</span>
                   <span className={tableStyles.column}>{dataset.count_replicated}</span>
                   <span className={tableStyles.column}>{dataset.replication_quota}</span>
