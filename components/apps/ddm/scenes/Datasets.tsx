@@ -37,6 +37,7 @@ export default function Datasets(props: {
         <div className={tableStyles.header}>
           <span className={tableStyles.columnId}>Id</span>
           <span className={tableStyles.columnName}>Name</span>
+          <span className={tableStyles.column}>Progress</span>
           <span className={tableStyles.column}>Size</span>
           <span className={tableStyles.column}>Deals Made</span>
           <span className={tableStyles.column}>Replication Quota</span>
@@ -46,7 +47,8 @@ export default function Datasets(props: {
         {props.datasets
           .filter((dataset, i) => !props.search || dataset.name.includes(props.search))
           .map((dataset, i) => {
-            let progress = dataset.bytes_replicated.padded / dataset.bytes_total.padded / dataset.replication_quota;
+            // let progress = dataset.bytes_replicated.padded / dataset.bytes_total.padded / dataset.replication_quota;
+            let progress = .4
             if (Number.isNaN(progress)) progress = 0;
             
             return (
@@ -54,6 +56,7 @@ export default function Datasets(props: {
                 <div className={tableStyles.row}>
                   <span className={tableStyles.columnId}>{dataset.ID}</span>
                   <span className={tableStyles.columnName}>{dataset.name}</span>
+                  <span className={tableStyles.column}>{progress * 100}%</span>
                   <span className={tableStyles.column}>{Utilities.bytesToSize(dataset.bytes_total.raw)}</span>
                   <span className={tableStyles.column}>{dataset.count_replicated} / {dataset.count_total}</span>
                   <span className={tableStyles.column}>{dataset.replication_quota}</span>
@@ -63,7 +66,7 @@ export default function Datasets(props: {
                   })}</div></span>
                 </div>
                 <div className={tableStyles.progress}>
-                  <div className={tableStyles.progressBar} style={{ width: `${progress * 100}%` }} />
+                  <div className={tableStyles.progressBar} style={{ width: `${progress * 100}%` }} ></div>
                 </div>
                 {/* <div className={tableStyles.rowButton}>➟ Make storage deals for this dataset</div> */}
                 <div className={tableStyles.rowButton} onClick={e => {
