@@ -47,8 +47,7 @@ export default function Datasets(props: {
         {props.datasets
           .filter((dataset, i) => !props.search || dataset.name.includes(props.search))
           .map((dataset, i) => {
-            // let progress = dataset.bytes_replicated.padded / dataset.bytes_total.padded / dataset.replication_quota;
-            let progress = .4
+            let progress = dataset.bytes_replicated.padded / dataset.bytes_total.padded / dataset.replication_quota;
             if (Number.isNaN(progress)) progress = 0;
             
             return (
