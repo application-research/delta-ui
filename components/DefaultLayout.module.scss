@@ -82,6 +82,8 @@
   transition: 200ms ease all;
   cursor: pointer;
   user-select: none;
+  color: var(--color-text) !important;
+  text-decoration: none;
 
   &:hover {
     opacity: 0.8;

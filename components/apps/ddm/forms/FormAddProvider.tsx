@@ -7,10 +7,10 @@ import Dismissible from '@components/Dismissible';
 import Button from '@components/Button';
 import Input from '@components/basic/Input';
 import Feedback from '@components/Feedback';
+import { DDMContext } from '@root/common/ddm';
 
-export default function FormAddProvider(props: {
-  updateProviders: () => void,
-}) {
+export default function FormAddProvider(props: {}) {
+  const ctx = React.useContext(DDMContext);
 
   const [providerID, setProviderID] = React.useState('');
   const [providerName, setProviderName] = React.useState('');
@@ -26,7 +26,7 @@ export default function FormAddProvider(props: {
       setLoading(true);
 
       await addProvider(providerID, providerName);
-      props.updateProviders();
+      ctx.updateProviders();
 
       setFeedback(<Feedback type='success' />);
     } catch (e) {

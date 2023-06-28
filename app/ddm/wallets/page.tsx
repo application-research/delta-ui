@@ -1,6 +1,6 @@
 'use client';
 
-import styles from './Wallets.module.scss';
+import styles from './page.module.scss';
 import tableStyles from '@components/Table.module.scss';
 
 import * as React from 'react';
@@ -13,11 +13,18 @@ import LoadingIndicator from '@components/LoadingIndicator';
 import WalletRef from '@components/WalletRef';
 import TagSelect from '@components/TagSelect';
 import Button from '@components/Button';
+import { DDMContext } from '@root/common/ddm';
 
-export default function Wallets(props: { wallets: any[], updateWallets: () => void, datasets: any[], updateDatasets: () => void }) {
+export default function Wallets() {
+  const ctx = React.useContext(DDMContext);
+
+  React.useEffect(() => {
+    ctx.updateWallets();
+  }, []);
+  
   return (
     <div className={styles.body}>
-      {props.wallets && (
+      {ctx.wallets && (
         <div className={tableStyles.body}>
           <div className={tableStyles.header}>
             <span className={styles.columnAddress}>Address</span>
@@ -25,21 +32,23 @@ export default function Wallets(props: { wallets: any[], updateWallets: () => vo
             <span className={tableStyles.column}>Datacap Balance</span>
             <span className={tableStyles.fluidColumn}>Datasets</span>
           </div>
-          {props.wallets.map((wallet, i) => {
+          {ctx.wallets.map((wallet, i) => {
             return (
               <div key={i}>
-                <WalletCard wallet={wallet} datasets={new Map(props.datasets?.map((dataset, i) => [dataset.ID, dataset.name]))} updateDatasets={props.updateDatasets} />
+                <WalletCard wallet={wallet} datasets={new Map(ctx.datasets?.map((dataset, i) => [dataset.ID, dataset.name]))} />
               </div>
             );
           })}
         </div>
       )}
-      {props.wallets === undefined && <LoadingIndicator padded />}
+      {ctx.wallets === undefined && <LoadingIndicator padded />}
     </div>
   );
 }
 
-function WalletCard(props: { wallet: any, datasets: Map<number, string>, updateDatasets: () => void }) {
+function WalletCard(props: { wallet: any, datasets: Map<number, string> }) {
+  const ctx = React.useContext(DDMContext);
+  
   let selectedDefault = () => props.wallet.datasets.map((dataset, i) => dataset.ID);
 
   const [selected, setSelected] = React.useState(selectedDefault());
@@ -66,7 +75,7 @@ function WalletCard(props: { wallet: any, datasets: Map<number, string>, updateD
       setSaving(false);
     }
 
-    props.updateDatasets();
+    ctx.updateDatasets();
   }
 
   return (

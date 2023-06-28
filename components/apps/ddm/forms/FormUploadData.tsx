@@ -10,12 +10,12 @@ import Dismissible from '@components/Dismissible';
 import FileUpload from '@components/FileUpload';
 import Feedback from '@components/Feedback';
 import { pluralize, truncCid } from '@root/common/utilities';
+import { DDMContext } from '@root/common/ddm';
 
-export default function FormUploadData(props: {
-  selectedDataset: string,
-  updateDatasets: () => void,
-}) {
-  const [datasetName, setDatasetName] = React.useState(props.selectedDataset || '');
+export default function FormUploadData(props: {}) {
+  const ctx = React.useContext(DDMContext);
+  
+  const [datasetName, setDatasetName] = React.useState(ctx.selectedDataset || '');
   const [file, setFile] = React.useState(null);
 
   const [loading, setLoading] = React.useState(false);
@@ -46,8 +46,8 @@ export default function FormUploadData(props: {
       // This is just to make sure the file is in valid JSON format
       JSON.parse(fileContents);
 
-      let res = await addContents(props.selectedDataset, fileContents);
-      props.updateDatasets();
+      let res = await addContents(ctx.selectedDataset, fileContents);
+      ctx.updateDatasets();
 
       setFeedback(
         <Feedback type='success'>
@@ -76,7 +76,7 @@ export default function FormUploadData(props: {
 
   return (
     <div>
-      <h2 className={styles.heading}>Attach data for {props.selectedDataset}</h2>
+      <h2 className={styles.heading}>Attach data for {ctx.selectedDataset}</h2>
       <p className={styles.paragraph}>Upload a <em>.json</em> dataset file describing contents to upload to the Filecoin network.</p>
       <form onSubmit={onUpload}>
         <div className={styles.formRow}>

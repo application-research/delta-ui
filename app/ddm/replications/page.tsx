@@ -3,7 +3,7 @@
 import * as React from 'react';
 import * as Utilities from '@common/utilities';
 
-import styles from './Replications.module.scss';
+import styles from './page.module.scss';
 import tableStyles from '@components/Table.module.scss';
 
 import Input from '@components/basic/Input';
@@ -12,17 +12,13 @@ import ProviderRef from '@components/ProviderRef';
 import Button from '@components/Button';
 import { GetReplicationsConfig, updateProvider } from '@root/data/api';
 import Select from '@root/components/basic/Select';
+import { DDMContext } from '@root/common/ddm';
 
-export default function Replications(props: {
-  replications: any,
-  datasets: any[],
-  updateReplications: () => void,
-  getReplicationsConfig: GetReplicationsConfig,
-  setGetReplicationsConfig: (cfg: GetReplicationsConfig) => void,
-}) {
+export default function Replications() {
+  const ctx = React.useContext(DDMContext);
   
   const [refreshTrigger, setRefreshTrigger] = React.useState(false);
-  const cfg = React.useRef(props.getReplicationsConfig);
+  const cfg = React.useRef(ctx.getReplicationsConfig);
   
   function setSearchDatasets(val: string) { 
     cfg.current.datasets = val.split(',').map((dataset) => dataset.trim());
@@ -68,12 +64,12 @@ export default function Replications(props: {
     applySearch();
   }, []);
   React.useEffect(() => {
-    props.updateReplications();
-    console.log(props.getReplicationsConfig);
-  }, [JSON.stringify(props.getReplicationsConfig), refreshTrigger]);
+    ctx.updateReplications();
+    console.log(ctx.getReplicationsConfig);
+  }, [JSON.stringify(ctx.getReplicationsConfig), refreshTrigger]);
   
   function applySearch() {
-    props.setGetReplicationsConfig(cfg.current);
+    ctx.setGetReplicationsConfig(cfg.current);
     refresh();
   }
 
@@ -150,11 +146,11 @@ export default function Replications(props: {
             <div className={tableStyles.fluidColumn}>Piece CID (CommP)</div>
             <div className={tableStyles.fluidColumn}>Message</div>
           </div>
-          {props.replications?.data?.map((replication, i) => {
+          {ctx.replications?.data?.map((replication, i) => {
             return (
               <div key={i}>
                 <div className={tableStyles.row}>
-                  <div className={tableStyles.column}>{props.datasets.find(d => d.ID === replication.content.dataset_id)?.name}</div>
+                  <div className={tableStyles.column}>{ctx.datasets?.find(d => d.ID === replication.content.dataset_id)?.name}</div>
                   <div className={tableStyles.column}>{replication.status}</div>
                   <div className={tableStyles.column}>
                     <ProviderRef providerID={replication.provider_actor_id} />
@@ -171,18 +167,18 @@ export default function Replications(props: {
         </div>
       }
 
-      {props.replications !== undefined && <PageIndex
-        offset={props.getReplicationsConfig.offset || 0}
+      {ctx.replications !== undefined && <PageIndex
+        offset={ctx.getReplicationsConfig.offset || 0}
         onChangeOffset={(offset) => {
           setSearchOffset(offset);
         }}
         onSearchLimit={(limit) => {
           setSearchLimit(limit);
         }}
-        limit={props.getReplicationsConfig.limit || 100}
-        total={props.replications?.totalCount || 0}
+        limit={ctx.getReplicationsConfig.limit || 100}
+        total={ctx.replications?.totalCount || 0}
         />}
-      {props.replications === undefined && <LoadingIndicator padded />}
+      {ctx.replications === undefined && <LoadingIndicator padded />}
     </div>
   );
 }

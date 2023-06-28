@@ -6,11 +6,12 @@ import { createSlug } from '@root/common/utilities';
 import styles from './Input.module.scss';
 
 export default function Input(props: {
+  id?: string,
   label?: any,
   inputClassName?: string,
   labelClassName?: string,
 } & React.ComponentPropsWithRef<'input'>) {
-  let id = (props.id ? props.id + '-' : '') + createSlug(props.label);
+  const id = props.id || 'input-' + Math.floor(Math.random() * 100000);
   
   // Find custom props that should be forwarded to the input element by removing custom props
   const filteredProps = Object.assign({}, props);

@@ -30,8 +30,8 @@ export default function Ptolemy(props) {
       <AppTitle>Ptolemy</AppTitle>
       <AppVersion>Vesion Placeholder</AppVersion>
       <AppNav>
-        <AppNavItem>Jobs</AppNavItem>
-        <AppNavSubItem onClick={e => setFormState(formStates.createJob)}>
+        <AppNavItem href='/ptolemy/jobs'>Jobs</AppNavItem>
+        <AppNavSubItem action={() => setFormState(formStates.createJob)}>
           <span ref={createJobButton}>+ Create job</span>
         </AppNavSubItem>
         {formState === formStates.createJob && <Modal modalID={formStates.createJob} onClose={onClose} anchor={createJobButton}>

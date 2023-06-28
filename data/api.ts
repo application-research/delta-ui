@@ -1,34 +1,34 @@
-import { getCookie } from '@root/modules/cookies';
+import { loadAuth, loadDDMAddress } from '@root/common/ddm';
 
 function apiURL() {
-  return (getCookie('ddm-address') || process.env.NEXT_PUBLIC_API_URL)?.replace(/\/$/, '') || 'http://localhost:1415';
+  return (loadDDMAddress() || process.env.NEXT_PUBLIC_API_URL)?.replace(/\/$/, '') || 'http://localhost:1415';
 }
 
 function defaultHeaders() {
   return {
     'Content-Type': 'application/json',
-    Authorization: 'Bearer ' + getCookie('auth'),
+    Authorization: 'Bearer ' + loadAuth(),
   };
 }
 
 // Checks only whether an auth key is in a valid format, without contacting
 // delta-dm API. Optionally accepts an auth key parameter - if not provided, the
-// auth cookie will be used.
+// cached value will be used.
 export function checkAuthFormat(auth?: string): boolean {
   if (auth === undefined) {
-    auth = getCookie('auth');
+    auth = loadAuth();
   }
 
   return /^(EST).*(ARY)$/.test(auth) || /^(DEL).*(TA)$/.test(auth);
 }
 
 // Checks auth key validity with delta-dm. Optionally accepts an auth key
-// parameter - if not provided, cached cookie values will be used.
+// parameter - if not provided, cached values will be used.
 //
 // This function times out after 5 seconds.
 export async function checkAuth(auth?: string, ddmAddress?: string): Promise<boolean> {
   if (auth === undefined) {
-    auth = getCookie('auth');
+    auth = loadAuth();
   }
 
   let res;

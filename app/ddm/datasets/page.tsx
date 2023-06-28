@@ -3,36 +3,35 @@
 import * as React from 'react';
 import * as Utilities from '@common/utilities';
 
-import styles from './Datasets.module.scss';
+import styles from './page.module.scss';
 import tableStyles from '@components/Table.module.scss';
 
 import Input from '@components/basic/Input';
 import LoadingIndicator from '@components/LoadingIndicator';
 import WalletRef from '@components/WalletRef';
+import { DDMContext } from '@root/common/ddm';
 
-export default function Datasets(props: {
-  datasets: any[],
-  searchLabel: string,
-  search: string,
-  onSearchChange: (string) => void,
-  placeholder: string,
-  setSelectedDataset: (string) => void,
-  attachContentButton: React.MutableRefObject<any>
-  onAttachContent: (anchor: React.ReactHTMLElement<any>) => void,
-}) {
+export default function Datasets() {  
   const modalAnchors = React.useRef({});
+  const ctx = React.useContext(DDMContext);
+
+  const [search, setSearch] = React.useState('');
+
+  React.useEffect(() => {
+    ctx.updateDatasets();
+  }, []);
   
   return (<div className={styles.body}>
-    {props.datasets &&
+    {ctx.datasets &&
       <div className={tableStyles.body}>
         <Input
           labelClassName={tableStyles.searchLabel}
           inputClassName={tableStyles.searchInput}
-          label={props.searchLabel}
-          id="scene-datasets-search"
-          placeholder={props.placeholder}
-          value={props.search}
-          onChange={props.onSearchChange}
+          label={'Search datasets'}
+          id='scene-datasets-search'
+          placeholder={'(example: university-bird-sounds)'}
+          value={search}
+          onChange={e => setSearch(e.target.value)}
         />
         <div className={tableStyles.header}>
           <span className={tableStyles.columnId}>Id</span>
@@ -44,8 +43,8 @@ export default function Datasets(props: {
           <span className={tableStyles.column}>Duration</span>
           <span className={tableStyles.fluidColumn}>Wallets</span>
         </div>
-        {props.datasets
-          .filter((dataset, i) => !props.search || dataset.name.includes(props.search))
+        {ctx.datasets
+          .filter((dataset, i) => !search || dataset.name.includes(search))
           .map((dataset, i) => {
             let progress = dataset.bytes_replicated.padded / dataset.bytes_total.padded / dataset.replication_quota;
             if (Number.isNaN(progress)) progress = 0;
@@ -69,8 +68,8 @@ export default function Datasets(props: {
                 </div>
                 {/* <div className={tableStyles.rowButton}>➟ Make storage deals for this dataset</div> */}
                 <div className={tableStyles.rowButton} onClick={e => {
-                  props.setSelectedDataset(dataset.name);
-                  props.onAttachContent(modalAnchors.current[dataset.name]);
+                  ctx.selectedDataset = dataset.name;
+                  ctx.tooltipState = modalAnchors.current[dataset.name];
                 }}><span ref={el => modalAnchors.current[dataset.name] = el}>➟ Attach content</span></div>
               </div>
             )
@@ -78,6 +77,6 @@ export default function Datasets(props: {
         }
       </div>
     }
-    {props.datasets === undefined && <LoadingIndicator padded />}
+    {ctx.datasets === undefined && <LoadingIndicator padded />}
   </div>);
 }

@@ -18,6 +18,7 @@ export default function Select(props: {
     <div className={styles.body}>
       <label htmlFor={id} className={styles.label}>{props.label}</label>
       <select 
+        id={id}
         className={styles.select} 
         value={props.value} 
         onChange={props.onChange}

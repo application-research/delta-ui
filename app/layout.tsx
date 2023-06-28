@@ -1,7 +1,9 @@
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+import '@root/global.scss';
+
+export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>{props.children}</body>
     </html>
   );
 }
