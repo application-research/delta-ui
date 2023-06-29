@@ -29,23 +29,18 @@ export function CreateDDMState() {
     selectedDataset,
     setSelectedDataset,
     async updateDatasets() {
-      // setDatasets(undefined);
       setDatasets(await getDatasets());
     },
     async updateProviders() {
-      // setProviders(undefined);
       setProviders(await getProviders());
     },
     async updateReplicationProfiles() {
-      // setReplicationProfiles(undefined);
       setReplicationProfiles(await getReplicationProfiles());
     },
     async updateReplications() {
-      // setReplications(undefined);
       setReplications(await getReplications(this.getReplicationsConfig));
     },
     async updateWallets() {
-      // setWallets(undefined);
       setWallets(await getWallets());
     },
   };
