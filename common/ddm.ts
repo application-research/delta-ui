@@ -9,10 +9,15 @@ if (typeof window !== 'undefined') {
 export function CreateDDMState() {
   const [getReplicationsConfig, setGetReplicationsConfig] = React.useState({ limit: limit || 10 } as GetReplicationsConfig);
   const [datasets, setDatasets] = React.useState(null);
+  const [datasetsLoading, setDatasetsLoading] = React.useState(false);
   const [providers, setProviders] = React.useState(null);
+  const [providersLoading, setProvidersLoading] = React.useState(false);
   const [replicationProfiles, setReplicationProfiles] = React.useState(null);
+  const [replicationProfilesLoading, setReplicationProfilesLoading] = React.useState(false);
   const [replications, setReplications] = React.useState(null);
+  const [replicationsLoading, setReplicationsLoading] = React.useState(false);
   const [wallets, setWallets] = React.useState(null);
+  const [walletsLoading, setWalletsLoading] = React.useState(false);
   const [tooltipState, setTooltipState] = React.useState(null);
   const [selectedDataset, setSelectedDataset] = React.useState(null);
 
@@ -20,28 +25,42 @@ export function CreateDDMState() {
     getReplicationsConfig,
     setGetReplicationsConfig,
     datasets,
+    datasetsLoading,
     providers,
+    providersLoading,
     replicationProfiles,
+    replicationProfilesLoading,
     replications,
+    replicationsLoading,
     wallets,
     tooltipState,
     setTooltipState,
     selectedDataset,
     setSelectedDataset,
     async updateDatasets() {
+      setDatasetsLoading(true);
       setDatasets(await getDatasets());
+      setDatasetsLoading(false);
     },
     async updateProviders() {
+      setProvidersLoading(true);
       setProviders(await getProviders());
+      setProvidersLoading(false);
     },
     async updateReplicationProfiles() {
+      setReplicationProfilesLoading(true);
       setReplicationProfiles(await getReplicationProfiles());
+      setReplicationProfilesLoading(false);
     },
     async updateReplications() {
+      setReplicationsLoading(true);
       setReplications(await getReplications(this.getReplicationsConfig));
+      setReplicationsLoading(false);
     },
     async updateWallets() {
+      setWalletsLoading(true);
       setWallets(await getWallets());
+      setWalletsLoading(false);
     },
   };
 }

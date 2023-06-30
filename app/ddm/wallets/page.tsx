@@ -41,7 +41,7 @@ export default function Wallets() {
           })}
         </div>
       )}
-      {ctx.wallets === undefined && <LoadingIndicator padded />}
+      {ctx.walletsLoading && <LoadingIndicator padded />}
     </div>
   );
 }

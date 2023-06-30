@@ -50,7 +50,7 @@ export default function Providers() {
             })}
         </div>
       )}
-      {ctx.providers === undefined && <LoadingIndicator padded />}
+      {ctx.providersLoading && <LoadingIndicator padded />}
     </div>
   );
 }
