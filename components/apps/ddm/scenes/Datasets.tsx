@@ -55,7 +55,7 @@ export default function Datasets(props: {
                 <div className={tableStyles.row}>
                   <span className={tableStyles.columnId}>{dataset.ID}</span>
                   <span className={tableStyles.columnName}>{dataset.name}</span>
-                  <span className={tableStyles.column}>{progress * 100}%</span>
+                  <span className={tableStyles.column}>{Math.floor((progress * 100))}%</span>
                   <span className={tableStyles.column}>{Utilities.bytesToSize(dataset.bytes_total.raw)}</span>
                   <span className={tableStyles.column}>{dataset.count_replicated} / {dataset.count_total}</span>
                   <span className={tableStyles.column}>{dataset.replication_quota}</span>
