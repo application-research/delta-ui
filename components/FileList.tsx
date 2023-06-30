@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as path from 'path';
 
-import styles from './FileList.module.scss';
+import styles from '@components/FileList.module.scss';
 
 export default function FileList(props) {
   const [files, setFiles] = React.useState([]);

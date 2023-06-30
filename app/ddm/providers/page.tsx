@@ -4,7 +4,7 @@ import * as React from 'react';
 import * as Utilities from '@common/utilities';
 import { updateProvider } from '@root/data/api';
 
-import styles from './page.module.scss';
+import styles from '@ddm/providers/page.module.scss';
 import tableStyles from '@components/Table.module.scss';
 
 import Input from '@components/basic/Input';

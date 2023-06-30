@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import styles from './page.module.scss';
+import styles from '@ddm/replication-profiles/page.module.scss';
 
 import Input from '@root/components/basic/Input';
 import { deleteReplicationProfile, updateReplicationProfile } from '@root/data/api';

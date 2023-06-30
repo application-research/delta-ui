@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { checkAuth, checkAuthFormat } from '@data/api';
 
-import styles from './page.module.scss';
+import styles from '@ddm/auth/page.module.scss';
 
 import Button from '@components/Button';
 import Input from '@components/basic/Input';

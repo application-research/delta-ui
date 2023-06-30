@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import styles from './Select.module.scss';
+import styles from '@components/basic/Select.module.scss';
 
 export default function Select(props: {
   id?: string,

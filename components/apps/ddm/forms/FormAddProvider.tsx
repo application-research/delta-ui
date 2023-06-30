@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { addProvider } from '@data/api';
 
-import styles from './FormAddProvider.module.scss';
+import styles from '@components/apps/ddm/forms/FormAddProvider.module.scss';
 
 import Dismissible from '@components/Dismissible';
 import Button from '@components/Button';

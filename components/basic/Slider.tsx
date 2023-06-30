@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import styles from './Slider.module.scss';
+import styles from '@components/basic/Slider.module.scss';
 
 export default function Slider(props: {
   id?: string,

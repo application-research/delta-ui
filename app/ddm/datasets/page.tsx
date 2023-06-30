@@ -3,7 +3,7 @@
 import * as React from 'react';
 import * as Utilities from '@common/utilities';
 
-import styles from './page.module.scss';
+import styles from '@ddm/datasets/page.module.scss';
 import tableStyles from '@components/Table.module.scss';
 
 import Input from '@components/basic/Input';

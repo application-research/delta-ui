@@ -4,7 +4,7 @@ import React from 'react';
 import { addDataset } from '@root/data/api';
 import { createSlug } from '@root/common/utilities';
 
-import styles from './FormNewDataset.module.scss';
+import styles from '@components/apps/ddm/forms/FormNewDataset.module.scss';
 
 import Dismissible from '@components/Dismissible';
 import Input from '@components/basic/Input';

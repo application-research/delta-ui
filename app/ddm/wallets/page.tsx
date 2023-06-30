@@ -1,6 +1,6 @@
 'use client';
 
-import styles from './page.module.scss';
+import styles from '@ddm/wallets/page.module.scss';
 import tableStyles from '@components/Table.module.scss';
 
 import * as React from 'react';

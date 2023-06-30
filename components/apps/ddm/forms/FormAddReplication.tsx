@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { addReplication } from '@root/data/api';
 
-import styles from './FormAddReplication.module.scss';
+import styles from '@components/apps/ddm/forms/FormAddReplication.module.scss';
 
 import Dismissible from '@components/Dismissible';
 import Button from '@components/Button';

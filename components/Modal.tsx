@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import styles from './Modal.module.scss';
+import styles from '@components/Modal.module.scss';
 
 // The `onClose` function will pass the provided `id` back to the caller so it
 // can be compared to avoid the case of one modal closing causing another one to

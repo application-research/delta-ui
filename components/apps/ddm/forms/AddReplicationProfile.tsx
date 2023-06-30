@@ -1,9 +1,10 @@
 import React from 'react';
 
+import styles from '@components/apps/ddm/forms/AddReplicationProfile.module.scss';
+
 import Input from '@root/components/basic/Input';
 import DatasetSelect from '@root/components/DatasetSelect';
 import ProviderSelect from '@root/components/ProviderSelect';
-import styles from './AddReplicationProfile.module.scss';
 import Button from '@root/components/Button';
 import { addReplicationProfile } from '@root/data/api';
 import Feedback from '@root/components/Feedback';

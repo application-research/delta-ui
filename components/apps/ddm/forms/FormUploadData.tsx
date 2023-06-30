@@ -1,9 +1,9 @@
 'use client';
 
-import styles from './FormUploadData.module.scss';
-
 import * as React from 'react';
 import { addContents } from '@root/data/api';
+
+import styles from '@components/apps/ddm/forms/FormUploadData.module.scss';
 
 import Button from '@components/Button';
 import Dismissible from '@components/Dismissible';
