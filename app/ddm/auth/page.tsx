@@ -10,6 +10,30 @@ import Input from '@components/basic/Input';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { loadAuth, saveAuth, saveDDMAddress } from '@root/common/ddm';
 
+async function auth(authToken: string, ddmAddress: string, setLoading: (loading: boolean) => void) {
+  setLoading(true);
+
+  try {
+    if (!(await checkAuth(authToken, ddmAddress))) {
+      alert('Unauthorized token');
+      return;
+    }
+  } catch (e) {
+    alert(e.toString());
+    return;
+  } finally {
+    setLoading(false);
+  }
+
+  saveAuth(authToken);
+  saveDDMAddress(ddmAddress);
+}
+
+function returnToOriginalPage(router, searchParams) {
+  let returnLocation = searchParams.get('return') || '/ddm/datasets';
+  router.replace(returnLocation);
+}
+
 export default function Auth(props: {}) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -18,35 +42,15 @@ export default function Auth(props: {}) {
   // state doesn't update until the user submits the form
   const [tmpAuthToken, setTmpAuthToken] = React.useState(loadAuth() || '');
   const [tmpDDMAddress, setTmpDDMAddress] = React.useState(loadAuth() || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1415');
-  const [loading, setLoading] = React.useState(false);
-
-  async function onSubmit(e) {
-    e.preventDefault();
-
-    setLoading(true);
-
-    try {
-      if (!(await checkAuth(tmpAuthToken, tmpDDMAddress))) {
-        alert('Unauthorized token');
-        return;
-      }
-    } catch (e) {
-      alert(e.toString());
-      return;
-    } finally {
-      setLoading(false);
-    }
-
-    saveAuth(tmpAuthToken);
-    saveDDMAddress(tmpDDMAddress);
-
-    let returnLocation = searchParams.get('return') || '/ddm/datasets';
-    router.replace(returnLocation);
-  }
+  const [loading, setLoading] = React.useState(false);  
 
   return (
     <div className={styles.body}>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={async e => {
+        e.preventDefault();
+        await auth(tmpAuthToken, tmpDDMAddress, setLoading);
+        returnToOriginalPage(router, searchParams);
+      }}>
         <Input label="Delta API Authorization Token" id="auth-token" value={tmpAuthToken} onChange={(e) => setTmpAuthToken(e.target.value)} />
         <Input label="Delta-DM API Address" id="ddm-address" value={tmpDDMAddress} onChange={(e) => setTmpDDMAddress(e.target.value)} />
         <Button disabled={!checkAuthFormat(tmpAuthToken)} loading={loading} primary>

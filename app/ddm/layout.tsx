@@ -15,7 +15,7 @@ import FormAddReplication from '@root/components/apps/ddm/forms/FormAddReplicati
 import FormNewDataset from '@root/components/apps/ddm/forms/FormNewDataset';
 import AddReplicationProfile from '@root/components/apps/ddm/forms/AddReplicationProfile';
 import FormSetPreferences from '@root/components/apps/ddm/forms/FormSetPreferences';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { redirect, usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 export default function DDM(props) {
   const router = useRouter();
@@ -51,16 +51,16 @@ export default function DDM(props) {
   }
 
   React.useEffect(() => {
-    let authToken = loadAuth();
-
-    if (authToken) {
-      updateHealth();
-      updateCommitHash();
-    } else {
-      if (pathname !== '/ddm/auth') {
-        router.replace(`/ddm/auth?return=${encodeURI(pathname)}`);
+    (async () => {
+      if (await checkAuth()) {
+        updateHealth();
+        updateCommitHash();
+      } else {
+        if (pathname !== '/ddm/auth') {
+          router.replace(`/ddm/auth?return=${encodeURI(pathname)}`);
+        }
       }
-    }
+    })();
   }, []);
 
   return (
