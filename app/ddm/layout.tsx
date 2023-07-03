@@ -52,7 +52,14 @@ export default function DDM(props) {
 
   React.useEffect(() => {
     (async () => {
-      if (await checkAuth()) {
+      let authorized = false;
+      try {
+        authorized = await checkAuth();
+      } catch (e) {
+        console.error(e);
+      }
+      
+      if (authorized) {
         updateHealth();
         updateCommitHash();
       } else {
