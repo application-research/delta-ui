@@ -21,6 +21,13 @@ export default function Datasets() {
     ctx.updateDatasets();
   }, []);
   
+  function formatPercentNumber(percent) {
+    if (percent == 0 || percent == 1) {
+      return percent * 100
+    }
+    return (percent * 100).toFixed(1)
+  }
+
   return (<div className={styles.body}>
     {ctx.datasets &&
       <div className={tableStyles.body}>
@@ -48,13 +55,13 @@ export default function Datasets() {
           .map((dataset, i) => {
             let progress = dataset.bytes_replicated.padded / dataset.bytes_total.padded / dataset.replication_quota;
             if (Number.isNaN(progress)) progress = 0;
-            
+
             return (
               <div key={dataset.name}>
                 <div className={tableStyles.row}>
                   <span className={tableStyles.columnId}>{dataset.ID}</span>
                   <span className={tableStyles.columnName}>{dataset.name}</span>
-                  <span className={tableStyles.column}>{progress * 100}%</span>
+                  <span className={tableStyles.column}>{formatPercentNumber(progress)}%</span>
                   <span className={tableStyles.column}>{Utilities.bytesToSize(dataset.bytes_total.raw)}</span>
                   <span className={tableStyles.column}>{dataset.count_replicated} / {dataset.count_total}</span>
                   <span className={tableStyles.column}>{dataset.replication_quota}</span>
