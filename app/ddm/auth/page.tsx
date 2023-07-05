@@ -42,7 +42,7 @@ export default function Auth(props: {}) {
   // state doesn't update until the user submits the form
   const [tmpAuthToken, setTmpAuthToken] = React.useState('');
   const [tmpDDMAddress, setTmpDDMAddress] = React.useState(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1415');
-  const [loading, setLoading] = React.useState(false);  
+  const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
     let loadedAuth = loadAuth();
@@ -57,22 +57,27 @@ export default function Auth(props: {}) {
   }, []);
 
   return (
-    <div className={styles.body}>
-      <form onSubmit={async e => {
-        e.preventDefault();
-        await auth(tmpAuthToken, tmpDDMAddress, setLoading);
-        returnToOriginalPage(router, searchParams);
-      }}>
-        <Input label="Delta API Authorization Token" id="auth-token" value={tmpAuthToken} onChange={(e) => setTmpAuthToken(e.target.value)} />
-        <Input label="Delta-DM API Address" id="ddm-address" value={tmpDDMAddress} onChange={(e) => setTmpDDMAddress(e.target.value)} />
-        <Button disabled={!checkAuthFormat(tmpAuthToken)} loading={loading} primary>
-          {tmpAuthToken == '' || checkAuthFormat(tmpAuthToken) ? 'Connect' : 'Invalid Token Format'}
-        </Button>
-      </form>
-    </div>
+    <>
+      <div className={styles.background}></div>
+      <div className={styles.body}>
+        <form
+          onSubmit={async (e) => {
+            e.preventDefault();
+            await auth(tmpAuthToken, tmpDDMAddress, setLoading);
+            returnToOriginalPage(router, searchParams);
+          }}
+        >
+          <Input label="Delta API Authorization Token" id="auth-token" value={tmpAuthToken} onChange={(e) => setTmpAuthToken(e.target.value)} />
+          <Input label="Delta-DM API Address" id="ddm-address" value={tmpDDMAddress} onChange={(e) => setTmpDDMAddress(e.target.value)} />
+          <Button disabled={!checkAuthFormat(tmpAuthToken)} loading={loading} primary>
+            {tmpAuthToken == '' || checkAuthFormat(tmpAuthToken) ? 'Connect' : 'Invalid Token Format'}
+          </Button>
+        </form>
+      </div>
+    </>
   );
 }
 
 Auth.getLayout = (page) => {
-  return page.Component.getLayout();  
-}
+  return page.Component.getLayout();
+};
