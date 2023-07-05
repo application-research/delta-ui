@@ -8,9 +8,9 @@ import styles from '@ddm/auth/page.module.scss';
 import Button from '@components/Button';
 import Input from '@components/basic/Input';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { loadAuth, loadDDMAddress, saveAuth, saveDDMAddress } from '@root/common/ddm';
+import { DDMContext, loadAuth, loadDDMAddress, saveAuth, saveDDMAddress } from '@root/common/ddm';
 
-async function auth(authToken: string, ddmAddress: string, setLoading: (loading: boolean) => void) {
+async function auth(ctx: any, authToken: string, ddmAddress: string, setLoading: (loading: boolean) => void) {
   setLoading(true);
 
   try {
@@ -27,6 +27,10 @@ async function auth(authToken: string, ddmAddress: string, setLoading: (loading:
 
   saveAuth(authToken);
   saveDDMAddress(ddmAddress);
+
+  // Make sure to unset the unauthorized flag so user doesn't get redirected
+  // back here after.
+  ctx.setUnauthorized(false);
 }
 
 function returnToOriginalPage(router, searchParams) {
@@ -37,6 +41,8 @@ function returnToOriginalPage(router, searchParams) {
 export default function Auth(props: {}) {
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  const ctx = React.useContext(DDMContext);
 
   // Store a tmp auth token in the component so the main application auth token
   // state doesn't update until the user submits the form
@@ -63,7 +69,7 @@ export default function Auth(props: {}) {
         <form
           onSubmit={async (e) => {
             e.preventDefault();
-            await auth(tmpAuthToken, tmpDDMAddress, setLoading);
+            await auth(ctx, tmpAuthToken, tmpDDMAddress, setLoading);
             returnToOriginalPage(router, searchParams);
           }}
         >
