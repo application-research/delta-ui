@@ -33,20 +33,19 @@ export default function FormAddReplication(props: {}) {
     e.preventDefault();
     e.target.reportValidity();
 
-
     try {
       setFeedback(undefined);
       setLoading(true);
 
       await addReplication(providerID, datasetID, numDeals, delayStartDays);
-      ctx.updateReplications();
-      
       setFeedback(<Feedback type='success' />);
     } catch (e) {
       setFeedback(<Feedback type='error'>{e.toString()}</Feedback>);
     } finally {
       setLoading(false);
     }
+
+    ctx.updateReplications();
   }
 
   function formValid() {

@@ -37,14 +37,14 @@ export default function FormNewDataset(props: {}) {
         replications,
         duration,
       );
-      ctx.updateDatasets();
-
       setFeedback(<Feedback type='success' />)
     } catch (e) {
       setFeedback(<Feedback type='error'>{e.toString()}</Feedback>);
     } finally {
       setLoading(false);
     }
+    
+    ctx.updateDatasets();
   }
 
   function isFormValid() {

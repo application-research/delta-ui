@@ -14,7 +14,7 @@ import { DDMContext } from '@root/common/ddm';
 
 export default function FormUploadData(props: {}) {
   const ctx = React.useContext(DDMContext);
-  
+
   const [datasetName, setDatasetName] = React.useState(ctx.selectedDataset || '');
   const [file, setFile] = React.useState(null);
 
@@ -24,7 +24,7 @@ export default function FormUploadData(props: {}) {
   async function onUpload(e) {
     e.preventDefault();
 
-    setFeedback(<Feedback />)
+    setFeedback(<Feedback />);
     setLoading(true);
 
     const readFileContents = (file) => {
@@ -47,27 +47,35 @@ export default function FormUploadData(props: {}) {
       JSON.parse(fileContents);
 
       let res = await addContents(ctx.selectedDataset, fileContents);
-      ctx.updateDatasets();
-
       setFeedback(
-        <Feedback type='success'>
-          {res.success &&
+        <Feedback type="success">
+          {res.success && (
             <>
-              <p>Attached {res.success.length} {pluralize('content', res.success.length)}</p>
+              <p>
+                Attached {res.success.length} {pluralize('content', res.success.length)}
+              </p>
               <ul>
-                {res.success.map((cid, i) => <li>{truncCid(cid)}</li>)}
+                {res.success.map((cid, i) => (
+                  <li>{truncCid(cid)}</li>
+                ))}
               </ul>
             </>
-          }
+          )}
           <br />
-          {res.fail && <p>Skipped {res.fail.length} duplicate {pluralize('content', res.fail.length)}</p>}
+          {res.fail && (
+            <p>
+              Skipped {res.fail.length} duplicate {pluralize('content', res.fail.length)}
+            </p>
+          )}
         </Feedback>
       );
     } catch (e) {
-      setFeedback(<Feedback type='error'>{e.toString()}</Feedback>);
+      setFeedback(<Feedback type="error">{e.toString()}</Feedback>);
     } finally {
       setLoading(false);
     }
+
+    ctx.updateDatasets();
   }
 
   function isFormValid() {
@@ -76,14 +84,18 @@ export default function FormUploadData(props: {}) {
 
   return (
     <div>
-      <h2 className={styles.heading}>Attach data for {ctx.datasets.find(dataset => dataset.ID === ctx.selectedDataset).name}</h2>
-      <p className={styles.paragraph}>Upload a <em>.json</em> dataset file describing contents to upload to the Filecoin network.</p>
+      <h2 className={styles.heading}>Attach data for {ctx.datasets.find((dataset) => dataset.ID === ctx.selectedDataset).name}</h2>
+      <p className={styles.paragraph}>
+        Upload a <em>.json</em> dataset file describing contents to upload to the Filecoin network.
+      </p>
       <form onSubmit={onUpload}>
         <div className={styles.formRow}>
-          <FileUpload label='Content JSON' onUpload={file => setFile(file)} />
+          <FileUpload label="Content JSON" onUpload={(file) => setFile(file)} />
         </div>
         <div className={styles.formRow}>
-          <Button disabled={!isFormValid() || feedback?.props.type === 'success'} loading={loading} primary>Upload</Button>
+          <Button disabled={!isFormValid() || feedback?.props.type === 'success'} loading={loading} primary>
+            Upload
+          </Button>
         </div>
       </form>
       {feedback}

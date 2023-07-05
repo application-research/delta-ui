@@ -84,7 +84,7 @@ function ProviderCard(props: { provider: any }) {
       setSaving(false);
     }
 
-    ctx.updateDatasets();
+    ctx.updateProviders();
   }
 
   if (editing)

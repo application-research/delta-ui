@@ -33,14 +33,14 @@ export default function (props: {}) {
       setLoading(true);
 
       await addReplicationProfile(provider, datasetID, indexed, unsealed);
-      ctx.updateReplicationProfiles();
-
       setFeedback(<Feedback type="success" />)
     } catch (e) {
       setFeedback(<Feedback type="error">{e.toString()}</Feedback>);
     } finally {
       setLoading(false);
     }
+
+    ctx.updateReplicationProfiles();
   }
 
   function formValid() {
