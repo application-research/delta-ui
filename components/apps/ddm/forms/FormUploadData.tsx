@@ -76,7 +76,7 @@ export default function FormUploadData(props: {}) {
 
   return (
     <div>
-      <h2 className={styles.heading}>Attach data for {ctx.selectedDataset}</h2>
+      <h2 className={styles.heading}>Attach data for {ctx.datasets.find(dataset => dataset.ID === ctx.selectedDataset).name}</h2>
       <p className={styles.paragraph}>Upload a <em>.json</em> dataset file describing contents to upload to the Filecoin network.</p>
       <form onSubmit={onUpload}>
         <div className={styles.formRow}>

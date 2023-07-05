@@ -14,6 +14,7 @@ export function CreateDDMState() {
   const [replications, setReplications] = React.useState(null);
   const [wallets, setWallets] = React.useState(null);
   const [tooltipState, setTooltipState] = React.useState(null);
+  const tooltipAnchor = React.useRef(null);
   const [selectedDataset, setSelectedDataset] = React.useState(null);
 
   return {
@@ -26,6 +27,7 @@ export function CreateDDMState() {
     wallets,
     tooltipState,
     setTooltipState,
+    tooltipAnchor,
     selectedDataset,
     setSelectedDataset,
     async updateDatasets() {

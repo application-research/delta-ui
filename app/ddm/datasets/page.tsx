@@ -9,7 +9,7 @@ import tableStyles from '@components/Table.module.scss';
 import Input from '@components/basic/Input';
 import LoadingIndicator from '@components/LoadingIndicator';
 import WalletRef from '@components/WalletRef';
-import { DDMContext } from '@root/common/ddm';
+import { DDMContext, tooltipStates } from '@root/common/ddm';
 
 export default function Datasets() {  
   const modalAnchors = React.useRef({});
@@ -75,8 +75,10 @@ export default function Datasets() {
                 </div>
                 {/* <div className={tableStyles.rowButton}>➟ Make storage deals for this dataset</div> */}
                 <div className={tableStyles.rowButton} onClick={e => {
-                  ctx.selectedDataset = dataset.name;
-                  ctx.tooltipState = modalAnchors.current[dataset.name];
+                  ctx.setSelectedDataset(dataset.ID);
+                  ctx.setTooltipState(tooltipStates.attachContent);
+                  ctx.tooltipAnchor.current = modalAnchors.current[dataset.name];
+                  console.log(tooltipStates.attachContent);
                 }}><span ref={el => modalAnchors.current[dataset.name] = el}>➟ Attach content</span></div>
               </div>
             )
