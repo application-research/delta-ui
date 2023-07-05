@@ -8,7 +8,7 @@ import styles from '@ddm/auth/page.module.scss';
 import Button from '@components/Button';
 import Input from '@components/basic/Input';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { loadAuth, saveAuth, saveDDMAddress } from '@root/common/ddm';
+import { loadAuth, loadDDMAddress, saveAuth, saveDDMAddress } from '@root/common/ddm';
 
 async function auth(authToken: string, ddmAddress: string, setLoading: (loading: boolean) => void) {
   setLoading(true);
@@ -40,9 +40,21 @@ export default function Auth(props: {}) {
 
   // Store a tmp auth token in the component so the main application auth token
   // state doesn't update until the user submits the form
-  const [tmpAuthToken, setTmpAuthToken] = React.useState(loadAuth() || '');
-  const [tmpDDMAddress, setTmpDDMAddress] = React.useState(loadAuth() || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1415');
+  const [tmpAuthToken, setTmpAuthToken] = React.useState('');
+  const [tmpDDMAddress, setTmpDDMAddress] = React.useState(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1415');
   const [loading, setLoading] = React.useState(false);  
+
+  React.useEffect(() => {
+    let loadedAuth = loadAuth();
+    if (loadedAuth) {
+      setTmpAuthToken(loadedAuth);
+    }
+
+    let loadedDDMAddress = loadDDMAddress();
+    if (loadedDDMAddress) {
+      setTmpDDMAddress(loadedDDMAddress);
+    }
+  }, []);
 
   return (
     <div className={styles.body}>
@@ -59,4 +71,8 @@ export default function Auth(props: {}) {
       </form>
     </div>
   );
+}
+
+Auth.getLayout = (page) => {
+  return page.Component.getLayout();  
 }

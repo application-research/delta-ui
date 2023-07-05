@@ -1,4 +1,4 @@
-import { getDatasets, getProviders, getReplicationProfiles, getReplications, GetReplicationsConfig, getWallets } from '@root/data/api';
+import { AuthError, getDatasets, getProviders, getReplicationProfiles, getReplications, GetReplicationsConfig, getWallets } from '@root/data/api';
 import React from 'react';
 
 let limit;
@@ -16,6 +16,11 @@ export function CreateDDMState() {
   const [tooltipState, setTooltipState] = React.useState(null);
   const tooltipAnchor = React.useRef(null);
   const [selectedDataset, setSelectedDataset] = React.useState(null);
+  
+  // Should get set to true if any function fails with an auth error. If this
+  // becomes true while any page other than that auth page is loaded, user will
+  // be redirected to the auth page.
+  const [unauthorized, setUnauthorized] = React.useState(false);
 
   return {
     getReplicationsConfig,
@@ -30,20 +35,42 @@ export function CreateDDMState() {
     tooltipAnchor,
     selectedDataset,
     setSelectedDataset,
+    unauthorized,
+    setUnauthorized,
     async updateDatasets() {
-      setDatasets(await getDatasets());
+      try {
+        setDatasets(await getDatasets());
+      } catch (e) {
+        this.setUnauthorized(true);
+      }
     },
     async updateProviders() {
-      setProviders(await getProviders());
+      try {
+        setProviders(await getProviders());
+      } catch (e) {
+        this.setUnauthorized(true);
+      }
     },
     async updateReplicationProfiles() {
-      setReplicationProfiles(await getReplicationProfiles());
+      try {
+        setReplicationProfiles(await getReplicationProfiles());
+      } catch (e) {
+        this.setUnauthorized(true);
+      }
     },
     async updateReplications() {
-      setReplications(await getReplications(this.getReplicationsConfig));
+      try {
+        setReplications(await getReplications(this.getReplicationsConfig));
+      } catch (e) {
+        this.setUnauthorized(true);
+      }
     },
     async updateWallets() {
-      setWallets(await getWallets());
+      try {
+        setWallets(await getWallets());
+      } catch (e) {
+        this.setUnauthorized(true);
+      }
     },
   };
 }

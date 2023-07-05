@@ -24,6 +24,7 @@ export default function DDM(props) {
   const [health, setHealth] = React.useState(undefined);
   const [commitHash, setCommitHash] = React.useState(undefined);
   const [appTooltipState, setAppTooltipState] = React.useState(0);
+  const [unauthorized, setUnauthorized] = React.useState(false);
 
   const newDatasetButton = React.useRef(null);
   const addProviderButton = React.useRef(null);
@@ -50,6 +51,7 @@ export default function DDM(props) {
     setAppTooltipState((prev) => (prev === id ? 0 : prev));
   }
 
+  // Preliminary auth check
   React.useEffect(() => {
     (async () => {
       let authorized = false;
@@ -63,12 +65,18 @@ export default function DDM(props) {
         updateHealth();
         updateCommitHash();
       } else {
-        if (pathname !== '/ddm/auth') {
-          router.replace(`/ddm/auth?return=${encodeURI(pathname)}`);
-        }
+        setUnauthorized(true);
       }
     })();
   }, []);
+
+  React.useEffect(() => {
+    if (unauthorized) {
+      if (pathname !== '/ddm/auth') {
+        router.replace(`/ddm/auth?return=${encodeURI(pathname)}`);
+      }
+    }
+  });
 
   function createCustomDDMState() {
     let state = createDDMState();
@@ -80,6 +88,10 @@ export default function DDM(props) {
     // Replace tooltip state
     state.tooltipState = appTooltipState;
     state.setTooltipState = setAppTooltipState;
+
+    // Replaced unauthorized state
+    state.unauthorized = unauthorized;
+    state.setUnauthorized = setUnauthorized;
     
     return state;
   }
