@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import PackageJSON from '@root/package.json';
-import { CreateDDMState, DDMContext, loadAuth, tooltipStates } from '@common/ddm';
+import { CreateDDMState as createDDMState, DDMContext, loadAuth, tooltipStates } from '@common/ddm';
 import { associateWallet, checkAuth, getDatasets, getHealth, getProviders, getReplicationProfiles, getReplications, GetReplicationsConfig, getWallets } from '@data/api';
 
 import DefaultLayout, { AppBody, AppNav, AppNavItem, AppNavSettingItem, AppNavSettings, AppNavSubItem, AppTitle, AppVersion } from '@components/DefaultLayout';
@@ -23,7 +23,8 @@ export default function DDM(props) {
 
   const [health, setHealth] = React.useState(undefined);
   const [commitHash, setCommitHash] = React.useState(undefined);
-  const [appTooltipID, setAppTooltipID] = React.useState(0);
+  const [appTooltipState, setAppTooltipState] = React.useState(0);
+  const [unauthorized, setUnauthorized] = React.useState(false);
 
   const newDatasetButton = React.useRef(null);
   const addProviderButton = React.useRef(null);
@@ -33,9 +34,9 @@ export default function DDM(props) {
   const addPreferencesButton = React.useRef(null);
 
   const anchor = React.useRef(null);
-  function setAppTooltipState(newID: any, newAnchor: React.ReactHTMLElement<any>) {
+  function setAppTooltip(newID: any, newAnchor: React.ReactHTMLElement<any>) {
     anchor.current = newAnchor;
-    setAppTooltipID(newID);
+    setAppTooltipState(newID);
   }
 
   async function updateHealth() {
@@ -47,24 +48,56 @@ export default function DDM(props) {
   }
 
   function dismissTooltip(id) {
-    setAppTooltipID((prev) => (prev === id ? 0 : prev));
+    setAppTooltipState((prev) => (prev === id ? 0 : prev));
   }
 
+  // Preliminary auth check
   React.useEffect(() => {
     (async () => {
-      if (await checkAuth()) {
+      let authorized = false;
+      try {
+        authorized = await checkAuth();
+      } catch (e) {
+        console.error(e);
+      }
+      
+      if (authorized) {
         updateHealth();
         updateCommitHash();
       } else {
-        if (pathname !== '/ddm/auth') {
-          router.replace(`/ddm/auth?return=${encodeURI(pathname)}`);
-        }
+        setUnauthorized(true);
       }
     })();
   }, []);
 
+  React.useEffect(() => {
+    if (unauthorized) {
+      if (pathname !== '/ddm/auth') {
+        router.replace(`/ddm/auth?return=${encodeURI(pathname)}`);
+      }
+    }
+  });
+
+  function createCustomDDMState() {
+    let state = createDDMState();
+
+    // Replace the default anchor ref with one defined in this component so it
+    // can be changed / used from here
+    state.tooltipAnchor = anchor;
+
+    // Replace tooltip state
+    state.tooltipState = appTooltipState;
+    state.setTooltipState = setAppTooltipState;
+
+    // Replaced unauthorized state
+    state.unauthorized = unauthorized;
+    state.setUnauthorized = setUnauthorized;
+    
+    return state;
+  }
+
   return (
-    <DDMContext.Provider value={CreateDDMState()}>
+    <DDMContext.Provider value={createCustomDDMState()}>
       <DefaultLayout apps={props.apps} onSwitchApp={props.onSwitchApp} activeApp={props.activeApp}>
         <AppTitle>Delta DM</AppTitle>
         <AppVersion>{`
@@ -78,28 +111,28 @@ export default function DDM(props) {
       `}</AppVersion>
         <AppNav>
           <AppNavItem href="/ddm/datasets">Datasets</AppNavItem>
-          <AppNavSubItem action={() => setAppTooltipState(tooltipStates.newDataset, newDatasetButton.current)}>
+          <AppNavSubItem action={() => setAppTooltip(tooltipStates.newDataset, newDatasetButton.current)}>
             <span ref={newDatasetButton}>+ New dataset</span>
           </AppNavSubItem>
           <AppNavItem href="/ddm/providers">Providers</AppNavItem>
-          <AppNavSubItem action={() => setAppTooltipState(tooltipStates.addProvider, addProviderButton.current)}>
+          <AppNavSubItem action={() => setAppTooltip(tooltipStates.addProvider, addProviderButton.current)}>
             <span ref={addProviderButton}>+ Add provider</span>
           </AppNavSubItem>
           <AppNavItem href="/ddm/replication-profiles">Repl. Profiles</AppNavItem>
-          <AppNavSubItem action={() => setAppTooltipState(tooltipStates.addReplicationProfile, addReplicationProfileButton.current)}>
+          <AppNavSubItem action={() => setAppTooltip(tooltipStates.addReplicationProfile, addReplicationProfileButton.current)}>
             <span ref={addReplicationProfileButton}>+ Add profile</span>
           </AppNavSubItem>
           <AppNavItem href="/ddm/replications">Replications</AppNavItem>
-          <AppNavSubItem action={() => setAppTooltipState(tooltipStates.addReplication, addReplicationButton.current)}>
+          <AppNavSubItem action={() => setAppTooltip(tooltipStates.addReplication, addReplicationButton.current)}>
             <span ref={addReplicationButton}>+ Add replication</span>
           </AppNavSubItem>
           <AppNavItem href="/ddm/wallets">Wallets</AppNavItem>
-          <AppNavSubItem action={() => setAppTooltipState(tooltipStates.addWallet, addWalletButton.current)}>
+          <AppNavSubItem action={() => setAppTooltip(tooltipStates.addWallet, addWalletButton.current)}>
             <span ref={addWalletButton}>+ Add wallet</span>
           </AppNavSubItem>
         </AppNav>
         <AppNavSettings>
-          <AppNavSettingItem onClick={(e) => setAppTooltipState(tooltipStates.setPreferences, addPreferencesButton.current)}>
+          <AppNavSettingItem onClick={(e) => setAppTooltip(tooltipStates.setPreferences, addPreferencesButton.current)}>
             <span style={{ fontSize: 26 }}>&#9881;</span>
             <span style={{ marginLeft: 15, paddingTop: 10 }} ref={addPreferencesButton}>
               Settings
@@ -108,37 +141,37 @@ export default function DDM(props) {
         </AppNavSettings>
         <AppBody>
           {props.children}
-          {appTooltipID === tooltipStates.newDataset && (
+          {appTooltipState === tooltipStates.newDataset && (
             <Modal anchor={anchor} modalID={tooltipStates.newDataset} onClose={dismissTooltip}>
               <FormNewDataset />
             </Modal>
           )}
-          {appTooltipID === tooltipStates.addProvider && (
+          {appTooltipState === tooltipStates.addProvider && (
             <Modal anchor={anchor} modalID={tooltipStates.addProvider} onClose={dismissTooltip}>
               <FormAddProvider />
             </Modal>
           )}
-          {appTooltipID === tooltipStates.addWallet && (
+          {appTooltipState === tooltipStates.addWallet && (
             <Modal anchor={anchor} modalID={tooltipStates.addWallet} onClose={dismissTooltip}>
               <FormAddWallet onOutsideClick={dismissTooltip} />
             </Modal>
           )}
-          {appTooltipID === tooltipStates.addReplicationProfile && (
+          {appTooltipState === tooltipStates.addReplicationProfile && (
             <Modal anchor={anchor} modalID={tooltipStates.addReplicationProfile} onClose={dismissTooltip}>
               <AddReplicationProfile />
             </Modal>
           )}
-          {appTooltipID === tooltipStates.attachContent && (
+          {appTooltipState === tooltipStates.attachContent && (
             <Modal anchor={anchor} modalID={tooltipStates.attachContent} onClose={dismissTooltip}>
               <FormUploadData />
             </Modal>
           )}
-          {appTooltipID === tooltipStates.addReplication && (
+          {appTooltipState === tooltipStates.addReplication && (
             <Modal anchor={anchor} modalID={tooltipStates.addReplication} onClose={dismissTooltip}>
               <FormAddReplication />
             </Modal>
           )}
-          {appTooltipID === tooltipStates.setPreferences && (
+          {appTooltipState === tooltipStates.setPreferences && (
             <Modal anchor={anchor} modalID={tooltipStates.setPreferences} onClose={dismissTooltip} attach="bottom">
               <FormSetPreferences />
             </Modal>

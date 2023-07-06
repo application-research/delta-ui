@@ -26,14 +26,14 @@ export default function FormAddProvider(props: {}) {
       setLoading(true);
 
       await addProvider(providerID, providerName);
-      ctx.updateProviders();
-
       setFeedback(<Feedback type='success' />);
     } catch (e) {
       setFeedback(<Feedback type='error'>{e.toString()}</Feedback>);
     } finally {
       setLoading(false);
     }
+
+    ctx.updateProviders();
   }
 
   return (

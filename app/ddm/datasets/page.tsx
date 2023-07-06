@@ -9,7 +9,7 @@ import tableStyles from '@components/Table.module.scss';
 import Input from '@components/basic/Input';
 import LoadingIndicator from '@components/LoadingIndicator';
 import WalletRef from '@components/WalletRef';
-import { DDMContext } from '@root/common/ddm';
+import { DDMContext, tooltipStates } from '@root/common/ddm';
 
 export default function Datasets() {  
   const modalAnchors = React.useRef({});
@@ -21,6 +21,13 @@ export default function Datasets() {
     ctx.updateDatasets();
   }, []);
   
+  function formatPercentNumber(percent) {
+    if (percent == 0 || percent == 1) {
+      return percent * 100
+    }
+    return (percent * 100).toFixed(1)
+  }
+
   return (<div className={styles.body}>
     {ctx.datasets &&
       <div className={tableStyles.body}>
@@ -48,13 +55,13 @@ export default function Datasets() {
           .map((dataset, i) => {
             let progress = dataset.bytes_replicated.padded / dataset.bytes_total.padded / dataset.replication_quota;
             if (Number.isNaN(progress)) progress = 0;
-            
+
             return (
               <div key={dataset.name}>
                 <div className={tableStyles.row}>
                   <span className={tableStyles.columnId}>{dataset.ID}</span>
                   <span className={tableStyles.columnName}>{dataset.name}</span>
-                  <span className={tableStyles.column}>{progress * 100}%</span>
+                  <span className={tableStyles.column}>{formatPercentNumber(progress)}%</span>
                   <span className={tableStyles.column}>{Utilities.bytesToSize(dataset.bytes_total.raw)}</span>
                   <span className={tableStyles.column}>{dataset.count_replicated} / {dataset.count_total}</span>
                   <span className={tableStyles.column}>{dataset.replication_quota}</span>
@@ -68,8 +75,10 @@ export default function Datasets() {
                 </div>
                 {/* <div className={tableStyles.rowButton}>➟ Make storage deals for this dataset</div> */}
                 <div className={tableStyles.rowButton} onClick={e => {
-                  ctx.selectedDataset = dataset.name;
-                  ctx.tooltipState = modalAnchors.current[dataset.name];
+                  ctx.setSelectedDataset(dataset.ID);
+                  ctx.setTooltipState(tooltipStates.attachContent);
+                  ctx.tooltipAnchor.current = modalAnchors.current[dataset.name];
+                  console.log(tooltipStates.attachContent);
                 }}><span ref={el => modalAnchors.current[dataset.name] = el}>➟ Attach content</span></div>
               </div>
             )

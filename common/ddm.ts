@@ -1,4 +1,4 @@
-import { getDatasets, getProviders, getReplicationProfiles, getReplications, GetReplicationsConfig, getWallets } from '@root/data/api';
+import { AuthError, getDatasets, getProviders, getReplicationProfiles, getReplications, GetReplicationsConfig, getWallets } from '@root/data/api';
 import React from 'react';
 
 let limit;
@@ -19,7 +19,13 @@ export function CreateDDMState() {
   const [wallets, setWallets] = React.useState(null);
   const [walletsLoading, setWalletsLoading] = React.useState(false);
   const [tooltipState, setTooltipState] = React.useState(null);
+  const tooltipAnchor = React.useRef(null);
   const [selectedDataset, setSelectedDataset] = React.useState(null);
+
+  // Should get set to true if any function fails with an auth error. If this
+  // becomes true while any page other than that auth page is loaded, user will
+  // be redirected to the auth page.
+  const [unauthorized, setUnauthorized] = React.useState(false);
 
   return {
     getReplicationsConfig,
@@ -35,32 +41,60 @@ export function CreateDDMState() {
     wallets,
     tooltipState,
     setTooltipState,
+    tooltipAnchor,
     selectedDataset,
     setSelectedDataset,
+    unauthorized,
+    setUnauthorized,
     async updateDatasets() {
       setDatasetsLoading(true);
-      setDatasets(await getDatasets());
-      setDatasetsLoading(false);
+      try {
+        setDatasets(await getDatasets());
+      } catch (e) {
+        this.setUnauthorized(true);
+      } finally {
+        setDatasetsLoading(false);
+      }
     },
     async updateProviders() {
       setProvidersLoading(true);
-      setProviders(await getProviders());
-      setProvidersLoading(false);
+      try {
+        setProviders(await getProviders());
+      } catch (e) {
+        this.setUnauthorized(true);
+      } finally {
+        setProvidersLoading(false);
+      }
     },
     async updateReplicationProfiles() {
       setReplicationProfilesLoading(true);
-      setReplicationProfiles(await getReplicationProfiles());
-      setReplicationProfilesLoading(false);
+      try {
+        setReplicationProfiles(await getReplicationProfiles());
+      } catch (e) {
+        this.setUnauthorized(true);
+      } finally {
+        setReplicationProfilesLoading(false);
+      }
     },
     async updateReplications() {
       setReplicationsLoading(true);
-      setReplications(await getReplications(this.getReplicationsConfig));
-      setReplicationsLoading(false);
+      try {
+        setReplications(await getReplications(this.getReplicationsConfig));
+      } catch (e) {
+        this.setUnauthorized(true);
+      } finally {
+        setReplicationsLoading(false);
+      }
     },
     async updateWallets() {
       setWalletsLoading(true);
-      setWallets(await getWallets());
-      setWalletsLoading(false);
+      try {
+        setWallets(await getWallets());
+      } catch (e) {
+        this.setUnauthorized(true);
+      } finally {
+        setWalletsLoading(false);
+      }
     },
   };
 }
