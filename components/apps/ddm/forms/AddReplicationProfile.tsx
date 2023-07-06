@@ -30,8 +30,6 @@ export default function (props: {}) {
     e.preventDefault();
 
     try {
-      setLoading(true);
-
       await addReplicationProfile(provider, datasetID, indexed, unsealed);
       setFeedback(<Feedback type="success" />)
     } catch (e) {

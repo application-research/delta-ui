@@ -178,7 +178,7 @@ export default function Replications() {
         limit={ctx.getReplicationsConfig.limit || 100}
         total={ctx.replications?.totalCount || 0}
         />}
-      {ctx.replications === undefined && <LoadingIndicator padded />}
+      {ctx.replicationsLoading && <LoadingIndicator padded />}
     </div>
   );
 }

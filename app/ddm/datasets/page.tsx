@@ -86,6 +86,6 @@ export default function Datasets() {
         }
       </div>
     }
-    {ctx.datasets === undefined && <LoadingIndicator padded />}
+    {ctx.datasetsLoading && <LoadingIndicator padded />}
   </div>);
 }
