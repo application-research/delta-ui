@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import styles from './Select.module.scss';
+import styles from '@components/basic/Select.module.scss';
 
 export default function Select(props: {
   id?: string,
@@ -18,6 +18,7 @@ export default function Select(props: {
     <div className={styles.body}>
       <label htmlFor={id} className={styles.label}>{props.label}</label>
       <select 
+        id={id}
         className={styles.select} 
         value={props.value} 
         onChange={props.onChange}

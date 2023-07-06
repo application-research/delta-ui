@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { addProvider } from '@data/api';
 
-import styles from './FormAddProvider.module.scss';
+import styles from '@components/apps/ddm/forms/FormAddProvider.module.scss';
 
 import Dismissible from '@components/Dismissible';
 import Button from '@components/Button';
 import Input from '@components/basic/Input';
 import Feedback from '@components/Feedback';
+import { DDMContext } from '@root/common/ddm';
 
-export default function FormAddProvider(props: {
-  updateProviders: () => void,
-}) {
+export default function FormAddProvider(props: {}) {
+  const ctx = React.useContext(DDMContext);
 
   const [providerID, setProviderID] = React.useState('');
   const [providerName, setProviderName] = React.useState('');
@@ -26,14 +26,14 @@ export default function FormAddProvider(props: {
       setLoading(true);
 
       await addProvider(providerID, providerName);
-      props.updateProviders();
-
       setFeedback(<Feedback type='success' />);
     } catch (e) {
       setFeedback(<Feedback type='error'>{e.toString()}</Feedback>);
     } finally {
       setLoading(false);
     }
+
+    ctx.updateProviders();
   }
 
   return (

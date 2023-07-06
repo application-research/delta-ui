@@ -1,14 +1,18 @@
 import React from 'react';
 
+import styles from '@components/apps/ddm/forms/AddReplicationProfile.module.scss';
+
 import Input from '@root/components/basic/Input';
 import DatasetSelect from '@root/components/DatasetSelect';
 import ProviderSelect from '@root/components/ProviderSelect';
-import styles from './AddReplicationProfile.module.scss';
 import Button from '@root/components/Button';
 import { addReplicationProfile } from '@root/data/api';
 import Feedback from '@root/components/Feedback';
+import { DDMContext } from '@root/common/ddm';
 
-export default function (props: { datasets: any[], providers: any[], updateReplicationProfiles: () => void }) {
+export default function (props: {}) {
+  const ctx = React.useContext(DDMContext);
+  
   const [loading, setLoading] = React.useState(false);
   const [feedback, setFeedback] = React.useState(null);
   
@@ -17,6 +21,11 @@ export default function (props: { datasets: any[], providers: any[], updateRepli
   const [indexed, setIndexed] = React.useState(false);
   const [unsealed, setUnsealed] = React.useState(false);
 
+  React.useEffect(() => {
+    ctx.updateProviders();
+    ctx.updateDatasets();
+  }, []);
+
   async function onSubmit(e) {
     e.preventDefault();
 
@@ -24,14 +33,14 @@ export default function (props: { datasets: any[], providers: any[], updateRepli
       setLoading(true);
 
       await addReplicationProfile(provider, datasetID, indexed, unsealed);
-      props.updateReplicationProfiles();
-
       setFeedback(<Feedback type="success" />)
     } catch (e) {
       setFeedback(<Feedback type="error">{e.toString()}</Feedback>);
     } finally {
       setLoading(false);
     }
+
+    ctx.updateReplicationProfiles();
   }
 
   function formValid() {
@@ -43,10 +52,10 @@ export default function (props: { datasets: any[], providers: any[], updateRepli
       <form onSubmit={onSubmit}>
         <h2 className={styles.heading}>Add Replication Profile</h2>
         <div className={styles.formRow}>
-          <ProviderSelect providers={props.providers} label="Provider" required onChange={(e) => setProvider(e.target.value)} />
+          <ProviderSelect providers={ctx.providers} label="Provider" required onChange={(e) => setProvider(e.target.value)} />
         </div>
         <div className={styles.formRow}>
-          <DatasetSelect datasets={props.datasets} label="Dataset" required onChange={(e) => setDatasetID(Number(e.target.value))} />
+          <DatasetSelect datasets={ctx.datasets} label="Dataset" required onChange={(e) => setDatasetID(Number(e.target.value))} />
         </div>
         <div className={styles.formRow}>
           <Input type="checkbox" label="Indexed" onChange={(e) => setIndexed(e.target.checked)} />

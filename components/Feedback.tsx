@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import styles from './Feedback.module.scss';
+import styles from '@components/Feedback.module.scss';
 
 export default function Feedback(props: {
   children?: React.ReactNode,

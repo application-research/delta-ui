@@ -1,7 +1,7 @@
 import '@root/global.scss';
 
-import Main from '@components/Main';
+import { redirect } from 'next/navigation';
 
-export default async function Page(props) {
-  return <Main />;
+export default async function Page() {
+  return redirect('/ddm');
 }

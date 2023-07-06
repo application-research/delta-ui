@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import styles from './Slider.module.scss';
+import styles from '@components/basic/Slider.module.scss';
 
 export default function Slider(props: {
   id?: string,
@@ -21,7 +21,7 @@ export default function Slider(props: {
     <div className={styles.body}>
       <label htmlFor={id} className={styles.label}>{props.label} ({value})</label>
       <input 
-        id={props.id} 
+        id={id} 
         className={styles.slider}
         type="range" 
         min={props.min} 

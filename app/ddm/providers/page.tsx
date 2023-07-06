@@ -4,7 +4,7 @@ import * as React from 'react';
 import * as Utilities from '@common/utilities';
 import { updateProvider } from '@root/data/api';
 
-import styles from './Providers.module.scss';
+import styles from '@ddm/providers/page.module.scss';
 import tableStyles from '@components/Table.module.scss';
 
 import Input from '@components/basic/Input';
@@ -12,28 +12,29 @@ import LoadingIndicator from '@components/LoadingIndicator';
 import ProviderRef from '@components/ProviderRef';
 import Button from '@components/Button';
 import TagSelect from '@components/TagSelect';
+import { DDMContext } from '@root/common/ddm';
 
-export default function Providers(props: {
-  providers: any[],
-  datasets: any[],
-  updateDatasets: () => void,
-  providerLabel: string,
-  placeholder: string,
-  search: string,
-  onSearchChange: (string) => void,
-}) {
+export default function Providers() {
+  const ctx = React.useContext(DDMContext);
+
+  const [search, setSearch] = React.useState('');
+
+  React.useEffect(() => {
+    ctx.updateProviders();
+  }, []);
+  
   return (
     <div className={styles.body}>
-      {props.providers && (
+      {ctx.providers && (
         <div className={tableStyles.body}>
           <Input
             labelClassName={tableStyles.searchLabel}
             inputClassName={tableStyles.searchInput}
-            label={props.providerLabel}
+            label={'Search providers'}
             id="scene-provider-search"
-            placeholder={props.placeholder}
-            value={props.search}
-            onChange={props.onSearchChange}
+            placeholder={'(example: f0123456)'}
+            value={search}
+            onChange={e => setSearch(e.target.value)}
           />
           <div className={tableStyles.header}>
             <span className={styles.columnProviderInfo}>Provider Info</span>
@@ -42,19 +43,21 @@ export default function Providers(props: {
             <span className={styles.columnFlags}>Flags</span>
             <span className={styles.columnProviderKey}>Provider Key</span>
           </div>
-          {props.providers
-            .filter((provider, i) => !props.search || provider.actor_id.includes(props.search))
+          {ctx.providers
+            .filter((provider, i) => !search || provider.actor_id.includes(search))
             .map((provider, i) => {
-              return <ProviderCard provider={provider} datasets={props.datasets} updateDatasets={props.updateDatasets} key={i} />;
+              return <ProviderCard provider={provider} key={i} />;
             })}
         </div>
       )}
-      {props.providers === undefined && <LoadingIndicator padded />}
+      {ctx.providers === undefined && <LoadingIndicator padded />}
     </div>
   );
 }
 
-function ProviderCard(props: { provider: any, datasets: any[], updateDatasets: () => void }) {
+function ProviderCard(props: { provider: any }) {
+  const ctx = React.useContext(DDMContext);
+  
   let provider = props.provider;
 
   let [editing, setEditing] = React.useState(false);
@@ -81,7 +84,7 @@ function ProviderCard(props: { provider: any, datasets: any[], updateDatasets: (
       setSaving(false);
     }
 
-    props.updateDatasets();
+    ctx.updateProviders();
   }
 
   if (editing)

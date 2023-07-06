@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import styles from './FormSetPreferences.module.scss';
+import styles from '@components/apps/ddm/forms/FormSetPreferences.module.scss';
 
 import Input from '@components/basic/Input';
 import { useState } from 'react';

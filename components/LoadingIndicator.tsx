@@ -1,6 +1,6 @@
 'use client';
 
-import styles from './LoadingIndicator.module.scss'
+import styles from '@components/LoadingIndicator.module.scss'
 
 export default function LoadingIndicator(props) {
   return (

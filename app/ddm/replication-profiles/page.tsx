@@ -1,12 +1,22 @@
+'use client';
+
 import React from 'react';
 
-import styles from './ReplicationProfiles.module.scss';
+import styles from '@ddm/replication-profiles/page.module.scss';
 
 import Input from '@root/components/basic/Input';
 import { deleteReplicationProfile, updateReplicationProfile } from '@root/data/api';
 import Button from '@root/components/Button';
+import { DDMContext } from '@root/common/ddm';
 
-export default function ReplicationProfiles(props: { replicationProfiles: any[], updateReplicationProfiles: () => void, datasets: any[] }) {
+export default function ReplicationProfiles() {
+  const ctx = React.useContext(DDMContext);
+
+  React.useEffect(() => {
+    ctx.updateDatasets();
+    ctx.updateReplicationProfiles();
+  }, []);
+
   return (
     <div className={styles.body}>
       <div>
@@ -17,17 +27,19 @@ export default function ReplicationProfiles(props: { replicationProfiles: any[],
           <div className={styles.column}>Unsealed</div>
           <div className={styles.fluidColumn}></div>
         </div>
-        {props.replicationProfiles?.map((profile, i) => (
-          <ProfileCard key={`${profile.dataset}-${profile.provider}`} datasets={props.datasets} profile={profile} updateReplicationProfiles={props.updateReplicationProfiles} />
+        {ctx.replicationProfiles?.map((profile, i) => (
+          <ProfileCard key={`${profile.dataset_id}-${profile.provider_actor_id}`} profile={profile} />
         ))}
       </div>
     </div>
   );
 }
 
-function ProfileCard(props: { datasets: any[], profile: any, updateReplicationProfiles: () => void }) {
-  let [indexed, setIndexed] = React.useState(props.profile.indexed);
-  let [unsealed, setUnsealed] = React.useState(props.profile.unsealed);
+function ProfileCard(props: { profile: any }) {
+  const ctx = React.useContext(DDMContext);
+  
+  const [indexed, setIndexed] = React.useState(props.profile.indexed);
+  const [unsealed, setUnsealed] = React.useState(props.profile.unsealed);
 
   const [confirmDelete, setConfirmDelete] = React.useState(false);
   const [editing, setEditing] = React.useState(false);
@@ -46,7 +58,7 @@ function ProfileCard(props: { datasets: any[], profile: any, updateReplicationPr
       setSaving(false);
     }
 
-    props.updateReplicationProfiles();
+    ctx.updateReplicationProfiles();
   }
 
   async function submitDelete() {
@@ -54,25 +66,25 @@ function ProfileCard(props: { datasets: any[], profile: any, updateReplicationPr
 
     try {
       await deleteReplicationProfile(props.profile.provider_actor_id, props.profile.dataset_id);
-    } catch(e) {
+    } catch (e) {
       alert('Deleting replication profile failed: ' + e.toString());
       return;
     } finally {
       setSaving(false);
     }
 
-    props.updateReplicationProfiles();
+    ctx.updateReplicationProfiles();
   }
 
   return (
     <div className={styles.row}>
-      <div className={styles.column}>{props.datasets.find((d) => d.ID === props.profile.dataset_id)?.name}</div>
+      <div className={styles.column}>{ctx.datasets?.find((d) => d.ID === props.profile.dataset_id)?.name}</div>
       <div className={styles.column}>{props.profile.provider_actor_id}</div>
       <div className={styles.column}>
-        <Input type="checkbox" label="Indexed" disabled={!editing} checked={indexed} onChange={e => setIndexed(e.target.checked)} />
+        <Input type="checkbox" label="Indexed" disabled={!editing} checked={indexed} onChange={(e) => setIndexed(e.target.checked)} />
       </div>
       <div className={styles.column}>
-        <Input type="checkbox" label="Unsealed" disabled={!editing} checked={unsealed} onChange={e => setUnsealed(e.target.checked)} />
+        <Input type="checkbox" label="Unsealed" disabled={!editing} checked={unsealed} onChange={(e) => setUnsealed(e.target.checked)} />
       </div>
       <div className={styles.fluidColumn}></div>
       {editing ? (

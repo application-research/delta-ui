@@ -1,34 +1,34 @@
-import { getCookie } from '@root/modules/cookies';
+import { loadAuth, loadDDMAddress } from '@root/common/ddm';
 
 function apiURL() {
-  return (getCookie('ddm-address') || process.env.NEXT_PUBLIC_API_URL)?.replace(/\/$/, '') || 'http://localhost:1415';
+  return (loadDDMAddress() || process.env.NEXT_PUBLIC_API_URL)?.replace(/\/$/, '') || 'http://localhost:1415';
 }
 
 function defaultHeaders() {
   return {
     'Content-Type': 'application/json',
-    Authorization: 'Bearer ' + getCookie('auth'),
+    Authorization: 'Bearer ' + loadAuth(),
   };
 }
 
 // Checks only whether an auth key is in a valid format, without contacting
 // delta-dm API. Optionally accepts an auth key parameter - if not provided, the
-// auth cookie will be used.
+// cached value will be used.
 export function checkAuthFormat(auth?: string): boolean {
   if (auth === undefined) {
-    auth = getCookie('auth');
+    auth = loadAuth();
   }
 
   return /^(EST).*(ARY)$/.test(auth) || /^(DEL).*(TA)$/.test(auth);
 }
 
 // Checks auth key validity with delta-dm. Optionally accepts an auth key
-// parameter - if not provided, cached cookie values will be used.
+// parameter - if not provided, cached values will be used.
 //
 // This function times out after 5 seconds.
 export async function checkAuth(auth?: string, ddmAddress?: string): Promise<boolean> {
   if (auth === undefined) {
-    auth = getCookie('auth');
+    auth = loadAuth();
   }
 
   let res;
@@ -63,16 +63,26 @@ export async function checkAuth(auth?: string, ddmAddress?: string): Promise<boo
   return true;
 }
 
+export class AuthError extends Error {}
+
+async function handleHTTPResponse(res: Response): Promise<any> {
+  if (res.ok) {
+    return await res.json();
+  }
+
+  if (res.status === 401) {
+    throw new AuthError();
+  }
+
+  throw new Error(await res.text());
+}
+
 export async function getHealth() {
   const res = await fetch(apiURL() + '/api/v1/health', {
     headers: defaultHeaders(),
   });
 
-  if (!res.ok) {
-    throw new Error(await res.text());
-  }
-
-  return await res.json();
+  return await handleHTTPResponse(res);
 }
 
 export async function getDatasets() {
@@ -80,11 +90,7 @@ export async function getDatasets() {
     headers: defaultHeaders(),
   });
 
-  if (!res.ok) {
-    throw new Error(await res.text());
-  }
-
-  return await res.json();
+  return await handleHTTPResponse(res);
 }
 
 export async function addDataset(name: string, replications: number, durationDays: number) {
@@ -98,11 +104,7 @@ export async function addDataset(name: string, replications: number, durationDay
     }),
   });
 
-  if (!res.ok) {
-    throw new Error(await res.text());
-  }
-
-  return await res.json();
+  return await handleHTTPResponse(res);
 }
 
 export async function addContents(datasetName: string, body: string) {
@@ -112,11 +114,7 @@ export async function addContents(datasetName: string, body: string) {
     body: body,
   });
 
-  if (!res.ok) {
-    throw new Error(await res.text());
-  }
-
-  return await res.json();
+  return await handleHTTPResponse(res);
 }
 
 export async function getProviders() {
@@ -124,11 +122,7 @@ export async function getProviders() {
     headers: defaultHeaders(),
   });
 
-  if (!res.ok) {
-    throw new Error(await res.text());
-  }
-
-  return await res.json();
+  return await handleHTTPResponse(res);
 }
 
 export async function addProvider(id: string, name: string) {
@@ -141,11 +135,7 @@ export async function addProvider(id: string, name: string) {
     }),
   });
 
-  if (!res.ok) {
-    throw new Error(await res.text());
-  }
-
-  return await res.json();
+  return await handleHTTPResponse(res);
 }
 
 export async function updateProvider(id: string, name: string, allowSelfService: boolean) {
@@ -158,11 +148,7 @@ export async function updateProvider(id: string, name: string, allowSelfService:
     }),
   });
 
-  if (!res.ok) {
-    throw new Error(await res.text());
-  }
-
-  return await res.json();
+  return await handleHTTPResponse(res);
 }
 
 export async function getReplicationProfiles() {
@@ -170,11 +156,7 @@ export async function getReplicationProfiles() {
     headers: defaultHeaders(),
   });
 
-  if (!res.ok) {
-    throw new Error(await res.text());
-  }
-
-  return await res.json();
+  return await handleHTTPResponse(res);
 }
 
 export async function addReplicationProfile(provider: string, datasetID: number, indexed: boolean, unsealed: boolean) {
@@ -189,11 +171,7 @@ export async function addReplicationProfile(provider: string, datasetID: number,
     }),
   });
 
-  if (!res.ok) {
-    throw new Error(await res.text());
-  }
-
-  return await res.json();
+  return await handleHTTPResponse(res);
 }
 
 export async function updateReplicationProfile(provider: string, datasetID: number, indexed: boolean, unsealed: boolean) {
@@ -208,11 +186,7 @@ export async function updateReplicationProfile(provider: string, datasetID: numb
     }),
   });
 
-  if (!res.ok) {
-    throw new Error(await res.text());
-  }
-
-  return await res.json();
+  return await handleHTTPResponse(res);
 }
 
 export async function deleteReplicationProfile(provider: string, datasetID: number) {
@@ -225,11 +199,7 @@ export async function deleteReplicationProfile(provider: string, datasetID: numb
     }),
   });
 
-  if (!res.ok)  {
-    throw new Error(await res.text());
-  }
-
-  return await res.json();
+  return await handleHTTPResponse(res);
 }
 
 export interface GetReplicationsConfig {

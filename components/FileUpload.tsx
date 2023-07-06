@@ -1,7 +1,7 @@
 import { createSlug } from '@common/utilities';
 import * as React from 'react';
 
-import styles from './FileUpload.module.scss';
+import styles from '@components/FileUpload.module.scss';
 
 export default function FileUpload(props) {
   let id = (props.id ? props.id + '-' : '') + createSlug(props.label);

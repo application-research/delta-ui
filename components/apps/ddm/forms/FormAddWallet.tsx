@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import styles from './FormAddWallet.module.scss';
+import styles from '@components/apps/ddm/forms/FormAddWallet.module.scss';
 
 import Button from '@components/Button';
 import Dismissible from '@components/Dismissible';

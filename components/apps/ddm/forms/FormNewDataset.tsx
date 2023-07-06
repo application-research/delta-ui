@@ -4,16 +4,17 @@ import React from 'react';
 import { addDataset } from '@root/data/api';
 import { createSlug } from '@root/common/utilities';
 
-import styles from './FormNewDataset.module.scss';
+import styles from '@components/apps/ddm/forms/FormNewDataset.module.scss';
 
 import Dismissible from '@components/Dismissible';
 import Input from '@components/basic/Input';
 import Button from '@components/Button';
 import Feedback from '@components/Feedback';
+import { DDMContext } from '@root/common/ddm';
 
-export default function FormNewDataset(props: {
-  updateDatasets: () => void,
-}) {
+export default function FormNewDataset(props: {}) {
+  const ctx = React.useContext(DDMContext);
+  
   let [name, setName] = React.useState('');
   let [replications, setReplications] = React.useState(6);
   let [duration, setDuration] = React.useState(540);
@@ -36,14 +37,14 @@ export default function FormNewDataset(props: {
         replications,
         duration,
       );
-      props.updateDatasets();
-
       setFeedback(<Feedback type='success' />)
     } catch (e) {
       setFeedback(<Feedback type='error'>{e.toString()}</Feedback>);
     } finally {
       setLoading(false);
     }
+    
+    ctx.updateDatasets();
   }
 
   function isFormValid() {

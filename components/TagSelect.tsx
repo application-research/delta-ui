@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import styles from './TagSelect.module.scss';
+import styles from '@components/TagSelect.module.scss';
 
 import Dismissible from '@components/Dismissible';
 
