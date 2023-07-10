@@ -12,7 +12,9 @@
   transition: 0.25s;
   color: var(--color-text);
   width: 100%;
-  font-size: 1rem;
+  font-size: 1em;
+  line-height: 1em;
+  height: 1rem;
   
   &:focus {
     outline: none;

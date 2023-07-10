@@ -203,16 +203,17 @@ export async function deleteReplicationProfile(provider: string, datasetID: numb
 }
 
 export interface GetReplicationsConfig {
-  offset: number;
-  limit: number;
-  datasets: string[];
-  providers: string[];
-  timeStart: Date;
-  timeEnd: Date;
+  offset: number,
+  limit: number,
+  datasets: string[],
+  providers: string[],
+  timeStart: Date,
+  timeEnd: Date,
+  statuses: string[],
   selfService: boolean,
   proposalCID: string;
-  pieceCID: string;
-  message: string;
+  pieceCID: string,
+  message: string,
 }
 
 export async function getReplications(cfg: GetReplicationsConfig) {
@@ -226,6 +227,7 @@ export async function getReplications(cfg: GetReplicationsConfig) {
       providers: cfg.providers?.join(','),
       deal_time_start: !!cfg.timeStart && Math.floor(cfg.timeStart.getTime() / 1000).toString(),
       deal_time_end: !!cfg.timeEnd && Math.floor(cfg.timeEnd.getTime() / 1000).toString(),
+      statuses: cfg.statuses?.join(','),
       self_service: cfg.selfService?.toString(),
       proposal_cid: cfg.proposalCID,
       piece_cid: cfg.pieceCID,
