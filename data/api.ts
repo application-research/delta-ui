@@ -211,7 +211,7 @@ export interface GetReplicationsConfig {
   timeEnd: Date,
   statuses: string[],
   selfService: boolean,
-  proposalCID: string;
+  proposalCID: string,
   pieceCID: string,
   message: string,
 }
