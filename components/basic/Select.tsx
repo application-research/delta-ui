@@ -11,13 +11,14 @@ export default function Select(props: {
   required?: boolean,
   disabled?: boolean
   children?: React.ReactElement<HTMLOptionElement>[],
-}) {
+} & React.ComponentPropsWithRef<'select'>) {
   const id = props.id || 'select-' + Math.floor(Math.random() * 100000);
   
   return (
     <div className={styles.body}>
       <label htmlFor={id} className={styles.label}>{props.label}</label>
       <select 
+        {...props}
         id={id}
         className={styles.select} 
         value={props.value} 
