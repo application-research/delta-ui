@@ -19,7 +19,11 @@ async function auth(ctx: any, authToken: string, ddmAddress: string, setLoading:
       return;
     }
   } catch (e) {
-    alert(e.toString());
+    if (e instanceof TypeError) {
+      alert(`Could not connect to Delta DM backend at ${ddmAddress}. Please ensure it is running and reachable on the network.`);
+    } else {
+      alert('Unknown error: ' + e.toString());
+    }
     return;
   } finally {
     setLoading(false);
