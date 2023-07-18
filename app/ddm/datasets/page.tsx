@@ -23,9 +23,9 @@ export default function Datasets() {
   
   function formatPercentNumber(percent) {
     if (percent == 0 || percent == 1) {
-      return percent * 100
+      return percent * 100;
     }
-    return (percent * 100).toFixed(1)
+    return (percent * 100).toFixed(1);
   }
 
   return (<div className={styles.body}>

@@ -25,7 +25,7 @@ export default function Replications() {
   const cfg = React.useRef(ctx.getReplicationsConfig);
 
   function setSearchDatasets(val: string) {
-    cfg.current.datasets = commaSeparate(val);
+    cfg.current.datasets = commaSeparate(val).map((datasetName) => ctx.getDatasetByName(datasetName)?.ID).filter((id) => id !== undefined);
   }
   function setSearchProviders(val: string) {
     cfg.current.providers = commaSeparate(val);
@@ -69,6 +69,7 @@ export default function Replications() {
 
   React.useEffect(() => {
     applySearch();
+    ctx.updateDatasets();
   }, []);
   React.useEffect(() => {
     ctx.updateReplications();

@@ -56,6 +56,15 @@ export function CreateDDMState() {
         setDatasetsLoading(false);
       }
     },
+    getDatasetByName(name: string): any {
+      return this.datasets?.find((dataset) => dataset.name === name);
+    },
+    searchDatasetsByName(nameFragment: string): any[] {
+      return this.datasets?.filter((dataset) => dataset.name.includes(nameFragment));
+    },
+    getDatasetByID(id: number): any {
+      return this.datasets?.find((dataset) => dataset.ID === id);
+    },
     async updateProviders() {
       setProvidersLoading(true);
       try {
