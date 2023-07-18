@@ -20,6 +20,7 @@ export default function Wallets() {
 
   React.useEffect(() => {
     ctx.updateWallets();
+    ctx.updateDatasets();
   }, []);
   
   return (
